@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+	<adminhtml_dashboard_index>
+		<reference name="head">
+			<action method="addCss">
+				<stylesheet>anattadesign/abandonedcarts/css/style.css</stylesheet>
+			</action>
+			<action method="addJs">
+				<script>anattadesign/abandonedcarts/zepto.js</script>
+			</action>
+			<action method="addJs">
+				<script>anattadesign/abandonedcarts/adminhack.js</script>
+			</action>
+		</reference>
+	</adminhtml_dashboard_index>
+</layout>

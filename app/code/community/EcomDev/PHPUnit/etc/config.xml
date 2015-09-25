@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * PHP Unit test suite for Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   EcomDev
+ * @package    EcomDev_PHPUnit
+ * @copyright  Copyright (c) 2013 EcomDev BV (http://www.ecomdev.org)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author     Ivan Chepurnyi <ivan.chepurnyi@ecomdev.org>
+ */
+-->
+<config>
+    <modules>
+        <EcomDev_PHPUnit>
+            <version>0.1.0</version>
+        </EcomDev_PHPUnit>
+    </modules>
+    <global>
+        <models>
+            <ecomdev_phpunit>
+                <class>EcomDev_PHPUnit_Model</class>
+                <resourceModel>ecomdev_phpunit_mysql4</resourceModel>
+            </ecomdev_phpunit>
+            <ecomdev_phpunit_mysql4>
+                <class>EcomDev_PHPUnit_Model_Mysql4</class>
+            </ecomdev_phpunit_mysql4>
+        </models>
+        <cache>
+            <types>
+                <ecomdev_phpunit>
+                    <label>Unit Test Cases</label>
+                    <description>Unit test case file paths cache.</description>
+                    <tags>ECOMDEV_PHPUNIT</tags>
+                </ecomdev_phpunit>
+            </types>
+        </cache>
+        <events>
+            <phpunit_suite_start_after>
+                <observers>
+                    <ecomdev_phpunit>
+                        <class>ecomdev_phpunit/observer</class>
+                        <method>registerDefaultTestHelpers</method>
+                    </ecomdev_phpunit>
+                </observers>
+            </phpunit_suite_start_after>
+        </events>
+    </global>
+    <phpunit>
+        <suite>
+            <modules /> <!-- List of modules included into test suite -->
+            <exclude /> <!-- List of modules that are excluded from test suite -->
+            <yaml>
+                <model>ecomdev_phpunit/yaml_loader</model>
+                <loaders>
+                    <default>ecomdev_phpunit/yaml_loader_default</default>
+                    <module>ecomdev_phpunit/yaml_loader_module</module>
+                    <global>ecomdev_phpunit/yaml_loader_global</global>
+                </loaders>
+            </yaml>
+            <!-- The names of directories inside Test for recognition of tests per group -->
+            <groups>
+                <models>Model</models>
+                <helpers>Helper</helpers>
+                <blocks>Block</blocks>
+                <config>Config</config>
+                <controllers>Controller</controllers>
+            </groups>
+            <!-- Test suite that will be used for creation of each of the tests -->
+            <test_suite>EcomDev_PHPUnit_Test_Suite_Group</test_suite>
+            <layout>
+                <model>ecomdev_phpunit/layout</model>
+            </layout>
+            <design>
+                <package>
+                    <model>ecomdev_phpunit/design_package</model>
+                </package>
+            </design>
+            <expectation>
+                <!-- Default model for loading of expectations -->
+                <model>ecomdev_phpunit/expectation</model>
+            </expectation>
+            <fixture>
+                <!-- Default model for loading of fixtures -->
+                <model>ecomdev_phpunit/fixture</model>
+                <processors>
+                    <registry>ecomdev_phpunit/fixture_processor_registry</registry>
+                    <scope>ecomdev_phpunit/fixture_processor_scope</scope>
+                    <config>ecomdev_phpunit/fixture_processor_config</config>
+                    <config_xml>ecomdev_phpunit/fixture_processor_config</config_xml>
+                    <cache_options>ecomdev_phpunit/fixture_processor_cache</cache_options>
+                    <attributes>ecomdev_phpunit/fixture_processor_attributes</attributes>
+                    <eav>ecomdev_phpunit/fixture_processor_eav</eav>
+                    <tables>ecomdev_phpunit/fixture_processor_tables</tables>
+                    <vfs>ecomdev_phpunit/fixture_processor_vfs</vfs>
+                </processors>
+                <attribute>
+                    <!-- Fixture loaders for EAV attributes
+                         Default can be used but does not support extra attribute table configuration -->
+                    <default>ecomdev_phpunit/fixture_attribute_default</default>
+                </attribute>
+                <eav>
+                    <!-- Here goes the list of fixture loaders for EAV entities
+                         If no fixture loader is specified for entity, then default will be used
+                    -->
+                    <default>ecomdev_phpunit/fixture_eav_default</default>
+                    <catalog_product>ecomdev_phpunit/fixture_eav_catalog_product</catalog_product>
+                    <catalog_category>ecomdev_phpunit/fixture_eav_catalog_category</catalog_category>
+                </eav>
+                <default_data>
+                    <category>
+                        <root>
+                            <entity_id>1</entity_id>
+                            <parent_id>0</parent_id>
+                            <path>1</path>
+                            <position>0</position>
+                            <level>0</level>
+                            <children_count>1</children_count>
+                            <name>Root Catalog</name>
+                            <url_key>root-catalog</url_key>
+                            <is_active>1</is_active>
+                            <is_anchor>0</is_anchor>
+                            <attribute_set_id>0</attribute_set_id>
+                        </root>
+                        <default_category>
+                            <entity_id>2</entity_id>
+                            <parent_id>1</parent_id>
+                            <path>1/2</path>
+                            <position>1</position>
+                            <level>1</level>
+                            <children_count>0</children_count>
+                            <name>Default Category</name>
+                            <url_key>default-category</url_key>
+                            <is_active>1</is_active>
+                            <is_anchor>0</is_anchor>
+                            <display_mode>PRODUCTS</display_mode>
+                            <include_in_menu>1</include_in_menu>
+                        </default_category>
+                    </category>
+                </default_data>
+            </fixture>
+            <app>
+                <!-- Application class name for running tests -->
+                <class>EcomDev_PHPUnit_Model_App</class>
+                <area>
+                    <!-- Application area class name for tests -->
+                    <class>EcomDev_PHPUnit_Model_App_Area</class>
+                </area>
+            </app>
+            <!-- Configuration of controller for test cases -->
+            <controller>
+                <front>
+                    <class>EcomDev_PHPUnit_Controller_Front</class>
+                </front>
+                <request>
+                    <class>EcomDev_PHPUnit_Controller_Request_Http</class>
+                </request>
+                <response>
+                    <class>EcomDev_PHPUnit_Controller_Response_Http</class>
+                </response>
+            </controller>
+
+            <modules>
+                <!-- Place your module name in your module config.xml
+                     For adding it to test suite -->
+                <!-- Example:
+                <Namespace_MyModule />
+                -->
+            </modules>
+
+            <helpers>
+                <mock>EcomDev_PHPUnit_Test_Case_Helper_Mock</mock>
+                <session>EcomDev_PHPUnit_Test_Case_Helper_Session</session>
+                <customer>EcomDev_PHPUnit_Test_Case_Helper_Customer</customer>
+                <guest>EcomDev_PHPUnit_Test_Case_Helper_Guest</guest>
+                <observer>EcomDev_PHPUnit_Test_Case_Helper_Observer</observer>
+            </helpers>
+        </suite>
+    </phpunit>
+    <test>
+        <!-- Definition of event observers that will be used only for test environment -->
+        <events>
+            <core_block_abstract_to_html_after>
+                <observers>
+                    <ecomdev_phpunit>
+                        <class>core/layout</class>
+                        <method>recordBlockRender</method>
+                    </ecomdev_phpunit>
+                </observers>
+            </core_block_abstract_to_html_after>
+        </events>
+    </test>
+</config>

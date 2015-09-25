@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <EM_Colorswatches>
+            <version>0.1.0</version>
+        </EM_Colorswatches>
+    </modules>
+	 <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <colorswatches>
+                                            <title>Image Configure</title>
+                                        </colorswatches>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <frontend>
+        <routers>
+            <colorswatches>
+                <use>standard</use>
+                <args>
+                    <module>EM_Colorswatches</module>
+                    <frontName>colorswatches</frontName>
+                </args>
+            </colorswatches>
+        </routers>
+        <layout>
+            <updates>
+                <colorswatches>
+                    <file>em_colorswatches.xml</file>
+                </colorswatches>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<colorswatches>
+				<use>admin</use>
+				<args>
+					<module>EM_Colorswatches</module>
+					<frontName>colorswatches</frontName>
+				</args>
+			</colorswatches>
+        </routers>
+    </admin>
+    <adminhtml>
+		
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<EM_Colorswatches>
+							<title>Colorswatches Module</title>
+							<sort_order>10</sort_order>
+						</EM_Colorswatches>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<colorswatches>
+					<file>colorswatches.xml</file>
+				</colorswatches>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+       
+        <blocks>
+            <colorswatches>
+                <class>EM_Colorswatches_Block</class>
+            </colorswatches>
+        </blocks>
+        <helpers>
+            <colorswatches>
+                <class>EM_Colorswatches_Helper</class>
+            </colorswatches>
+        </helpers>
+    </global>
+	
+</config>

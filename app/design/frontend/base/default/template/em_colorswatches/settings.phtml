@@ -1,0 +1,134 @@
+<?php 
+$swatches = $this->get_option_swatches();
+?>
+<!-- GALATHEMES: COLOR SWATCHES -->
+<script type="text/javascript">
+	document.observe('dom:loaded', function() {
+		try {
+			var swatches = <?php echo Mage::helper('core')->jsonEncode($swatches); ?>;
+		
+			function find_swatch(key, value) {
+				for (var i in swatches) {
+					if (swatches[i].key == key && swatches[i].value == value)
+						return swatches[i];
+				}
+				return null;
+			}
+		
+			function has_swatch_key(key) {
+				for (var i in swatches) {
+					if (swatches[i].key == key)
+						return true;
+				}
+				return false;
+			}
+		
+			function create_swatches(label, select) {
+				// create swatches div, and append below the <select>
+				var sw = new Element('div', {'class': 'swatches-container'});
+				select.up().appendChild(sw);
+			
+				// store these element to use later for recreate swatches
+				select.swatchLabel = label;
+				select.swatchElement = sw;
+			
+				// hide select
+				select.setStyle({position: 'absolute', top: '-9999px'})
+			
+				$A(select.options).each(function(opt, i) {
+					if (opt.getAttribute('value')) {
+						var elm;
+						var key = trim(opt.innerHTML);
+					
+						// remove price
+						if (opt.getAttribute('price')) key = trim(key.replace(/\+([^+]+)$/, ''));
+					
+						var item = find_swatch(label, key);
+						if (item)
+							elm = new Element('img', {
+								src: '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>swatches/'+item.img, 
+								alt: opt.innerHTML, 
+								title: opt.innerHTML, 
+								'class': 'swatch-img'});
+						else {
+							console.debug(label, key, swatches);
+							elm = new Element('a', {'class': 'swatch-span'});
+							elm.update(opt.innerHTML);
+						}
+						elm.observe('click', function(event) {
+							select.selectedIndex = i;
+							fireEvent(select, 'change');
+							var cur = sw.down('.current');
+							if (cur) cur.removeClassName('current');
+							elm.addClassName('current');
+						});
+						sw.appendChild(elm);
+					}
+				});
+			}
+		
+			function recreate_swatches_recursive(select) {
+				// remove the old swatches
+				if (select.swatchElement) {
+					select.up().removeChild(select.swatchElement);
+					select.swatchElement = null;
+				}
+			
+				// create again
+				if (!select.disabled)
+					create_swatches(select.swatchLabel, select);
+			
+				// recursively recreate swatches for the next select
+				if (select.nextSetting)
+					recreate_swatches_recursive(select.nextSetting);
+			}
+		
+			function fireEvent(element,event){
+				if (document.createEventObject){
+					// dispatch for IE
+					var evt = document.createEventObject();
+					return element.fireEvent('on'+event,evt)
+				}
+				else{
+					// dispatch for firefox + others
+					var evt = document.createEvent("HTMLEvents");
+					evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+					return !element.dispatchEvent(evt);
+				}
+			}
+		
+			function trim(str) {
+				return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+			}
+		
+		
+			$$('#product-options-wrapper dt').each(function(dt) {
+			
+				// get custom option's label
+				var label = '';
+				$A(dt.down('label').childNodes).each(function(node) {
+					if (node.nodeType == 3) label += node.nodeValue;
+				});
+				label = trim(label);
+			
+				var dd = dt.next();
+				var select = dd.down('select');
+				if (select && has_swatch_key(label)) {
+					create_swatches(label, select);
+				
+					// if configurable products, recreate swatches of the next select when the current select change
+					if (select.hasClassName('super-attribute-select')) {
+						select.observe('change', function() {
+							setTimeout(function() {
+								recreate_swatches_recursive(select.nextSetting);
+							}, 100);
+						});
+					}
+				}
+			});
+		}
+		catch(e) {
+			alert("Color Swatches javascript error. Please report this error to support@galathemes.com. Error:" + e.message);
+		}
+	});
+</script>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Reports
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <sections>
+        <colorswatches translate="label" module="colorswatches">
+            <label>Gala ColorSwatches Settings</label>
+            <tab>general</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+			<groups>
+                <image translate="label">
+                    <label>Image Configure</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>  
+					 <fields>
+						<option_swatches translate="label comment">
+							<label>Custom Option Swatches</label>
+							<frontend_type>textarea</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[
+								<p>Format: <em>[option label]</em> : <em>[option value]</em> = <em>[swatch image]</em></p>
+								<p>Example:</p>
+								<p>
+								Size : Small = size-small.png<br/>
+								Size : Medium = size-medium.png<br/>
+								Size : Large = size-large.png<br/>
+								Color : Red = color-red.png<br/>
+								Color : Green = color-medium.png<br/>
+								Color : Blue = color-blue.png<br/>
+								Color : Yellow = color-yellow.png<br/>
+								</p>
+								<p>Swatch images should be uploaded in <strong>media/color_swatches/</strong></p>
+								]]></comment>
+						</option_swatches>
+                    </fields>
+                </image>
+			</groups>
+        </colorswatches>
+    </sections>
+</config>

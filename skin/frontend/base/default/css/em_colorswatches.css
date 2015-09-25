@@ -1,0 +1,5 @@
+.swatches-container .swatch-img,
+.swatches-container .swatch-span { margin:0 2px 2px 0; }
+.swatches-container .swatch-img { border:1px solid #eee; }
+.swatches-container .swatch-img.current { border:1px solid #333; }
+.swatches-container .swatch-span { }

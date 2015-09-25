@@ -1,0 +1,146 @@
+<!--@subject {{var email_subject}} @-->
+
+<body style="background: #f3f0ec;padding: 0px; margin: 0px;">
+<div style="background: #f3f0ec;padding-top: 20px; margin: 0px; ">
+    <!--main table with single cell-->
+    <table cellspacing="0" cellpadding="0" align="center" width="545px;" style="background: #fff; padding: 40px 40px 40px 40px; color: #000; font-family: 'LatoRegular',arial,sans-serif; font-size: 13px;">
+        <tr>
+            <td style="border-bottom:1px solid #d5d5d5;margin-bottom:20px">
+                <table cellspacing="0" cellpadding="0" align="left" width="100%">
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <h1 style="font-size:24px;padding:0 0 18px 0;margin:0;font-family:'LatoBlack',arial,sans-serif;font-weight:normal;">Your weekly update</h1>
+                            </td>
+                            <td align="right" style="vertical-align: top;">
+                                <a href="https://awesomecheckout.com/?kme=Clicked%20Link&km_Email=MyAB" style="font-size:11px; color:#000; text-decoration:none" target="_blank">
+                                    Sponsored by<br>
+                                    <img src="{{skin url='anattadesign/abandonedcarts/images/logo.png'}}" style="margin-top:5px; width:140px">
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="margin:0px auto; margin-top:20px;">
+                    <h2 style="background:#cf7e3e; height: 10px; overflow: hidden;border:2px solid #c36449;padding:8px 10px;color:#fff;margin:0px;">
+                        <span style="float:left;font-size:12px;font-weight:normal; text-transform: uppercase;">This WEEK &nbsp; ( {{var week1_from}}  -  {{var week1_to}} )</span>
+                        <a href="http://myabandonedcarts.com/?kme=Clicked%20Widget" style="float:right;"><img src="{{skin url='anattadesign/abandonedcarts/images/powerdby.jpg'}}"  style="border:none;"/></a>
+                    </h2>
+
+                    <div style="border:1px solid #343434;border-top:none;">
+                        <div style="padding:10px 0 20px 0;">
+                            <table cellspacing="0" cellpadding="0" align="right" >
+                                <tr>
+                                    <td align="right">
+                                        <span style="width:70px;text-transform:uppercase;font-size:8px;font-weight:bold;color:#000;text-align:center; float:right;font-family: 'LatoBlack',arial,sans-serif; font-weight: normal;">ABANDONMENT RATE<small style="font-size:26px;display:block;line-height:30px;">{{var week1_abandonment}}%</small> <sub style="font-size: 8px; color: #{{var week1_color}};"> ({{var week1_difference}}%)</sub></span>
+                                        <span style="width:70px;text-transform:uppercase;font-size:8px;font-weight:bold;color:#000;text-align:center; float:right;font-family: 'LatoBlack',arial,sans-serif; font-weight: normal;">COMPLETED CHECKOUT<small style="color:#cf7e3e;display:block;font-size:10px;">{{var week1_completed}}</small></span>
+                                        <span style="width:70px;text-transform:uppercase;font-size:8px;font-weight:bold;color:#000;text-align:center; float:right;font-family: 'LatoBlack',arial,sans-serif; font-weight: normal;">ENTERED CHECKOUT<small style="color:#cf7e3e;display:block;font-size:10px;font-family: 'LatoBlack',arial,sans-serif; font-weight: normal;">{{var week1_entered}}</small></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="padding-top:35px; vertical-align: middle;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="vertical-align: middle; height: 135px;">
+                                <tr>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step1_entered}}</span></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step1_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step1_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step1_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step2_entered}}</span></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step2_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step2_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step2_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step3_entered}}</span></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step3_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step3_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step3_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step4_entered}}</span></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step4_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step4_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step4_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step5_entered}}</span></td>
+                                    {{if week1_step5_name}}
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step5_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step5_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step5_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step6_entered}}</span></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="display:block; color:#00; width: 30px; margin:0px 0 4px 0; text-align:center;font-size:10px;">{{var week1_step6_abandoned}}%</span><div style="border:2px solid #c36449;border-bottom:none;margin:-2px 0 0 0;background: #EBD5B7;height: {{var week1_step6_total}}%;"><span style="background:#333;display:block;color:#fff;text-align:center;font-size:10px;;height:{{var week1_step6_abandoned}}%;"></span></div></td>
+                                    <td style="text-align:center;vertical-align:bottom;padding:0 5px;width:1%;"><span style="font-size:9px;color:#cf7e3e;">{{var week1_step7_entered}}</span></td>
+                                    {{/if}}
+                                </tr>
+                                <tr style="padding-right:4%;border-right:1px solid #343434;">
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;">&nbsp;</td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">1. {{var week1_step1_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><img src="{{skin url='anattadesign/abandonedcarts/images/table-step-img-arrow.jpg'}}" alt="" style="border:none;" /></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">2. {{var week1_step2_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><img src="{{skin url='anattadesign/abandonedcarts/images/table-step-img-arrow.jpg'}}" alt="" style="border:none;" /></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">3. {{var week1_step3_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><img src="{{skin url='anattadesign/abandonedcarts/images/table-step-img-arrow.jpg'}}" alt="" style="border:none;" /></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">4. {{var week1_step4_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><img src="{{skin url='anattadesign/abandonedcarts/images/table-step-img-arrow.jpg'}}" alt="" style="border:none;" /></td>
+                                    {{if week1_step5_name}}
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">5. {{var week1_step5_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><img src="{{skin url='anattadesign/abandonedcarts/images/table-step-img-arrow.jpg'}}" alt="" style="border:none;" /></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:center;"><span style="padding:0px 0 0 2px;font-size:9px;">6. {{var week1_step6_name}}</span></td>
+                                    <td style="background:#eaefef;vertical-align:middle;height:37px;border-top:1px solid #343434;text-align:left;"></td>
+                                    {{/if}}
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h6 style="padding: 35px 0 15px 0; margin: 0; color: #d86d45; font-weight: normal;text-transform: uppercase; font-size: 12px;font-family: 'LatoBold',arial,sans-serif; font-weight: normal; letter-spacing:1px;">PREVIOUS WEEK’S ABANDONMENT RATE</h6>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table cellspacing="0" cellpadding="0" align="center" width="100%" style="border:1px solid #c4c1be;">
+                    <tr>
+                        <th align="center" style=" background: #f6f4f1; padding: 8px 5px ; color: #000100; text-transform: uppercase; font-size: 9px; font-family: 'LatoBold',arial,sans-serif; font-weight: normal; border-right: 1px solid #c4c1be;border-bottom: 1px solid #c4c1be;">{{var week2_from}}  -  {{var week2_to}}</th>
+                        <th align="center" style=" background: #f6f4f1; padding: 8px 5px; color: #000100; text-transform: uppercase; font-size: 9px; font-family: 'LatoBold',arial,sans-serif; font-weight: normal;border-right: 1px solid #c4c1be;border-bottom: 1px solid #c4c1be;">{{var week3_from}}  -  {{var week3_to}}</th>
+                        <th align="center" style=" background: #f6f4f1; padding: 8px 5px ; color: #000100; text-transform: uppercase; font-size: 9px; font-family: 'LatoBold',arial,sans-serif; font-weight: normal;border-bottom: 1px solid #c4c1be;">{{var week4_from}}  -  {{var week4_to}}</th>
+                    </tr>
+                    <tr>
+                        <td align="center" style=" background: #edd6b8; font-size: 14px;padding:10px 5px; color: #000100;border-right: 1px solid #c4c1be;">{{var week2_abandonment}}% <sub style="font-size: 8px; color: #{{var week2_color}};"> ({{var week2_difference}}%)</sub></td>
+                        <td align="center" style=" background: #edd6b8; font-size: 14px;padding:10px 5px; color: #000100;border-right: 1px solid #c4c1be;">{{var week3_abandonment}}% <sub style="font-size: 8px; color: #{{var week3_color}};"> ({{var week3_difference}}%)</sub></td>
+                        <td align="center" style=" background: #edd6b8; font-size: 14px;padding:10px 5px; color: #000100;">{{var week4_abandonment}}% <sub style="font-size: 8px; color: #{{var week4_color}};"> ({{var week4_difference}}%)</sub></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="50"><a href="{{var dashboard_url}}">Click here to view full reports on Magento dashboard</a></a></td>
+        </tr>
+        <tr>
+            <td height="50"><span style="border-top:1px solid #d5d5d5; display:block;"></span></td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td valign="top"><img src="{{skin url='anattadesign/abandonedcarts/images/tipimproveicon.jpg'}}" alt="" style="float: left; border:none;" /></td>
+                        <td valign="top">
+                            <h2 style="font-size: 22px; color: #333; display:block; padding:4px 0 0 10px; margin: 0; float: left;font-family: 'LatoBlack',arial,sans-serif; font-weight: normal;">A tip to improve your checkout.</h2>
+                            <br>
+                            <p style="font-size:16px; color: #333; padding: 20px 0 15px 10px; margin: 0px; line-height: 24px;">{{var tip}}</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <!--
+        <tr>
+            <td>
+                <table width="100%">
+                    <tr>
+                        <td valign="top" align="center">
+                            <p style="border-top:1px solid #d5d5d5;  padding: 30px 0 25px 0; margin: 0px; text-align: center; margin-top:20px;"><a href="#"><img src="{{skin url='anattadesign/abandonedcarts/images/learnmore.jpg'}}" alt="" style="border: none;" /></a></p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        -->
+    </table>
+    <!--main table-->
+    {{var email_footer}}
+</div>
+</body>

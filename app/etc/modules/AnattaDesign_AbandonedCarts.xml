@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<modules>
+		<AnattaDesign_AbandonedCarts>
+			<active>true</active>
+			<codePool>local</codePool>
+		</AnattaDesign_AbandonedCarts>
+	</modules>
+</config>

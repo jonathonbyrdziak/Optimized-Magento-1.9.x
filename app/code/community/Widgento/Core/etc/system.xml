@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+/**
+ * Widgento_Login
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   Widgento
+ * @package    Widgento_Login
+ * @author     Yury Ksenevich <info@widgento.com>
+ * @copyright  Copyright (c) 2012-2015 Yury Ksenevich p.e.
+ * @license    http://www.widgento.com/customer-service Widgento Modules License
+ */
+
+
+-->
+
+<config>
+    <tabs>
+        <widgento translate="label">
+            <label>Widgento Modules</label>
+            <sort_order>199</sort_order>
+        </widgento>
+    </tabs>
+    <sections>
+        <widgentocore translate="label" module="widgentocore">
+            <label>Modules Info</label>
+            <tab>widgento</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>110</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <extensions translate="label">
+                    <label>Installed Extensions</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>widgentocore/system_extensions</frontend_model>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </extensions>
+            </groups>
+        </widgentocore>
+    </sections>
+</config>

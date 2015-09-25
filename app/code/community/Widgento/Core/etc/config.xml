@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+/**
+ * Widgento_Login
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0), a
+ * copy of which is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   Widgento
+ * @package    Widgento_Login
+ * @author     Yury Ksenevich <info@widgento.com>
+ * @copyright  Copyright (c) 2012-2015 Yury Ksenevich p.e.
+ * @license    http://www.widgento.com/customer-service Widgento Modules License
+ */
+
+
+-->
+
+<config>
+    <modules>
+        <Widgento_Core>
+            <version>0.2.0</version>
+        </Widgento_Core>
+    </modules>
+
+    <global>
+        <models>
+            <widgentocore>
+                <class>Widgento_Core_Model</class>
+                <resourceModel>widgentocore_mysql4</resourceModel>
+            </widgentocore>
+            
+            <widgentocore_mysql4>
+                <class>Widgento_Core_Model_Mysql4</class>
+                <entities>
+                    
+                </entities>
+            </widgentocore_mysql4>
+        </models>
+        <blocks>
+            <widgentocore>
+                <class>Widgento_Core_Block</class>
+            </widgentocore>
+        </blocks>
+
+        <helpers>
+            <widgentocore><class>Widgento_Core_Helper</class></widgentocore>
+        </helpers>
+
+		<resources>
+			<widgentocore_setup>
+				<setup>
+ 				   <module>Widgento_Core</module>
+				</setup>
+				<connection>
+				    <use>core_setup</use>
+				</connection>
+			</widgentocore_setup>
+			<widgentocore_write>
+				<connection>
+				    <use>core_write</use>
+				</connection>
+			</widgentocore_write>
+			<widgentocore_read>
+				<connection>
+				    <use>core_read</use>
+				</connection>
+			</widgentocore_read>
+		</resources>        
+    </global>
+
+    <admin>
+    </admin>
+
+    <adminhtml>
+        <menu>
+            
+        </menu>
+        <events>
+		    <controller_action_predispatch>
+	            <observers>
+	                <widgentocore>
+	                    <type>singleton</type>
+	                    <class>widgentocore/feed</class>
+	                    <method>checkUpdate</method>
+	                </widgentocore>
+	            </observers>
+		    </controller_action_predispatch>
+		</events>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <widgentocore>
+                                            <title>Widgento Modules Info</title>
+                                        </widgentocore>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <frontend>
+    </frontend>
+
+    <default>
+        <widgentocore>
+            <newsletter>
+                <feed_url>http://news.widgento.com/feed.xml</feed_url>
+            </newsletter>
+        </widgentocore>
+    </default>
+</config>
