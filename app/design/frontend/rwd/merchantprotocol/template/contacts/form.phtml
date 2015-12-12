@@ -1,0 +1,83 @@
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+<div class="contact-block">
+    <h2><?php echo Mage::helper('contacts')->__('Contact B4Schools') ?></h2>
+    <form action="<?php echo $this->getFormAction(); ?>" id="contactForm" method="post" class="scaffold-form">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo Mage::helper('contacts')->__('Contact Information') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <label for="name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('First Name') ?></label>
+                        <div class="input-box">
+                            <input name="name" id="name" title="<?php echo Mage::helper('contacts')->__('First Name') ?>" value="<?php echo $this->escapeHtml($this->helper('contacts')->getUserName()) ?>" class="form-control required-entry" type="text" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="last-name" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Last Name') ?></label>
+                        <div class="input-box">
+                            <input name="last-name" id="last-name" title="<?php echo Mage::helper('contacts')->__('Last Name') ?>" value="" class="form-control required-entry" type="text" />
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <label for="email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Valid Email Address') ?></label>
+                        <div class="input-box">
+                            <input name="email" id="email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->escapeHtml($this->helper('contacts')->getUserEmail()) ?>" class="form-control required-entry validate-email" type="email" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="conf-email" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Confirm Email Address') ?></label>
+                        <div class="input-box">
+                            <input name="email" id="conf-email" title="<?php echo Mage::helper('contacts')->__('Email') ?>" value="<?php echo $this->escapeHtml($this->helper('contacts')->getUserEmail()) ?>" class="form-control required-entry validate-email" type="email" autocapitalize="off" autocorrect="off" spellcheck="false" />
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <label for="order"><?php echo Mage::helper('contacts')->__('Order Number (Optional)') ?></label>
+                        <div class="input-box">
+                            <input name="order" id="order" title="<?php echo Mage::helper('contacts')->__('Order Number (Optional)') ?>" value="" class="form-control" type="text" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="input-box">
+                            <p class="required"><?php echo Mage::helper('contacts')->__('* Required Fields') ?></p>
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <label class="required" for="select"><?php echo Mage::helper('contacts')->__('Message Subject') ?></label>
+                        <div class="input-box ">
+                            <select id="select" class="validate-select required-entry" name="subject">
+                                <option><?php echo $this->__('Message Subject') ?></option>
+                                <option><?php echo $this->__('Problem With Ordering') ?></option>
+                                <option><?php echo $this->__('Question About Previous Order') ?></option>
+                                <option><?php echo $this->__('Payment & Billing') ?></option>
+                                <option><?php echo $this->__('Damaged & Defective Items') ?></option>
+                                <option><?php echo $this->__('Returns') ?></option>                                <option><?php echo $this->__('Returns') ?></option>
+                                <option><?php echo $this->__('Other Questions & Comments') ?></option> 
+                            </select>
+                        </div> 
+                    </div>
+                </li>
+                <li class="wide">
+                    <label for="comment" class="required"><em>*</em><?php echo Mage::helper('contacts')->__('Message') ?></label>
+                    <div class="input-box">
+                        <textarea name="comment" id="comment" title="<?php echo Mage::helper('contacts')->__('Message') ?>" class="required-entry form-control" cols="5" rows="9"><?php echo $this->__('Message') ?></textarea>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buttons-set">
+            <input type="text" name="hideit" id="hideit" value="" style="display:none !important;" />
+            <button type="submit" title="<?php echo Mage::helper('contacts')->__('Submit') ?>" class="btn btn-primary"><span><span><?php echo Mage::helper('contacts')->__('Submit') ?></span></span></button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var contactForm = new VarienForm('contactForm', true);
+//]]>
+</script>

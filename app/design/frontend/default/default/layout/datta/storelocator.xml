@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * Magento 
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *  
+ * 
+ * @category    design
+ * @package     ecart_ecart-theme
+ * @created     Dattatray Yadav  2nd Dec,2013 3:00pm
+ * @author      Clarion magento team<Dattatray Yadav>   
+ * @purpose     Manage store locator layout 
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License
+ */
+-->
+<layout version="0.1.0">
+    <default>
+        <reference name="top.links">
+            <action method="addLink" translate="label title">
+                <label>School's</label>
+                <url>datta_storelocator</url>
+                <title>School's</title>
+                <prepare>true</prepare>
+                <urlParams/>
+                <position>6</position>
+            </action>
+        </reference>
+    </default>
+    <datta_storelocator_index_index>
+        <reference name="head">
+            <action method="addCss"><stylesheet>css/datta/storelocator.css</stylesheet></action>
+            <action method="addItem"><type>js</type><name>datta/storelocator.js</name><params/></action>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="datta_storelocator/store" name="store" template="datta/storelocator/storelocator.phtml"/>
+        </reference>
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbName>Home</crumbName>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbName>School's</crumbName>
+                <crumbInfo>
+                    <label>School's</label>
+                    <title>School's</title>
+                </crumbInfo>
+            </action>
+        </reference>
+    </datta_storelocator_index_index>
+</layout>

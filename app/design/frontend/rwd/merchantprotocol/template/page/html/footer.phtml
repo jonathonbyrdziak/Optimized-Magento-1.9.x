@@ -1,0 +1,36 @@
+<div class="footer-container">
+    <div class="footer">
+        <?php echo $this->getChildHtml('footer_menu') ?>
+        <div class="box">
+            <?php $_header = $this->getHelper('page/html_header') ?>
+            <strong class="logo"><a href="<?php echo $this->getUrl('') ?>"><?php echo $_header->getLogoAlt() ?></a></strong>
+            <?php echo $this->getChildHtml('footer_contacts') ?>
+        </div>
+    </div>
+    <div class="footer-holder">
+        <div class="footer-frame">
+            <address class="copyright"><?php echo $this->getCopyright() ?></address>
+            <span class="version_control"><?php echo Widgetized_Idpas400_Helper_Data::VERSION ?></span>
+            <?php echo $this->getChildHtml('footer_socials') ?>
+        </div>
+    </div>
+</div>
+
+<div class="info-messages" style="display: none;">
+    <div class="holder">
+        <p><a href="<?php echo Mage::getUrl('checkout/cart') ?>">View Cart &gt;&gt;</a> <span class="ajax-message"></span></p>
+    </div>
+</div>
+
+<script>
+    jQuery(function(){
+        var signup = jQuery('.signup-box').clone().removeClass('hidden-xs').addClass('visible-xs');
+        jQuery.each(signup, function(k,el){
+            jQuery('.col-main').after(el);
+        });
+        var total = jQuery('.heade-holder li').length-2;
+        var li = jQuery('.heade-holder li').eq(total);
+        li.before(
+            '<li class="visible-xs"><a href="<?php echo Mage::getUrl('checkout/cart') ?>" title="Shopping Cart">Cart</a></li>');
+    });
+</script>

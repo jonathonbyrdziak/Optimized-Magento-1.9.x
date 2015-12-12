@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <RocketWeb_UpsAddressTypeValidator>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Webshopapps_Shipusa/>
+            </depends>
+        </RocketWeb_UpsAddressTypeValidator>
+    </modules>
+</config>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?> 
+<config>
+          <acl>
+             <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <wavethemes_jmmegamenu>
+                                            <title>JM Megamenu List</title>
+                                        </wavethemes_jmmegamenu>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <translate>
+			<modules>
+				<Wavethemes_Jmmegamenu>
+					<files>
+						<default>Wavethemes_Jmmegamenu.csv</default>
+					</files>
+				</Wavethemes_Jmmegamenu>
+			</modules>
+		</translate>
+</config>

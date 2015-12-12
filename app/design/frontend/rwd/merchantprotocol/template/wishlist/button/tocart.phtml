@@ -1,0 +1,3 @@
+<?php if($this->getWishlist()->getItemsCount() && $this->getWishlist()->isSalable()): ?>
+    <button type="button" title="<?php echo $this->__('Add All to Cart') ?>" onclick="addAllWItemsToCart()" class="btn btn-primary btn-add"><span><span><?php echo $this->__('Add All to Cart') ?></span></span></button>
+<?php endif;?>

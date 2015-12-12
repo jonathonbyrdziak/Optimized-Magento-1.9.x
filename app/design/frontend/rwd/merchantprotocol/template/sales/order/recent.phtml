@@ -1,0 +1,95 @@
+<?php if (Mage::getSingleton('customer/session')->getCustomerId()): ?>
+<div class="box-account box-recent">
+<?php $_orders = $this->getOrders(); ?>
+    <div class="box-head">
+        <h2><?php echo $this->__('Recent Orders') ?></h2>
+        <?php if( sizeof($_orders->getItems()) > 0 ): ?><a class="link" href="<?php echo $this->getUrl('sales/order/history') ?>"><?php echo $this->__('View All') ?></a><?php endif; ?>
+    </div>
+<?php 
+        $cc = 0;
+        if( sizeof($_orders->getItems()) > 0 ): ?>
+    <?php foreach ($_orders as $_order):
+        $_order = Mage::getModel('sales/order')->load($_order->getId());
+        $_items = $_order->getAllItems();
+
+        $isRecurring = false;
+        if ($_order->getData('parent_id')) {
+            $parent = Mage::getModel('recorder/order')->load($_order->getData('parent_id'));
+            if ($parent->getId())
+                $isRecurring = true;
+        }
+        ?>
+        <?php foreach ($_items as $_item): $cc++; if ($cc>=3) break; ?>
+            <div class="product">
+                <?php $_product = $_item->getProduct(); ?>
+                <div class="product-img">
+                    <a href="<?php echo $this->escapeHtml($_product->getProductUrl()) ?>">
+                        <img src="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(120); ?>" 
+                             alt="<?php echo $this->escapeHtml($_product->getName()) ?>" />
+                    </a>
+                </div>
+                
+                <div class="btn-holder">
+                    <?php if ($isRecurring): ?>
+                    <a href="<?php echo Mage::helper('recorder')->editOrderUrl($_order->getData('parent_id'), true) ?>" class="btn">Edit Recurring Order</a>
+                    <?php else: ?>
+                    <a href="<?php echo Mage::helper('recorder')->createOrderUrl($_order) ?>" class="btn"><?php echo $this->__('Create Recurring Order') ?></a>
+                    <?php endif ?>
+                    
+                    
+                    <?php 
+                    
+                    // /shippingtracking/index
+                    
+                    $hasShipped = Mage::helper('idpas400')->getTrackingCodes($_order); if ($hasShipped): ?>
+                    <a href="<?php echo $this->getUrl('awmobiletracking/tracking/collectTracks') ?>?<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_NUMBER ?>=<?php echo $_order->getIncrementId() ?>&<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_EMAIL ?>=<?php echo $_order->getCustomerEmail() ?>" class="btn"><?php echo $this->__('Track Shipment') ?></a>
+                    
+                    <?php else: ?>
+                    <a href="<?php echo $this->getUrl('awmobiletracking/tracking/view') ?>" class="btn"><?php echo $this->__('Track Shipment') ?></a>
+                    <?php endif ?>
+                </div>
+                
+                <div class="text-holder">
+                    
+                    <?php if ($isRecurring): ?>
+                    <div class="pull-right" style="padding-right:10px">
+                        <img src="<?php echo Mage::getDesign()->getSkinUrl() ?>/images/recurring_icon.png" title="This is a Recurring Order" />
+                    </div>
+                    <?php endif ?>
+                    
+                    <h3><?php echo $this->escapeHtml($_item->getName()) ?></h3>
+                    <dl class="info">
+                        <?php if ($isRecurring): ?>
+                        <dt><?php echo $this->__('Recurring Order #:').' '.$_order->getData('parent_id') ?></dt>
+                        <?php endif ?>
+                        <dt><?php echo $this->__('Order #:') ?></dt>
+                        <dd><?php echo $_order->getRealOrderId() ?></dd>
+                        <dt><?php echo $this->__('Order Date:') ?></dt>
+                        <dd><?php echo $this->__('%s', $this->formatDate($_order->getCreatedAtStoreDate())) ?></dd>
+                        
+                        <dt><?php echo $this->__('Ship To:') ?> </dt>
+                        <dd><?php echo $_order->getShippingAddress() ? $this->escapeHtml($_order->getShippingAddress()->getName()) : '&nbsp;' ?></dd>
+                        <dt><?php echo $this->__('Status:') ?> </dt>
+                        <dd><?php echo $_order->getStatusLabel() ?></dd>
+                    </dl>
+                    <ul class="links-list">
+                        <li><a href="<?php echo $this->getViewUrl($_order) ?>"><?php echo $this->__('View This Order') ?></a></li>
+                        <?php if ($isRecurring): ?>
+                        <li>
+                            <a href="<?php echo Mage::helper('recorder')->editOrderUrl($_order->getData('parent_id'), true) ?>">
+                            <?php echo $this->__('Edit Recurring Order') ?>
+                            </a>
+                        </li>
+                        <?php else: ?>
+                        <li><a href="<?php echo Mage::helper('recorder')->createOrderUrl($_order) ?>"><?php echo $this->__('Create Recurring Order') ?></a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p><?php echo $this->__('You have placed no orders.'); ?></p>
+<?php endif; ?>
+</div>
+<?php endif ?>

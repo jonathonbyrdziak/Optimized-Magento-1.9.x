@@ -1,0 +1,228 @@
+<?php $data1=$this->getAttributeFilter();$data=$this->getAttributeInput();
+$amountCustomer=$this->getAmountCustomer();$amountCustomerFilter=$data1['amountCustomerFilter'];
+unset($data1['amountCustomerFilter']);$subData1=$this->paging($data1);
+if(count($data1)%25==0)
+	$totalPage=count($data1)/25;
+else
+	$totalPage=FLOOR(count($data1)/25+1);
+$messageToCustomer=Mage::getSingleton('core/session')->getData('messageToCustomer');
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+      google.load("visualization", "1", {packages:["barchart"]});
+              google.setOnLoadCallback(drawChart);
+              function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Attribute','Number of customers'],
+                 <?php foreach ($data1 as $label => $value):?>
+                  ['<?php echo $label; ?>',<?php echo $value; ?>],           
+                <?php endforeach; ?>
+                ]);
+
+                var options = {
+                  title: 'Customer Report',
+				  titleFontSize:16,
+				  min:0,
+				  max:<?php if($amountCustomerFilter>=5){ if($amountCustomerFilter%5==0)echo $amountCustomerFilter;else echo ($amountCustomerFilter+5-($amountCustomerFilter%5));}else echo 5;?>,
+					gridlines:{count:6},
+				  axisFontSize:14,
+                  legendFontSize:14,
+				  height:<?php echo 30*count($data1)+30;?>
+                };
+
+                var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+              }
+</script>
+<?php if(count($data1)!=0){?>
+	<div class='buttons-change'>
+        <button class="show-data" type="button" id="show-table" style="display:none"><span><span><?php echo $this->__('View Data Table') ?></span></span></button>
+        <button class="show-data" type="button" id="show-chart"><span><span><?php echo $this->__('View Chart') ?></span></span></button>
+		<div class="export" style='float:right;'>
+        <img class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/icon_export.gif');?>">&nbsp;<?php  echo $this->__('Export to: ')?>           
+        <select style="width:8em;" id="report_export" name="report_export">
+            <option value="csv">CSV</option>
+            <option value="xml">XML</option>
+        </select>
+        <button style="" onclick="exportReport()" class="scalable task" type="button" title="Export"><span><span><span>Export</span></span></span></button>
+        </div>
+	</div>
+	<div class="table-report grid" id="table-report">
+	<!-- bat dau phan trang-->
+		<table cellspacing="0" class="actions" style="border:none">
+			<tbody>
+				<tr>
+					<td class="pager">
+					<?php echo $this->__('Page');?>
+					<a id="prev-page" onclick="prevPage('2');" title="Prev page" href="javascript:void;"><img class="arrow" alt="Go to Previous page" src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif');?>"></a>
+					<input type="text" onkeypress="inputPage(event)" class="input-text page" value="1" name="page" id="input-text-page">
+					<a id="next-page" onclick="nextPage('2');" title="Next page" href="javascript:void;"><img class="arrow" alt="Go to Next page" src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif');?>"></a>
+					<?php echo $this->__('of '.$totalPage.' pages');?><span class="separator">|</span>
+					<?php echo $this->__('Total '.count($data1).' records found');?> <span class="no-display" id="gridProducts-total-count">38</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	<!--ket thu phan trang-->
+        <table class="data">
+            <colgroup>
+                 <?php for ($i=0;$i<count($data)+3;$i++) : ?>
+                <col />
+                <?php endfor;?>
+                <?php //if(Mage::getSingleton('core/session')->getData('order_status')): ?>
+                <col />
+                <?php// endif; ?>
+                <!--<col width="1" />
+                <col width="1" />
+                <col width="1" />-->
+            </colgroup>
+            <thead>
+				<tr class="headings">
+					<th style="border-bottom:1px solid #c2d3e0"><?php echo $this->__('Total Results: ').$amountCustomerFilter; ?></th>
+					<th style="border-bottom:1px solid #c2d3e0" colspan="50"><?php echo $this->__('Total Customers: ').$amountCustomer; ?></th>
+				</tr>
+			</thead>
+            <thead>
+				<tr class="headings">
+					<?php foreach($data as $attributeInput):?>
+					<th><?php echo $attributeInput;?></th>
+					<?php endforeach;?>
+					<th><?php echo $this->__('Number of Customers')?></th>
+					<th><?php echo $this->__('Relative Percentage (based on Total Results)')?></th>
+					<th><?php echo $this->__('Absolute Percentage (based on Total Customers)')?></th>
+				</tr>
+            </thead>
+			<?php for($ii=0;$ii<count($data1)/25;$ii++){?>
+            <tbody id="even_<?php echo $ii;?>" style="display:none">
+				
+				<?php $i=0; foreach(array_slice($data1,$ii*25,25) as $label => $values):?>
+				<tr <?php if($i%2 == 0): ?>class="even"<?php endif; ?> >
+				<?php $mm=explode(',',$label); foreach($mm as $value):?>
+					<td><span class="nobr"><?php echo $value;?></span></td>
+				<?php endforeach;?>
+					<td><span class="nobr"><?php $i++; echo $values;?></span></td>
+					<td><span class="nobr"><?php if($amountCustomerFilter!=0) echo  round(100*$values/$amountCustomerFilter,2); else echo '0';?> %</span></td>
+					<td><span class="nobr"><?php if($amountCustomer!=0) echo round(100*$values/$amountCustomer,2); else echo '0';?> %</span></td>
+				</tr>
+				<?php endforeach;?>
+				
+            </tbody>
+			<?php }?>
+        </table> 
+    </div>
+	<div class="chart" id="chart-report" style="opacity:0;position: absolute;top:-1000000px;visibility: hidden;">
+	   <div id="chart_div" style="width: 100%; height:<?php echo 30*count($data1)+200;?>px;min-height:500px;float:left;"></div>
+	</div>
+<?php }else if($messageToCustomer){?>
+	<div class="no-data" id="no-data" align="center">
+	   <h4><?php echo $this->__('No data!');?></h4>
+	</div>
+<?php }else{?>
+	<div class="no-data" id="no-data" align="center">
+	   <h4><?php echo $this->__('Select at least one attribute to filter!');?></h4>
+	</div>
+<?php }?>
+	<div id="loading-mask" style="left: -2px; top: 0px;height: 808px; display: none;">
+        <p class="loader" id="loading_mask_loader"><img src="<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif') ?>" alt="Loading..."><br><?php echo $this->__('Please wait...')?></p>
+    </div>
+	<script type="text/javascript">
+		var input=$('input-text-page');
+		var page='even_'+(input.value-1);
+		$(page).style.display="";
+
+	function inputPage(e)
+	{
+		 var key;
+
+		 if(window.event)
+			  key = window.event.keyCode;     //IE
+		 else
+			  key = e.which;     //firefox
+
+		 if(key == 13)
+		{       var newInput=$('input-text-page');
+                        var newPage='even_'+(newInput.value-1);
+                        if(newPage!=page)
+                        {
+                            $('loading-mask').style.display="";
+                            setTimeout(function(){				
+				
+					$(newPage).style.display="";
+					$(page).style.display="none";
+					$('loading-mask').style.display="none";
+					page=newPage;				
+				  return false;
+                            },1500);
+                        }
+		}
+		 else
+			  return true;
+	} 
+	function nextPage()
+	{
+		var input=$('input-text-page');
+		if(input.value <<?php echo $totalPage;?>)
+		{
+			$('loading-mask').style.display="";
+                setTimeout(function(){
+				var value=input.value-1;
+				var value2=value+1;
+				$('even_'+value).style.display="none";
+				$('even_'+value2).style.display="";
+				$('loading-mask').style.display="none";
+				$('input-text-page').value=value+2;
+				page='even_'+value2;
+			},1500);
+		}
+	}
+	function prevPage()
+	{
+		var input=$('input-text-page');
+		if(input.value != 1) {
+			$('loading-mask').style.display="";
+                setTimeout(function(){
+				var value=input.value-1;
+				var value2=value-1;
+				$('even_'+value).style.display="none";
+				$('even_'+value2).style.display="";
+				$('loading-mask').style.display="none";
+				$('input-text-page').value=value;
+				page='even_'+value2;
+			},1500);
+		}
+		
+	}
+	function exportReport()
+	{
+		if($('report_export').selectedIndex == 0)
+		window.location.href = '<?php echo Mage::helper("adminhtml")->getUrl('customerattributeadmin/adminhtml_report_customerreport/exportCsv')?>';
+		else
+		window.location.href = '<?php echo Mage::helper("adminhtml")->getUrl('customerattributeadmin/adminhtml_report_customerreport/exportXml')?>';
+	}
+    $('show-table').observe('click',function(){
+		$('loading-mask').style.display="";
+        setTimeout(function(){
+			$('show-chart').style.display = "";
+			$('show-table').style.display = "none";
+			$('chart-report').style.display = "none";
+			$('table-report').style.display = "";
+			$('loading-mask').style.display="none";
+        },1500);
+        
+    });
+    $('show-chart').observe('click',function(){
+		$('loading-mask').style.display="";
+        setTimeout(function(){
+			$('show-table').style.display = "";
+			$('show-chart').style.display = "none";
+			$('table-report').style.display = "none";
+			$('chart-report').style.display = "";
+			$('chart-report').setStyle({
+			   opacity: 1 ,
+			   position:'static',
+			   visibility:'visible',
+			});
+			$('loading-mask').style.display="none";
+        },1500);
+    });
+	</script>

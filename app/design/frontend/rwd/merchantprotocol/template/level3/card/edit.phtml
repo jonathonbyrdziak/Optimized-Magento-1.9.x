@@ -1,0 +1,87 @@
+<?php
+
+
+$_ccType = 'visa';
+?>
+<?php echo $this->getMessagesBlock()->toHtml(); ?>
+<div class="page-title">
+    <h1>Edit Saved Credit Card</h1>
+</div>
+
+<form action="<?php echo Mage::getUrl('level3/cc/save') ?>" method="post">
+    <input type="hidden" name="payment[saved_card_id]" value="<?php echo $this->getInfoData('id') ?>" />
+    
+<div class="fieldset">
+    <ul class="form-list">
+        <li class="wide">
+            <label for="name" class="required"><em>*</em>Name on Card</label>
+            <div class="input-box">
+                <input name="payment[cc_owner]" value="<?php echo $this->getInfoData('name') ?>" title="Name on Card" id="name"
+                       class="form-control required-entry" type="text">
+            </div>
+        </li>
+        <li class="wide">
+            <label for="number" class="required"><em>*</em>Credit Card Number</label>
+            <div class="input-box">
+                <input name="payment[cc_number]" value="" title="Credit Card Number" id="number" 
+                       class="form-control" type="text">
+            </div>
+        </li><?php $this->getMethod() ?> 
+        <li class="fields">
+            <label for="revolution_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
+            <div class="input-box">
+                <select id="revolution_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
+                    <option value=""><?php echo $this->__('--Please Select--')?></option>
+                <?php $_ccType = $this->getInfoData('type') ?> 
+                <?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
+                    <option value="<?php echo $_typeCode ?>"<?php if($_typeCode==$_ccType): ?> selected="selected"<?php endif ?>><?php echo $_typeName ?></option>
+                <?php endforeach ?>
+                </select>
+            </div>
+        </li>
+        <li id="revolution_cc_type_exp_div">
+            <label for="revolution_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
+            <div class="input-box">
+                <div class="v-fix" style="width:48%;margin-right:4%">
+                    <select id="revolution_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
+                    <?php $_ccExpMonth = $this->getInfoData('month') ?>
+                    <?php foreach ($this->getCcMonths() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="v-fix" style="width:47%">
+                    <?php $_ccExpYear = $this->getInfoData('year') ?>
+                    <select id="revolution_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
+                    <?php foreach ($this->getCcYears() as $k=>$v): ?>
+                        <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpYear): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+        </li>
+        <li id="revolution_cc_type_cvv_div">
+            <label for="ccv" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
+            <div class="input-box">
+                <div class="v-fix">
+                    <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" 
+                           class="form-control input-text cvv required-entry validate-cc-cvn" id="revolution_cc_cid" name="cvv" value="" />
+                </div>
+            </div>
+        </li>
+        
+        <input type="hidden" name="payment[primary]" value="1" />
+            <?php /*
+        <li class="fields">
+            <input type="hidden" name="payment[primary]" class="input-checkbox" <?php echo $this->getInfoData('primary')?'checked':'' ?> />
+            <span>Make this the primary payment card</span>
+        </li>
+        */ ?>
+    </ul>
+</div>
+
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo Mage::getUrl('level3/cc') ?>"><small>« </small>Back</a></p>
+    <button type="submit" title="Save Card" class="btn btn-primary"><span><span>Save Card</span></span></button>
+</div>
+</form>

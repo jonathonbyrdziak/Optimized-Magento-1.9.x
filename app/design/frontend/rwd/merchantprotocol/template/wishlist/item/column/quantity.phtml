@@ -1,0 +1,16 @@
+<?php
+/* @var $this Mage_Wishlist_Block_Customer_Wishlist_Item_Column_Cart */
+/* @var Mage_Wishlist_Model_Item $item */
+$item = $this->getItem();
+$product = $item->getProduct();
+$options = $this->getChild('customer.wishlist.item.options')
+    ->setItem($item)
+    ->getConfiguredOptions();
+?>
+<div class="cart-cell">
+    <div class="add-to-cart-alt">
+    <?php if ($item->canHaveQty() && $item->getProduct()->isVisibleInSiteVisibility()): ?>
+        <input type="text" pattern="\d*" class="form-control qty validate-not-negative-number" name="qty[<?php echo $item->getId() ?>]" value="<?php echo $this->getAddToCartQty($item) * 1 ?>" />
+    <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<?php
+/**
+ * 
+ */
+$recurring = $this->getRecurring();
+$helper = Mage::helper('recorder');
+?>
+<form action="<?php echo $this->url('update') ?>" method="post">
+
+    <?php echo $this->getChildHtml() ?>
+    <?php echo $recurring->getTotals() ?>
+    
+    <div style="max-width:900px;margin:0 auto;">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 text-right">
+                <button type="submit" class="btn btn-primary"><?php if (Mage::helper('recorder')->getParam('createorder', false)): ?>Enable Recurring Order<?php else: ?>Update Order<?php endif ?></button>
+                <button type="submit" onClick="document.getElementById('finish').value = '1';" class="btn btn-link"><?php if (Mage::helper('recorder')->getParam('createorder', false)): ?>Enable &amp; Finish<?php else: ?>Update &amp; Finish<?php endif ?></button>
+
+            </div>
+        </div>
+    </div>
+    
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][recurring_id]" value="<?php echo $recurring->getId() ?>"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][shipping_address]" value="<?php echo $recurring->getShippingAddress() ?>"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][billing_address]" value="<?php echo $recurring->getBillingAddress() ?>"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][failed_attempt]" value="0"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][reminder_sent]" value="0"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][enabled]" value="1"/>
+    <input type="hidden" name="options[<?php echo Widgetized_Recorder_Helper_Data::OPTIONSID ?>][errors]" value="0"/>
+<?php if (Mage::helper('recorder')->getParam('createorder', false)): ?>
+        <input type="hidden" name="new" value="1"/>
+    <?php endif ?>
+    <input type="hidden" id="finish" name="finish" value="0"/>
+</form>

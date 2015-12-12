@@ -1,0 +1,14 @@
+<div class="block block-login">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Login') ?></span></strong>
+    </div>
+    <form action="<?php echo $this->getPostActionUrl() ?>" method="post">
+        <div class="block-content">
+            <label for="mini-login"><?php echo $this->__('Email:') ?></label><input type="email" autocapitalize="off" autocorrect="off" spellcheck="false" name="login[username]" id="mini-login" class="form-control" />
+            <label for="mini-password"><?php echo $this->__('Password:') ?></label><input type="password" name="login[password]" id="mini-password" class="form-control" />
+            <div class="actions">
+                <button type="submit" class="btn btn-primary"><span><span><?php echo $this->__('Login') ?></span></span></button>
+            </div>
+        </div>
+    </form>
+</div>

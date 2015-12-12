@@ -1,0 +1,47 @@
+<?php
+/**
+ * Template for filter items block
+ *
+ * @see Mage_Catalog_Block_Layer_Filter
+ */
+?>
+<?php
+$_url = '';
+
+if ($this->getRequest()->getControllerName() == 'product') {
+    $_product = Mage::registry('current_product');
+    if ($_product) {
+        $_catIds = $_product->getCategoryIds();
+        $_catId = array_shift($_catIds);
+        if ($_catId) {
+            $_category = Mage::getModel('catalog/category')->load($_catId);
+            if ($_category) {
+                $_categoryUrl = $_category->getUrl();
+                $_currentUrl = $this->helper('core/url')->getCurrentUrl();
+            }
+        }
+    }
+}
+?>
+<ol>
+<?php foreach ($this->getItems() as $_item): ?>
+    <li>
+        <?php if ($_item->getCount() > 0): ?>
+            <?php $_itemUrl = str_replace($_currentUrl, $_categoryUrl, $_item->getUrl()); ?>
+            <a href="<?php echo $this->urlEscape($_itemUrl) ?>">
+                <?php echo $_item->getLabel() ?>
+                <?php if ($this->shouldDisplayProductCount()): ?>
+                <span class="count">(<?php echo $_item->getCount() ?>)</span>
+                <?php endif; ?>
+            </a>
+        <?php else: ?>
+            <span>
+                <?php echo $_item->getLabel(); ?>
+                <?php if ($this->shouldDisplayProductCount()): ?>
+                    <span class="count">(<?php echo $_item->getCount() ?>)</span>
+                <?php endif; ?>
+            </span>
+        <?php endif; ?>
+    </li>
+<?php endforeach ?>
+</ol>

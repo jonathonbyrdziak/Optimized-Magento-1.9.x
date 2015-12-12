@@ -1,0 +1,63 @@
+<?php
+/**
+* zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/shop/license-community.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento Community edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    base_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://www.zeonsolutions.com/shop/license-community.txt
+ */
+
+?>
+<?php
+    $_faqCollection=$this->getCollection();
+    $processor = Mage::helper('zeon_faq')->getBlockTemplateProcessor();
+?>
+<div class="page-title">
+<?php if($categoryId = $this->getRequest()->getParam('category_id')): ?>
+<?php $categoryTitle = Mage::getResourceModel('zeon_faq/category')->getFaqCategoryTitleById($categoryId); ?>
+    <h1><?php echo $this->__('Frequently Asked Questions - ') ?><?php echo $this->htmlEscape($categoryTitle) ?></h1>
+<?php elseif ($this->getRequest()->getParam('mfaq')):?>
+    <h1><?php echo $this->__('Most Frequently Asked Questions') ?></h1>
+<?php else: ?>
+    <h1><?php echo $this->__('Frequently Asked Questions') ?></h1>
+<?php endif; ?>
+</div>
+<?php echo $this->getChildHtml('faq_search_form') ?>
+<?php echo $this->getPagerHtml(); ?>
+<?php if(!$_faqCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no faq matching the selection.') ?></p>
+<?php else: ?>
+<div class="std">
+    <ul class="disc" style="margin:15px 0 20px !important;border-bottom:1px solid #ddd;padding-bottom:20px;">
+    <?php foreach ($_faqCollection as $_faq): ?>
+        <li style="line-height:1.35em;margin:5px 0;padding-left:9px;"><a href="<?php echo "#".$this->htmlEscape($_faq->getTitle()) ?>"><?php echo $this->htmlEscape($_faq->getTitle()) ?></a></li>
+    <?php endforeach; ?>
+    </ul>
+    <dl class="generic-dl">
+    <?php foreach ($_faqCollection as $_faq): ?>
+        <dt id="<?php echo $this->htmlEscape($_faq->getTitle()) ?>"><?php echo $this->__('Q. ').$this->htmlEscape($_faq->getTitle()) ?></dt>
+        <dd style="margin-bottom:1.4em;padding-left:0;"><strong>A. </strong><?php echo $processor->filter($_faq->getDescription()) ?></dd>
+    <?php endforeach; ?>
+    </dl>
+</div>
+<?php endif; ?>
+<?php echo $this->getPagerHtml(); ?>

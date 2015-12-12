@@ -1,0 +1,580 @@
+<?php
+    $customerattributes = $this->getCustomerAttribute();
+    $addressattributes =  $this->getCustomerAddressAttribute();
+    $customerattribute_checkeds = unserialize(Mage::getSingleton('core/session')->getData('customerAttributeToOrder'));
+    $addressattribute_checkeds = unserialize(Mage::getSingleton('core/session')->getData('addressAttributeToOrder'));
+    $storeId = Mage::getSingleton('core/session')->getData('store_view');
+    $created_at = unserialize(Mage::getSingleton('core/session')->getData('created_at_order'));    
+    $status = unserialize(Mage::getSingleton('core/session')->getData('order_status'));
+    $option_labels = Mage::helper('customerattribute')->getAllOptionLabel();
+    $order_status =  Mage::helper('customerattribute')->getAllOrderStatus();
+    $empty_row = Mage::getSingleton('core/session')->getData('empty_row');
+?>
+<div class="content-header">
+    <h3><?php echo $this->__('Order Reports');?></h3>
+</div>
+<div class="entry-edit">
+    <div class="entry-edit-head" style="border:1px solid #6f8992;width:100%;padding:0;">
+        <a style="text-decoration:none;padding:0 10px;"><?php echo $this->__('Attribute To Filter');?></a>
+    </div>
+</div>
+<div class="content-container">
+    <form method="post" id="attributes-filter" action="<?php echo Mage::helper('adminhtml')->getUrl('customerattribute/adminhtml_report_orderreport/showreport')?>">
+        <div><input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>"></div>
+        <div class="customer-attribute block-attribute">
+            <h4><?php echo $this->__('Customer Attribute')?></h4>
+        <?php foreach ($customerattributes as $customerattribute):?>
+            
+            <div class="attribute">
+                <div class="select_attribute">
+                    <input type="checkbox" id="attribute_<?php echo $customerattribute->getAttributeId(); ?>" />
+                 <span class="span_attribute" id="span_<?php echo $customerattribute->getAttributeId(); ?>"><?php echo ' '.$customerattribute->getFrontendLabel(); ?></span>
+                </div>
+            <a class="select_options" id="select_<?php echo $customerattribute->getAttributeId() ?>" href="javascript:void(0)" style="display:none"><?php echo $this->__('Select') ?></a>
+            <div class="box_options" id="box_options_<?php echo  $customerattribute->getAttributeId() ?>" style="display:none">
+                <a class="close-box" href="javascript:void(0)" onclick="chooseOption(<?php echo $customerattribute->getAttributeId() ?>)">[X]</a>
+                <select id="box_select_<?php echo $customerattribute->getAttributeId(); ?>" multiple="multiple" name="customerattribute[<?php echo $customerattribute->getAttributeCode();?>][]">                
+                <?php if($customerattribute->getFrontendInput() =='boolean'): ?>
+                    <option id="option_true" class="option_true" value="true"><?php echo $this->__('Yes') ?></option>
+                    <option id="option_false" class="option_false" value="false"><?php echo $this->__('No') ?></option>
+                <?php else: ?>
+                 <?php if($customerattribute->getAttributeCode() == 'group_id'){
+                        $options = Mage::helper('customerattribute/report')->getOptionsGroup();
+                     ?>
+                    <?php foreach($options as $groupId=>$group): ?>
+                    <option id="option_<?php echo $groupId;  ?>" class="option_<?php echo $groupId;  ?>" value="<?php echo $groupId ?>"><?php echo ' '.$group;?></option>
+                    <?php endforeach;?>
+                <?php }else{ $options = Mage::helper('customerattribute')->getOptionIds($customerattribute->getAttributeId());?>
+                <?php foreach($options as $option): ?>
+                    <option id="option_<?php echo $option;  ?>" class="option_<?php echo $option;  ?>" value="<?php echo $option ?>"><?php if(strlen($option_labels[$option])>=23) echo ' '.substr($option_labels[$option],0,23).'...';else echo ' '.$option_labels[$option];?></option>
+                <?php endforeach;}?>
+                <?php endif;?>                   
+                </select>
+            </div>      
+            </br>
+            <script>    
+                var list1 = $('box_select_<?php echo $customerattribute->getAttributeId(); ?>').options.length;
+                if(list1>4) $('box_select_<?php echo $customerattribute->getAttributeId(); ?>').setStyle({
+                   height: list1*20+'px',
+                   'max-height':'200px',
+                });
+                $('select_<?php echo $customerattribute->getAttributeId(); ?>').observe('click',function(){
+                    $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = '';
+                });
+                $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked){
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').style.display = '';
+                        var opt1 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt1.each(function(el){
+                            el.selected = true;
+                        });
+                     }else{
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt1 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt1.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').update('<?php echo $this->__('Select') ?>');
+                     }
+                });
+                $('span_<?php echo $customerattribute->getAttributeId() ?>').observe('click',function(){
+                    if($('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked){
+                        $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked = false;
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt2 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt2.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').update('<?php echo $this->__('Select') ?>');
+                    }else{
+                        $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked = true;
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').style.display = '';
+                        var opt2 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt2.each(function(el){
+                            el.selected = true;
+                        });
+                    }
+                });                
+            </script> 
+            </div>           
+        <?php endforeach ;?>
+        <script type="text/javascript">
+            <?php if(count($customerattribute_checkeds) !=0 ): ?>            
+              <?php foreach ($customerattribute_checkeds as $lab=>$val){
+                  $attId = Mage::getModel('customer/attribute')->getCollection()->addFieldToFilter('attribute_code',$lab)
+                            ->getFirstItem()->getAttributeId();?>
+                  document.getElementById("attribute_<?php echo $attId ?>").checked=true;
+                 var label=' ';
+                 <?php foreach ($val as $va){?>
+                     var options1 = $$('#box_select_<?php echo $attId ?> option');
+                     options1.each(function(el){
+                         if(el.hasClassName('option_<?php echo $va;  ?>'))
+                         el.defaultSelected = true;
+                     });
+
+                     <?php if(!is_numeric($va)){ ?>
+                     <?php if($va != 'true' && $va != 'false'): ?>
+                    <?php $group = Mage::helper('customerattribute/report')->getOptionsGroup();    ?>
+                        label = label+'<?php echo $group[$va].", "; ?>';
+                     <?php elseif($va == 'true'): ?>
+                         label = label+'<?php echo $this->__("Yes").", " ?>';
+                    <?php elseif($va == 'false'): ?>
+                        label = label+'<?php echo $this->__("No").", " ?>';
+                     <?php endif; ?>
+                 <?php }else{                                                                      
+                 ?>                               
+                        label = label+'<?php echo $option_labels[$va].", "?>';
+                 <?php } ?>
+                 <?php } ?>
+                     if(label.length > 20)
+                        label = label.substring(0,20)+'...';
+                 if($('attribute_<?php echo $attId; ?>').checked){
+                    $('select_<?php echo $attId ?>').style.display = '';
+                    $('select_<?php echo $attId ?>').update(label);
+                 }
+              <?php } ?>                    
+
+           <?php endif; ?>
+    </script>
+        </div>
+        <div class="address-attribute block-attribute">
+            <h4><?php echo $this->__('Customer Address Attribute');?></h4>
+        <?php foreach($addressattributes as $addressattribute): ?>
+           
+            <div class="attribute">
+                <div class="select_attribute">
+                     <input type="checkbox" id="addressattribute_<?php echo $addressattribute->getAttributeId();?>" />
+                     <span class="span_attribute" id="span_<?php echo $addressattribute->getAttributeId();?>"><?php echo ' '.$addressattribute->getFrontendLabel(); ?></span>
+                </div>
+            <a class="select_options" id="select_<?php echo $addressattribute->getAttributeId() ?>" href="javascript:void(0)" style="display:none"><?php echo $this->__('Select') ?></a>
+            <div class="box_options" id="box_options_<?php echo $addressattribute->getAttributeId() ?>" style="display:none">
+                <a class="close-box" href="javascript:void(0)" onclick="chooseOption(<?php echo $addressattribute->getAttributeId(); ?>)">[X]</a>
+                <select id="box_select_<?php echo $addressattribute->getAttributeId(); ?>" multiple="multiple" name="addressattribute[<?php echo $addressattribute->getAttributeCode();?>][]">
+                     <?php if($addressattribute->getFrontendInput() =='boolean'): ?>
+                    <option id="option_1" class="option_1" value="1"><?php echo $this->__('Yes') ?></option>
+                    <option id="option_0" class="option_0" value="0"><?php echo $this->__('No') ?></option>
+                <?php else: ?>
+                <?php 
+                if($addressattribute->getAttributeCode()=='country_id'){
+                    $options = Mage::helper('customerattribute/report')->getOptionCountry();
+                    foreach($options as $country_id=>$country): ?>
+                        <option id="option_<?php echo $country_id ?>"class="option_<?php echo $country_id ?>" value="<?php echo $country_id ?>"><?php echo ' '.$country;?></option>
+                    <?php endforeach;?>
+                <?php }else {$options = Mage::helper('customerattribute')->getOptionIds($addressattribute->getAttributeId());
+                foreach($options as $option): ?>
+                    <option id="option_<?php echo $option ?>" class="option_<?php echo $option ?>" value="<?php echo $option ?>"><?php if(strlen($option_labels[$option])>=23) echo ' '.substr($option_labels[$option],0,23).'...';else echo ' '.$option_labels[$option];?></option>
+                <?php endforeach;}?>
+                <?php endif; ?>
+                </select>
+            </div>      
+            </br>
+            <script>
+                var list2 = $('box_select_<?php echo $addressattribute->getAttributeId(); ?>').options.length;
+                if(list2>4) $('box_select_<?php echo $addressattribute->getAttributeId(); ?>').setStyle({
+                   height: list2*20+'px',
+                   'max-height':'200px',
+                });
+                $('select_<?php echo $addressattribute->getAttributeId() ; ?>').observe('click',function(){
+                    $('box_options_<?php echo $addressattribute->getAttributeId() ; ?>').style.display = '';
+                });
+               $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked){
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = '';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = true;
+                        });
+                     }else{
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $addressattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').update('<?php echo $this->__('Select') ?>');
+                     }
+                });
+                $('span_<?php echo $addressattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked){
+                       $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked = false;
+                       $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $addressattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').update('<?php echo $this->__('Select') ?>'); 
+                     }else{
+                        $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked = true;
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = '';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = true;
+                        });
+                     }
+                });
+                
+            </script>
+            </div> 
+     <?php endforeach; ?>  
+    <script type="text/javascript">
+        <?php if(count($addressattribute_checkeds) !=0 ): ?>
+                  <?php foreach ($addressattribute_checkeds as $addresslab=>$addressval){
+                      $entityTypeId = Mage::getModel('customer/entity_setup', 'core_setup')->getEntityTypeId('customer_address');
+                      $addressattId = Mage::getResourceModel('eav/entity_attribute_collection')->setEntityTypeFilter($entityTypeId)
+                        ->addFieldToFilter('attribute_code',$addresslab)->getFirstItem()->getAttributeId();
+                      $country = Mage::helper('customerattribute/report')->getOptionCountry();
+                      ?>
+                      document.getElementById("addressattribute_<?php echo $addressattId ?>").checked=true;
+                     var label=' ';
+                     <?php foreach ($addressval as $adva){?>
+                         var options2 = $$('#box_select_<?php echo $addressattId ?> option');
+                         options2.each(function(el){
+                             if(el.hasClassName('option_<?php echo $adva;  ?>'))
+                             el.defaultSelected = true;
+                         });
+                      <?php if(is_numeric($adva)){ ?>   
+                     <?php if($adva != 1 && $adva != 0){?>                                                              
+                            label = label+'<?php echo $option_labels[$adva].", "?>';
+                     <?php }elseif($adva == 1){ ?>
+                             label = label+'<?php echo $this->__("Yes").", " ?>';
+                     <?php }elseif($adva == 0){ ?>
+                            label = label+'<?php echo $this->__("No").", " ?>';                   
+                     <?php } ?>
+                     <?php }else{?>
+                        label = label+'<?php echo $country[$adva].", " ?>';
+                     <?php } ?>
+                     <?php } ?>
+                         if(label.length > 20)
+                            label = label.substring(0,20)+'...';
+                     if($('addressattribute_<?php echo $addressattId; ?>').checked){
+                        $('select_<?php echo $addressattId ?>').style.display = '';
+                        $('select_<?php echo $addressattId ?>').update(label);
+                     }
+                  <?php } ?>                    
+              
+               <?php endif; ?>
+    </script>
+    </div> 
+        <div class="order-status">
+            <h4><?php echo $this->__('Order Status');?></h4>
+            <select style="width:200px;height:175px;" multiple="multiple" name="order_status[]">
+                <?php foreach ($order_status as $orderstatus=>$label_status){ ?>
+                <option  <?php if(in_array($orderstatus,$status)): ?>selected <?php endif; ?> value="<?php echo $orderstatus;  ?>"><?php echo $label_status; ?></option>
+                <?php }?>
+                
+            </select>
+            <script>
+                $('select_status').observe('click',function(){
+                    $('box_options_status').style.display = '';
+                });
+            </script>
+        </div>
+        <div class="range">
+            <div class='store'>
+                <label><?php echo $this->__('Choose Store View:') ?></label>
+                <select type='select'  name='store_view' style='width:200px;'>
+                    <option value='0'><?php echo $this->__('All Store Views') ?></option>
+             <?php 
+                foreach (Mage::app()->getWebsites() as $website) {
+                 foreach ($website->getGroups() as $group) { ?>
+                    <optgroup label='<?php echo $group->getName(); ?>'>
+                    <?php $stores = $group->getStores();
+                        foreach ($stores as $store) { ?>                      
+                       <option <?php if($store->getId()== $storeId):?>selected <?php endif; ?> value='<?php echo $store->getId(); ?>'><?php echo $store->getName(); ?></option>  
+                           <?php }?>
+                    </optgroup>
+                      <?php }
+                  }
+                ?>
+                    
+              </select>
+            </div>
+            <div class="range-line date">              
+                <span class="label">From:</span>
+                <input value="<?php if(!empty($created_at['from'])) echo date("m/d/Y",strtotime($created_at['from'])); ?>" type="text" name="created_at[from]" id="created_from" value="" class="input-text no-changes">
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>" alt="" class="v-middle" id="created_from_trig" title="Date selector">
+            </div>
+            <div class="range-line date">
+                <span class="label">To :</span>
+                <input value="<?php if(!empty($created_at['to'])) echo date("m/d/Y",strtotime($created_at['to'])); ?>" type="text" name="created_at[to]" id="created_to" value="" class="input-text no-changes">
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>" alt="" class="v-middle" id="created_to_trig" title="Date selector">
+            </div>
+            <div class="show_empty_row" style="float: left;margin-left:15px; ">
+                <label><?php echo $this->__('Show empty rows: ');?></label>
+                <select style="width:50px;" id="box_select_filter_empty" name="empty_row">
+                    <option  <?php if($empty_row==0): ?>selected <?php endif; ?> value=0><?php echo $this->__('No');?></option>
+                    <option  <?php if($empty_row==1): ?>selected <?php endif; ?> value=1><?php echo $this->__('Yes');?></option>                    
+                </select>
+            </div>
+            <script type="text/javascript">
+                Calendar.setup({
+                    inputField : "created_from",
+                    ifFormat : "%m/%e/%Y",
+                    button : "created_from_trig",
+                    showsTime: false,
+                    align : "Bl",
+                    singleClick : true
+                });
+                Calendar.setup({
+                    inputField : "created_to",
+                    ifFormat : "%m/%e/%Y",
+                    button : "created_to_trig",
+                    showsTime: false,
+                    align : "Bl",
+                    singleClick : true
+                });
+                function chooseOption(id){
+                    var select = $('box_select_'+id);
+                    var label = '';
+                    for(var i = 0;i<select.options.length;i++){
+                        var opt = select.options[i];
+                        if(opt.selected == true)
+                            label = label+opt.text+', ';
+                    }
+                    if(label.length > 20) label = label.substring(0,20)+'...';
+                    if(label.length == 0) label = '<?php echo $this->__("Select") ?>';
+                    $('select_'+id).update(label);
+                    $('box_options_'+id).hide();
+                }
+             </script>
+        </div>        
+        <div class="button-sets">
+            <button type="submit" ><span><span><?php echo $this->__('Show report');?></span></span></button>     
+        </div>
+    </form>    
+</div>
+<?php                       
+        $total_on_store = count(Mage::getResourceModel('sales/order_grid_collection'));
+        $result = $this->getOrderReport();
+        $data= $result['data'];
+        if(count($data)%25!=0)
+            $totalPage = FLOOR(count($data)/25+1);
+        else $totalPage = count($data)/25 ;
+        $total_result = $result['total_result'];
+        $message = Mage::getSingleton('core/session')->getData('messageToOrder');
+    ?>
+<?php if($message && count($data)!=0): ?>
+<div class="report" >
+    <div class='buttons-change'>
+        <button class="show-data" type="button" id="show-table" style="display:none"><span><span><?php echo $this->__('View Data Table') ?></span></span></button>
+        <button class="show-data" type="button" id="show-chart"><span><span><?php echo $this->__('View Chart') ?></span></span></button>        
+        <div class="export" style='float:right;'>
+        <img class="v-middle" alt="" src="<?php echo $this->getSkinUrl('images/icon_export.gif');?>">&nbsp;<?php  echo $this->__('Export to: ')?>           
+        <select style="width:8em;" id="report_export" name="report_export">
+            <option value="csv">CSV</option>
+            <option value="xml">XML</option>
+        </select>
+        <button style="" onclick="exportReport()" class="scalable task" type="button" title="Export"><span><span><span>Export</span></span></span></button>
+        </div>
+    </div>
+    <div class="table-report grid" id="table-report">
+        <table cellspacing="0" class="actions" style="border:none">
+            <tbody>
+                <tr>
+                    <td class="pager">
+                    <?php echo $this->__('Page');?>
+                    <a id="prev-page" onclick="prevPage()" title="Prev page" href="javascript:void(0)"><img class="arrow" alt="Go to Previous page" src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif');?>"></a>
+                    <input type="text" onkeypress="inputPage(event)" class="input-text page" value="1" name="page" id="input-text-page">
+                    <a id="next-page" onclick="nextPage()" title="Next page" href="javascript:void(0)"><img class="arrow" alt="Go to Next page" src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif');?>"></a>
+                    <?php echo $this->__('of '.$totalPage.' pages');?><span class="separator">|</span>
+                    <?php echo $this->__('Total '.count($data).' records found');?> <span class="no-display" id="gridProducts-total-count">38</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="data">
+            <colgroup>
+                 <?php foreach ($this->getAttributeLabelToTable() as $attributeCode) : ?>
+                <col />
+                <?php endforeach;?>
+                <?php if(Mage::getSingleton('core/session')->getData('order_status')): ?>
+                <col />
+                <?php endif; ?>
+                <col width="1" />
+                <col width="1" />
+                <col width="1" />
+            </colgroup>
+            <thead>
+                <tr class="headings">
+                    <th class="no-link" style="border-bottom:1px solid #c2d3e0"><span class="no-br"><?php echo $this->__('Total Results: ').$total_result; ?></span></th>
+                    <th class="no-link" style="border-bottom:1px solid #c2d3e0" colspan="50"><span class="no-br"><?php echo $this->__('Total Orders: ').$total_on_store; ?></span></th>
+                </tr>
+            </thead>
+            <thead>
+                <tr class="headings">
+                <?php foreach ($this->getAttributeLabelToTable() as $attributeCode) : ?>
+                <th class="no-link"><span class="no-br"><?php echo $attributeCode; ?></span></th>
+                <?php endforeach;?>
+                <?php if(Mage::getSingleton('core/session')->getData('order_status')): ?>
+                <th class="no-link"><span class="no-br"><?php echo $this->__('Order Status');?></span></th>
+                <?php endif; ?>
+                <th class="no-link" ><span class="no-br"><?php echo $this->__('Number of Orders');?></span></th>
+                <th class="no-link" ><span class="no-br"><?php echo $this->__('Relative Percentage (based on Total Results)');?></span></th>
+                <th class="no-link"><span class="no-br"><?php echo $this->__('Absolute Percentage (based on Total Orders)');?></span></th>
+                </tr>
+            </thead>
+                 
+            <?php $i=0;$j=0; foreach($data as $labels=>$value){?>
+            <?php if($i%25 == 0): ?>       
+             <tbody id="even_<?php echo $j;?>" style="display:none">
+            <?php endif; ?>
+                <tr <?php if($i%2 == 0): ?>class="even"<?php endif; ?>>
+                <?php $label = explode(',', $labels);
+                 foreach($label as $lb){     ?>
+                    <td><?php echo $lb ?></td>  
+                <?php } ?>
+                    <td><?php echo $value; ?></td>
+                    <td><?php if($total_result!=0) echo round(100*$value/$total_result,2).'%';else echo '0%' ;?></td>
+                    <td><?php if($total_on_store!=0) echo round(100*$value/$total_on_store,2).'%';else echo '0%'; ?></td>
+                </tr>
+            <?php if($i%25 == 24||$i == count($data)): ?>
+            </tbody>
+            <?php $j++; endif;  ?>
+            <?php $i++; } ?>
+        </table> 
+    </div>
+    <div class="chart" id="chart-report" style="opacity:0;position: absolute;top:-1000000px;visibility: hidden;">
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+              google.load("visualization", "1", {packages:["barchart"]});
+              google.setOnLoadCallback(drawChart);
+              function drawChart() {
+                <?php // $total = count(Mage::getResourceModel('sales/order_grid_collection'));  ?>              
+                var data = google.visualization.arrayToDataTable([
+                    ['Attribute','Number of orders'],
+                  
+                 <?php foreach ($data as $label=>$value):?>
+                  ['<?php echo $label; ?>',<?php echo $value; ?>],           
+                <?php endforeach; ?>
+                ]);
+
+                var options = {
+                  title: 'Order Report',
+                  titleFontSize:16,
+                  min:0, 
+                  max:<?php if($total_result){ if($total_result%5!=0) echo 5*(floor($total_result/5)+1) ;else echo 5*(floor($total_result/5)); }else echo 5;?>,   
+                  gridlines:{count:6},
+                  axisFontSize:14,
+                  legendFontSize:14,
+                };
+
+                var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+              }
+        </script>
+         <div id="chart_div" style="width: 100%; height:<?php echo 45*count($data)+150;?>px;min-height:500px;float:left;"></div>
+ </div>
+    <div id="loading-mask" style="left: -2px; top: 0px;height: 808px; display: none;">
+        <p class="loader" id="loading_mask_loader"><img src="<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif') ?>" alt="Loading..."><br><?php echo $this->__('Please wait...')?></p>
+    </div>
+</div>
+<?php elseif(!$message): ?>
+<?php //Mage::getSingleton('adminhtml/session')->addError(Mage::helper('customerattribute')->__('Not any attributes has been selected!')); ?>
+<div class="no-data" id="no-data" align="center">
+	   <h4><?php echo $this->__('Select at least one attribute to filter.');?></h4>
+</div>
+<?php elseif($message && count($data)==0): ?>
+<div class="no-data" id="no-data" align="center">
+	   <h4><?php echo $this->__('No Data.');?></h4>
+</div>
+<?php endif;?>
+<script type="text/javascript">
+    var input=$('input-text-page');
+    var page ='even_'+(input.value-1);
+    $(page).style.display = "";
+   function inputPage(e)
+    {
+        var key;
+
+        if(window.event)
+                 key = window.event.keyCode;     //IE
+        else
+                 key = e.which;     //firefox
+
+        if(key == 13)
+       {   
+           var new_input=$('input-text-page');
+            var new_page='even_'+(new_input.value-1);
+            if(new_page!=page){
+            $('loading-mask').style.display="";
+                setTimeout(function(){               
+                            $(new_page).style.display="";
+                            $(page).style.display="none";
+                            $('loading-mask').style.display="none";
+                            page=new_page;
+                      return false;
+                 },1500);
+            }
+       }
+        else
+                 return true;
+    }
+    function nextPage()
+	{
+            var i=$('input-text-page');
+            if(i.value < <?php echo $totalPage;?>)
+            {
+                $('loading-mask').style.display="";
+                setTimeout(function(){
+                var value=i.value-1;
+                var value2=value+1;
+                $('even_'+value).style.display="none";
+                $('even_'+value2).style.display="";
+                $('loading-mask').style.display="none";
+                $('input-text-page').value=value+2;    
+                page = 'even_'+value2;
+                },1500);               
+            }
+	}
+	function prevPage()
+	{
+            var i=$('input-text-page');
+            if(i.value != 1) {
+                $('loading-mask').style.display="";
+                setTimeout(function(){
+                    var value=i.value-1;
+                    var value2=value-1;
+                    $('even_'+value).style.display="none";
+                    $('even_'+value2).style.display="";
+                    $('loading-mask').style.display="none";
+                    $('input-text-page').value=value;
+                    page = 'even_'+value2;
+                },1500);                
+            }		
+	}
+    function exportReport()
+    {   
+        if($('report_export').selectedIndex == 0)
+            window.location.href = '<?php echo Mage::helper("adminhtml")->getUrl('customerattributeadmin/adminhtml_report_orderreport/exportCsv')?>';
+        else
+            window.location.href = '<?php echo Mage::helper("adminhtml")->getUrl('customerattributeadmin/adminhtml_report_orderreport/exportXml')?>';
+    }
+    $('show-table').observe('click',function(){
+        $('loading-mask').style.display="";
+        setTimeout(function(){
+            $('chart-report').style.display = "none";
+            $('table-report').style.display = "";
+            $('show-table').style.display = "none";
+            $('show-chart').style.display = "";
+            $('loading-mask').style.display="none";
+        },1500);
+    });
+    $('show-chart').observe('click',function(){
+        $('loading-mask').style.display="";
+        setTimeout(function(){
+            $('table-report').style.display = "none";
+            $('chart-report').style.display = "";
+            $('chart-report').setStyle({
+               opacity: 1 ,
+               position:'static',
+               visibility:'visible',
+            });
+            $('show-table').style.display = "";
+            $('show-chart').style.display = "none";
+            $('loading-mask').style.display="none";
+        },1500);
+    });
+</script>

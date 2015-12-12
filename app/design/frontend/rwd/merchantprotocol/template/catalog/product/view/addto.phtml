@@ -1,0 +1,28 @@
+<?php $_product = $this->getProduct(); ?>
+<?php  ?>
+
+<ul class="add-to-links">
+<?php if ($this->helper('wishlist')->isAllow()):
+    
+    if (Mage::helper('customer')->isLoggedIn()) {
+        $customer = Mage::getSingleton('customer/session')->getCustomer();
+        $wishlist = Mage::getModel('wishlist/wishlist')->loadByCustomer($customer, true); 
+
+        $wishlist = Mage::getModel('wishlist/item')->getCollection()
+            ->addFieldToFilter('wishlist_id', $wishlist->getId())
+            ->addFieldToFilter('product_id', $_product->getId());
+        $wishlistitem = $wishlist->getFirstItem();
+        $hasProduct = !is_null($wishlistitem->getId());
+    }
+    $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product);
+    if ($hasProduct) {
+        $_wishlistSubmitUrl = str_replace('add','remove',$_wishlistSubmitUrl);
+    }
+    ?>
+    <li>
+        <a href="<?php echo $_wishlistSubmitUrl ?>" class="<?php echo $hasProduct?' isWished':'' ?> link-wishlist">
+        <?php echo $this->__( $hasProduct?'Remove from Wishlist':'Add to Wishlist' ) ?>
+        </a>
+    </li>
+<?php endif; ?>
+</ul>

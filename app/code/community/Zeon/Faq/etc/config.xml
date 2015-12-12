@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/shop/license-community.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento COMMUNITY edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   Zeon
+ * @package    Zeon_Faq
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://www.zeonsolutions.com/shop/license-community.txt
+ */
+-->
+<config>
+    <modules>
+        <Zeon_Faq>
+            <version>0.1.0</version>
+        </Zeon_Faq>
+    </modules>
+    <frontend>
+        <routers>
+            <faq>
+                <use>standard</use>
+                <args>
+                    <module>Zeon_Faq</module>
+                    <frontName>faq</frontName>
+                </args>
+            </faq>
+        </routers>
+        <layout>
+            <updates>
+                <faq>
+                    <file>zeon_faq.xml</file>
+                </faq>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Zeon_Faq>
+                    <files>
+                        <default>Zeon_Faq.csv</default>
+                    </files>
+                </Zeon_Faq>
+            </modules>
+        </translate>
+    </frontend>
+    <admin>
+         <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <zeon_faq before="Mage_Adminhtml">Zeon_Faq_Adminhtml</zeon_faq>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <zeon_faq module="Zeon_Faq">
+                    <file>zeon_faq.xml</file>
+                </zeon_faq>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Zeon_Faq>
+                    <files>
+                        <default>Zeon_Faq.csv</default>
+                    </files>
+                </Zeon_Faq>
+            </modules>
+        </translate>
+    </adminhtml>
+    <global>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <faq>
+                        <class>Zeon_Faq_Controller_Router</class>
+                        <method>initControllerRouters</method>
+                    </faq>
+                </observers>
+            </controller_front_init_routers>
+        </events>
+        <models>
+            <zeon_faq>
+                <class>Zeon_Faq_Model</class>
+                <resourceModel>zeon_faq_mysql4</resourceModel>
+            </zeon_faq>
+            <zeon_faq_mysql4>
+                <class>Zeon_Faq_Model_Mysql4</class>
+                <entities>
+                    <faq>
+                        <table>zeon_faq</table>
+                    </faq>
+                    <store>
+                        <table>zeon_faq_store</table>
+                    </store>
+                    <category>
+                        <table>zeon_faq_category</table>
+                    </category>
+                </entities>
+            </zeon_faq_mysql4>
+        </models>
+        <helpers>
+            <zeon_faq>
+                <class>Zeon_Faq_Helper</class>
+            </zeon_faq>
+        </helpers>
+        <blocks>
+            <zeon_faq>
+                <class>Zeon_Faq_Block</class>
+            </zeon_faq>
+        </blocks>
+        <resources>
+            <zeon_faq_setup>
+                <setup>
+                    <module>Zeon_Faq</module>
+                    <class>Zeon_Faq_Model_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </zeon_faq_setup>
+            <zeon_faq_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zeon_faq_write>
+            <zeon_faq_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zeon_faq_read>
+        </resources>
+    </global>
+    <default>
+        <zeon_faq>
+            <general>
+                <is_enabled>1</is_enabled>
+            </general>
+            <frontend>
+                <is_display_mfaq>1</is_display_mfaq>
+            </frontend>
+        </zeon_faq>
+    </default>
+</config>

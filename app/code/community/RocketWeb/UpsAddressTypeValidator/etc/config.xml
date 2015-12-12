@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RocketWeb
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   RocketWeb
+ * @package    RocketWeb_UpsAddressTypeValidator
+ * @copyright  Copyright (c) 2012 RocketWeb (http://rocketweb.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author     RocketWeb
+ */
+-->
+<config>
+    <default>
+        <rocketweb_addressvalidator>
+            <general>
+                <run_validation_scope>1,2</run_validation_scope>
+            </general>
+        </rocketweb_addressvalidator>
+    </default>
+    <modules>
+        <RocketWeb_UpsAddressTypeValidator>
+            <version>2.0.1</version>
+            <extension_version>2.1.4</extension_version>
+        </RocketWeb_UpsAddressTypeValidator>
+    </modules>
+    <global>
+        <blocks>
+            <ups_address_validator>
+                <class>RocketWeb_UpsAddressTypeValidator_Block</class>
+            </ups_address_validator>
+            <adminhtml>
+                <rewrite>
+                    <customer_edit_tab_addresses>RocketWeb_UpsAddressTypeValidator_Block_Adminhtml_Customer_Edit_Tab_Addresses</customer_edit_tab_addresses>
+                    <sales_order_create_billing_address>RocketWeb_UpsAddressTypeValidator_Block_Adminhtml_Sales_Order_Create_Billing_Address</sales_order_create_billing_address>
+                    <sales_order_create_shipping_address>RocketWeb_UpsAddressTypeValidator_Block_Adminhtml_Sales_Order_Create_Shipping_Address</sales_order_create_shipping_address>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <models>
+            <ups_address_validator>
+                <class>RocketWeb_UpsAddressTypeValidator_Model</class>
+            </ups_address_validator>
+            <usa>
+                <rewrite>
+                    <shipping_carrier_ups>RocketWeb_UpsAddressTypeValidator_Model_Usa_Shipping_Carrier_Ups</shipping_carrier_ups>
+                </rewrite>
+            </usa>
+            <sales>
+                <rewrite>
+                    <order_address>RocketWeb_UpsAddressTypeValidator_Model_Rewrite_Sales_Order_Address</order_address>
+                </rewrite>
+            </sales>
+        </models>
+        <helpers>
+            <ups_address_validator>
+                <class>RocketWeb_UpsAddressTypeValidator_Helper</class>
+            </ups_address_validator>
+        </helpers>
+        <resources>
+            <ups_address_validator_setup>
+                <setup>
+                    <module>RocketWeb_UpsAddressTypeValidator</module>
+                    <class>Mage_Customer_Model_Entity_Setup</class>
+                    <!-- This is the important thing-->
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ups_address_validator_setup>
+        </resources>
+        <events>
+            <sales_order_save_before>
+                <observers>
+                    <ups_address_validator>
+                        <class>RocketWeb_UpsAddressTypeValidator_Model_Observer</class>
+                        <method>addResidentialIndicator</method>
+                    </ups_address_validator>
+                </observers>
+            </sales_order_save_before>
+            <widgetized_validate_address>
+                <observers>
+                    <ups_address_validator>
+                        <class>RocketWeb_UpsAddressTypeValidator_Model_Observer</class>
+                        <method>addResidentialIndicator</method>
+                    </ups_address_validator>
+                </observers>
+            </widgetized_validate_address>
+        </events>
+        <fieldsets>
+            <sales_copy_order_shipping_address>
+                <is_ups_invalid>
+                    <to_order>*</to_order>
+                </is_ups_invalid>
+            </sales_copy_order_shipping_address>
+            <sales_convert_quote_address>
+                <is_ups_invalid>
+                    <to_order_address>*</to_order_address>
+                    <to_customer_address>*</to_customer_address>
+                </is_ups_invalid>
+            </sales_convert_quote_address>
+            <sales_convert_order_address>
+                <is_ups_invalid>
+                    <to_quote_address>*</to_quote_address>
+                </is_ups_invalid>
+            </sales_convert_order_address>
+            <customer_address>
+                <is_ups_invalid>
+                    <to_quote_address>*</to_quote_address>
+                </is_ups_invalid>
+            </customer_address>
+        </fieldsets>
+    </global>
+<!--    <frontend>
+        <routers>
+            <checkout>
+                <args>
+                    <modules>
+                        <RocketWeb_UpsAddressTypeValidator before="Mage_Checkout">RocketWeb_UpsAddressTypeValidator_Checkout</RocketWeb_UpsAddressTypeValidator>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>-->
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <ups_address_validator before="Mage_Adminhtml">RocketWeb_UpsAddressTypeValidator_Adminhtml</ups_address_validator>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <sintax>
+                    <file>RocketWeb_Ups.xml</file>
+                </sintax>
+            </updates>
+        </layout>
+    </adminhtml>
+    <default>
+        <carriers>
+            <ups>
+                <ups_xml_add_indicator_all_other>0</ups_xml_add_indicator_all_other>
+                <ups_xml_commercial_indicator>- commercial</ups_xml_commercial_indicator>
+                <ups_xml_residential_indicator>- residential</ups_xml_residential_indicator>
+                <xav_xml_url>https://onlinetools.ups.com/ups.app/xml/XAV</xav_xml_url>
+            </ups>
+        </carriers>
+        <rocketweb_addressvalidator>
+            <general>
+                <customer_warning_message>Your shipping address seems to be invalid. Making sure your address is correct will help us provide the best shipping rates for you. If you are sure the address is correct, you can continue the checkout process.</customer_warning_message>
+                <checkout_stop_message>Your shipping address is invalid. Please correct it to be able to continue the checkout process.</checkout_stop_message>
+                <admin_warn_invalid_address>1</admin_warn_invalid_address>
+            </general>
+        </rocketweb_addressvalidator>
+    </default>
+</config>

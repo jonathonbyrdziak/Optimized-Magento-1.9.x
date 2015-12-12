@@ -1,0 +1,13 @@
+<?php
+$_product = $this->getProduct(); ?>
+<?php $_associatedProducts = $this->getAssociatedProducts(); ?>
+<?php $_hasAssociatedProducts = count($_associatedProducts) > 0; ?>
+<?php if ($this->displayProductStockStatus()): ?>
+    <?php if ($_product->isAvailable() && $_hasAssociatedProducts): ?>
+        <dt><?php echo $this->helper('catalog')->__('Availability:') ?></dt>
+        <dd><i>(<?php echo $this->helper('catalog')->__('In stock') ?>)</i></dd>
+    <?php else: ?>
+        <dt><?php echo $this->helper('catalog')->__('Availability:') ?></dt>
+        <dd><i style="color:red">(<?php echo $this->helper('catalog')->__('(Out of stock. Check back in 1-3 days)') ?>)</i></dd>
+    <?php endif; ?>
+<?php endif; ?>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <cms_index_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>banner/banner_effects.js</name></action>
+        </reference>
+    </cms_index_index>
+    <bannerpro_index_index>
+        <reference name="content">
+            <block type="bannerpro/bannerpro" name="bannerpro" template="bannerpro/bannerpro.phtml" />
+        </reference>
+    </bannerpro_index_index>
+</layout>

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Customerattribute
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<layout version="0.1.0">
+    <customerattributeadmin_adminhtml_customerattribute_index>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_customerattribute" name="customerattribute" />
+        </reference>
+    </customerattributeadmin_adminhtml_customerattribute_index>
+	<customerattributeadmin_adminhtml_customerattribute_edit>
+        <update handle="scope_switcher"/>
+        <reference name="content">
+            
+        </reference>
+        <reference name="js">
+            <block type="customerattribute/adminhtml_customerattribute_edit_js" template="customerattribute/js.phtml" />
+        </reference>
+    </customerattributeadmin_adminhtml_customerattribute_edit>
+	<adminhtml_customer_edit>
+     <reference name="customer_edit_tabs">
+        <action method="addTab">
+          <name>managecustomer_edit_tab_form</name>
+          <block>customerattribute/adminhtml_managecustomer_edit_tab_form</block>
+        </action>
+     </reference>
+	</adminhtml_customer_edit>
+    <customerattributeadmin_adminhtml_customeraddressattribute_index>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_customeraddressattribute" name="customeraddressattribute" />
+        </reference>
+    </customerattributeadmin_adminhtml_customeraddressattribute_index>
+    <customerattributeadmin_adminhtml_customeraddressattribute_edit>
+        <update handle="scope_switcher"/>
+      
+        <reference name="js">
+            <block type="customerattribute/adminhtml_customerattribute_edit_js" template="customerattribute/js.phtml" />
+        </reference>
+    </customerattributeadmin_adminhtml_customeraddressattribute_edit>
+    <customerattributeadmin_adminhtml_managecustomer_index>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_managecustomer" name="managecustomer" />
+        </reference>
+    </customerattributeadmin_adminhtml_managecustomer_index>
+     <customerattributeadmin_adminhtml_report_orderreport_index>
+         <reference name="head">
+             <action method="addCss">
+                 <stylesheet>css/customerattribute.css</stylesheet>
+             </action>
+         </reference>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_report_order_orderreport" template="customerattribute/report/order/orderreport.phtml" />
+        </reference>
+    </customerattributeadmin_adminhtml_report_orderreport_index>
+	<customerattributeadmin_adminhtml_report_customerreport_index>
+         <reference name="head">
+             <action method="addCss">
+                 <stylesheet>css/customerattribute.css</stylesheet>
+             </action>
+         </reference>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_report_customerreport_customerreport" template="customerattribute/report/customer/customerreport.phtml" />
+        </reference>
+    </customerattributeadmin_adminhtml_report_customerreport_index>
+	<!-- <customerattributeadmin_adminhtml_report_customerreport_exportCsv>
+        <reference name="content">
+            <block type="customerattribute/adminhtml_report_customerreport_customerreport" name="customerreport" />
+        </reference>
+    </customerattributeadmin_adminhtml_report_customerreport_exportCsv> -->
+</layout>

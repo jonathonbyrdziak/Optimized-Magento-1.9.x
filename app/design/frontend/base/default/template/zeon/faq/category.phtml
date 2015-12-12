@@ -1,0 +1,50 @@
+<?php
+/**
+* zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/shop/license-community.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento Community edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    base_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://www.zeonsolutions.com/shop/license-community.txt
+ */
+
+?>
+<?php $_categories = $this->getCategoryCollection(); ?>
+<?php if($_categories->count()): ?>
+<div class="block">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Filter By Categories') ?></span></strong>
+    </div>
+    <div class="block-content">
+       <ul id="narrow-by-list">
+           <?php if (Mage::helper('zeon_faq')->getIsDisplayMfaq()): ?>
+           <li><a href="<?php echo $this->getUrl('faq/mfaq') ?>"><?php echo $this->__('Most Frequently Asked Questions') ?></a></li>
+           <?php endif;?>
+           <?php foreach ($_categories as $_category): ?>
+            <li <?php if($this->isActiveCategory($_category)): ?>class="active"<?php endif;?>>
+                   <a href="<?php echo $this->getUrl('faq/'.$_category->getIdentifier()) ?>">
+                   <?php echo $this->__($_category->getTitle()) ?></a>
+            </li>
+            <?php endforeach; ?>
+       </ul>
+    </div>
+</div>
+<?php endif; ?>

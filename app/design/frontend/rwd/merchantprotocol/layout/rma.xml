@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * Open Biz Ltd
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file OPEN-BIZ-LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://mageconsult.net/terms-and-conditions
+ *
+ * @category   Magecon
+ * @package    Magecon_Rma
+ * @version    1.0.0
+ * @copyright  Copyright (c) 2013 Open Biz Ltd (http://www.mageconsult.net)
+ * @license    http://mageconsult.net/terms-and-conditions
+ */
+-->
+
+<layout version="0.1.0">      
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="rma">
+                <name>rma</name>
+                <path>rma/order/completed</path>
+                <label>My RMAs</label>
+            </action>
+        </reference>
+    </customer_account>
+    <rma_order_completed>
+        <label>Customer My Account Completed Order History</label>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="rma/order_history" name="rma.order.completed">
+            </block>
+        </reference>
+    </rma_order_completed>
+    <rma_order_request translate="label">
+        <label>Reqeust RMA</label>
+        <remove name="right"/>
+        <remove name="left"/>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="rma/order_request" name="rma.order.request" />
+        </reference>
+    </rma_order_request>
+    <rma_order_view>
+        <update handle="customer_account"/>
+        <reference name="my.account.wrapper">
+            <block type="rma/rma_info" name="rma.rma.info" />
+        </reference>
+    </rma_order_view>
+    <rma_order_print>
+        <reference name="content">
+            <block type="rma/rma_print" template="rma/rma/print.phtml" />
+        </reference>
+    </rma_order_print>
+    <rma_email_rma_items>
+        <block type="rma/email_rma_items" name="items" template="rma/order/items.phtml" />
+    </rma_email_rma_items>
+</layout>

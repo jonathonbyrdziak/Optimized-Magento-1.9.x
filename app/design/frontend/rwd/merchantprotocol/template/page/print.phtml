@@ -1,0 +1,27 @@
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html>
+<!--[if IE 9 ]>    <html lang="en" id="top" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" id="top" class="no-js"> <!--<![endif]-->
+<head>
+<?php echo $this->getChildHtml('head') ?>
+</head>
+<body class="page-print<?php echo $this->getBodyClass()?$this->getBodyClass():'' ?>">
+<div>
+    <div class="print-head">
+        <img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>/email/logo/default/B4S_email_header_2.jpg" style="float:left;" />
+        <?php if ($this->getPrintLogoText()):?>
+            <address><?php echo nl2br($this->escapeHtml($this->getPrintLogoText())) ?></address>
+        <?php endif;?>
+    </div>
+    <?php echo $this->getChildHtml('content') ?>
+    <div class="buttons-set">
+        <button type="button" title="<?php echo $this->__('Close Window') ?>" class="button" onclick="window.close();"><span><span><?php echo $this->__('Close Window') ?></span></span></button>
+    </div>
+    <?php echo $this->getAbsoluteFooter() ?>
+</div>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout>
+    <default>
+        <reference name="head">
+            <!-- add the local css -->
+            <action method="addItem"><type>skin_css</type><name>css/bootstrap.css</name></action>
+
+            <!-- add the local js -->
+            <action method="addItem"><type>skin_js</type><name>js/jquery.main.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery.loadingbar.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/minicart.js</name></action>
+
+            <!-- Remove Magento default assets -->
+            <action method="removeItem"><type>js</type><name>varien/menu.js</name></action>
+            <action method="removeItem"><type>skin_js</type><name>js/ie6.js</name></action>
+            <action method="removeItem"><type>js</type><name>lib/ds-sleight.js</name></action>
+            <action method="removeItem"><type>skin_js</type><name>js/slideshow.js</name></action>
+            <action method="removeItem"><type>skin_js</type><name>js/lib/jquery.cycle2.min.js</name></action>
+            <action method="removeItem"><type>skin_js</type><name>js/lib/jquery.cycle2.swipe.min.js</name></action>
+            <action method="removeItem"><type>skin_css</type><name>css/styles-ie8.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>css/styles.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>css/madisonisland-ie8.css</name></action>
+            <action method="removeItem"><type>skin_css</type><name>css/madisonisland.css</name></action>
+            <action method="removeItem"><type>link_rel</type><name>//fonts.googleapis.com/css?family=Raleway:300,400,500,700,600</name></action>
+            <action method="unsetChild"><name>head.viewport</name></action>
+
+            <action method="addItem"><type>skin_css</type><name>css/styles.css</name></action>
+            
+            <!-- if IE -->
+            <action method="addItem"><type>skin_js</type><name>js/ie.js</name><params/><if>IE</if></action>
+
+            <!-- if lt IE 9 -->
+            <action method="addItem"><type>skin_css</type><name>css/ie.css</name><params/><if>lt IE 9</if></action>
+        </reference>
+
+        <!-- header -->
+        <reference name="header">
+            <block type="cms/block" name="header_message">
+                <action method="setBlockId"><block_id>header_message</block_id></action>
+            </block>
+            <block type="cms/block" name="header_free_shipping">
+                <action method="setBlockId"><block_id>header_free_shipping</block_id></action>
+            </block>
+            <block type="cms/block" name="header_social_networks">
+                <action method="setBlockId"><block_id>header_social_networks</block_id></action>
+            </block>
+            <block type="cms/block" name="header_menu">
+                <action method="setBlockId"><block_id>header_menu</block_id></action>
+            </block>
+<!--             <block type="menupro/menu" name="menupro_group_1" ifconfig="menupro/setting/enable" template="menupro/menupro-header.phtml"> -->
+<!--                 <action method="setData"><name>group_id</name><value>1</value></action> -->
+<!--             </block> -->
+            <block type="page/html_topmenu" name="menupro_group_1" template="page/html/topmenu.phtml"/>
+        </reference>
+
+        <!-- footer -->
+        <reference name="footer">
+            <block type="core/text_list" name="footer_menu">
+                <block type="menupro/menu" name="menupro_group_2" ifconfig="menupro/setting/enable" template="menupro/menupro-footer.phtml">
+                    <action method="setData"><name>group_id</name><value>2</value></action>
+                    <action method="setData"><name>title</name><value>About B4Schools</value></action>
+                </block>
+                <block type="menupro/menu" name="menupro_group_3" ifconfig="menupro/setting/enable" template="menupro/menupro-footer.phtml">
+                    <action method="setData"><name>group_id</name><value>3</value></action>
+                    <action method="setData"><name>title</name><value>Our Products</value></action>
+                </block>
+                <block type="menupro/menu" name="menupro_group_4" ifconfig="menupro/setting/enable" template="menupro/menupro-footer.phtml">
+                    <action method="setData"><name>group_id</name><value>4</value></action>
+                    <action method="setData"><name>title</name><value>Customer Care</value></action>
+                </block>
+            </block>
+            <block type="cms/block" name="footer_contacts">
+                <action method="setBlockId"><block_id>footer_contacts</block_id></action>
+            </block>
+            <block type="cms/block" name="footer_socials">
+                <action method="setBlockId"><block_id>header_social_networks</block_id></action>
+            </block>
+        </reference>
+
+        <!-- left sidebar -->
+        <reference name="left">
+            <action method="unsetChild"><name>left.permanent.callout</name></action>
+            <action method="unsetChild"><name>tags_popular</name></action>
+            <action method="unsetChild"><name>left.newsletter</name></action>
+        </reference>
+
+        <!-- right sidebar -->
+        <reference name="right">
+            <action method="unsetChild"><name>right.permanent.callout</name></action>
+            <action method="unsetChild"><name>cart_sidebar</name></action>
+            <action method="unsetChild"><name>right.reports.product.compared</name></action>
+            <action method="unsetChild"><name>right.reports.product.viewed</name></action>
+            <action method="unsetChild"><name>catalog.compare.sidebar</name></action>
+        </reference>
+
+        <reference name="top.links">
+            
+        </reference>
+    </default>
+
+    <!-- Load this update on every page when customer is logged in -->
+    <customer_logged_in>
+        <reference name="top.links">
+            <action method="removeLinkByUrl"><url helper="customer/getLogoutUrl"/></action>
+            <action method="addLink" translate="label title" module="customer"><label>Sign Out</label><url helper="customer/getLogoutUrl"/><title>Sign Out</title><prepare/><urlParams/><position>100</position></action>
+        </reference>
+    </customer_logged_in>
+
+    <!-- Load this update on every page when customer is logged out -->
+    <customer_logged_out>
+        <reference name="top.links">
+            <action method="removeLinkByUrl"><url helper="customer/getLoginUrl"/></action>
+            <action method="removeLinkByUrl"><url helper="customer/getRegisterUrl"/></action>
+            <action method="addLink" translate="label title" module="customer"><label>Sign In</label><url helper="customer/getLoginUrl"/><title>Sign In</title><prepare/><urlParams/><position>100</position></action>
+            <action method="addLink" translate="label title" module="customer"><label>Create Account</label><url helper="customer/getRegisterUrl"/><title>Create Account</title><prepare/><urlParams/><position>110</position></action>
+        </reference>
+    </customer_logged_out>
+
+    <!-- Index -->
+    <cms_index_index>
+        <reference name="cms.wrapper">
+            <action method="setElementClass"><value>std-home</value></action>
+        </reference>
+    </cms_index_index>
+
+    <!-- Category default layout -->
+    <catalog_category_default translate="label">
+        <label>Catalog Category (Non-Anchor)</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <block type="core/text_list" name="content_additional">
+                <block type="core/template" name="ajax.cart.message" template="additional/ajax-cart-message.phtml" />
+            </block>
+        </reference>
+        <reference name="left_first">
+            <block type="catalog/navigation" name="left.categories" template="additional/left--categories.phtml" before="-" />
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+        
+        <!--
+        <reference name="content">
+            <block type="cms/block" name="block_sign_up_two">
+                <action method="setElementClass"><value>mobile-only-block</value></action>
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+        -->
+        <reference name="product_list">
+            <action method="setColumnCount"><count>3</count></action>
+        </reference>
+    </catalog_category_default>
+
+    <!-- Category layered navigation layout -->
+    <catalog_category_layered translate="label">
+        <label>Catalog Category (Anchor)</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <block type="core/text_list" name="content_additional">
+                <block type="core/template" name="ajax.cart.message" template="additional/ajax-cart-message.phtml" />
+            </block>
+        </reference>
+        <reference name="left_first">
+            <block type="catalog/navigation" name="left.categories" template="additional/left--categories.phtml" before="-" />
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+        <reference name="product_list">
+            <action method="setColumnCount"><count>3</count></action>
+        </reference>
+    </catalog_category_layered>
+
+    <!-- Search results -->
+    <catalogsearch_result_index translate="label">
+        <label>Quick Search Form</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <block type="core/text_list" name="content_additional">
+                <block type="core/template" name="ajax.cart.message" template="additional/ajax-cart-message.phtml" />
+            </block>
+        </reference>
+        <reference name="left_first">
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+    </catalogsearch_result_index>
+
+    <!-- Product view -->
+    <catalog_product_view translate="label">
+        <label>Catalog Product View (Any)</label>
+        <!-- Mage_Catalog -->
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+            <block type="core/text_list" name="content_additional">
+                <block type="core/template" name="ajax.cart.message" template="additional/ajax-cart-message.phtml" />
+            </block>
+        </reference>
+        <reference name="product.info">
+            <action method="unsetChild"><name>additional</name></action>
+            <action method="unsetChild"><name>upsell_products</name></action>
+        </reference>
+        <reference name="product.description">
+            <action method="setTitle" translate="value"><value>Description/Specifications</value></action>
+        </reference>
+        <reference name="left_first">
+            <block type="catalog/navigation" name="left.categories" template="additional/left--categories.phtml" before="-" />
+            <block type="catalog/layer_view" name="catalog.leftnav" after="currency" template="catalog/layer/view.phtml">
+                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+            </block>
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+    </catalog_product_view>
+
+    <!-- Product reviews page -->
+    <review_product_list>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="left_first">
+            <block type="catalog/navigation" name="left.categories" template="additional/left--categories.phtml" before="-" />
+            <block type="catalog/layer_view" name="catalog.leftnav" after="currency" template="catalog/layer/view.phtml">
+                <block type="core/text_list" name="catalog.leftnav.state.renderers" as="state_renderers" />
+            </block>
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+        <reference name="product.info">
+                <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
+                <block type="core/text_list" name="alert.urls" as="alert_urls" translate="label">
+                    <label>Alert Urls</label>
+                </block>
+        </reference>
+    </review_product_list>
+
+    <!-- Customer account pages, rendered for all tabs in dashboard -->
+    <customer_account translate="label">
+        <reference name="left">
+            <action method="unsetChild"><name>catalog.compare.sidebar</name></action>
+            <action method="unsetChild"><name>cart_sidebar</name></action>
+            <action method="unsetChild"><name>reorder</name></action>
+        </reference>
+    </customer_account>
+
+    <!-- Advanced search results -->
+    <catalogsearch_advanced_result>
+        <reference name="search_result_list">
+            <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>3</count></action>
+            <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>3</count></action>
+        </reference>
+    </catalogsearch_advanced_result>
+
+    <!-- cart index -->
+    <checkout_cart_index>
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>Home</crumbname>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbname>Shopping Cart</crumbname>
+                <crumbInfo>
+                    <label>Shopping Cart</label>
+                    <title>Shopping Cart</title>
+                </crumbInfo>
+            </action>
+        </reference>
+        <reference name="checkout.cart">
+            <block type="cms/block" name="cart_notice">
+                <action method="setBlockId"><block_id>cart_notice</block_id></action>
+            </block>
+        </reference>
+    </checkout_cart_index>
+
+    <!-- FAQ -->
+    <faq_index_index>
+        <reference name="head">
+            <action method="setTitle" translate="title"><title>FAQ</title></action>
+        </reference>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+            <block type="core/template" name="page_content_heading" template="cms/content_heading.phtml">
+                <action method="setContentHeading"><value>Frequently Asked Questions</value></action>
+            </block>
+        </reference>
+        <reference name="right">
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+            <block type="cms/block" name="block_want_free_shipping">
+                <action method="setBlockId"><block_id>block_want_free_shipping</block_id></action>
+            </block>
+        </reference>
+    </faq_index_index>
+
+    <!-- blog -->
+    <blog_index_list>
+        <reference name="root">
+            <block type="core/template" name="page_content_heading" template="cms/content_heading.phtml">
+                <action method="setContentHeading"><value>News</value></action>
+            </block>
+        </reference>
+    </blog_index_list>
+
+    <!-- blog post -->
+    <blog_post_view>
+        <reference name="root">
+            <block type="core/template" name="page_content_heading" template="cms/content_heading.phtml">
+                <action method="setContentHeading"><value>News</value></action>
+            </block>
+        </reference>
+    </blog_post_view>
+
+    <!-- contacts -->
+    <contacts_index_index>
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>Home</crumbname>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbname>Contact Us</crumbname>
+                <crumbInfo>
+                    <label>Contact Us</label>
+                    <title>Contact Us</title>
+                </crumbInfo>
+            </action>
+        </reference>
+        <reference name="root">
+            <block type="core/template" name="page_content_heading" template="cms/content_heading.phtml">
+                <action method="setContentHeading"><value>Contact Us</value></action>
+            </block>
+        </reference>
+        <reference name="left_first">
+            <block type="cms/block" name="block_contacts">
+                <action method="setBlockId"><block_id>block_contacts</block_id></action>
+            </block>
+            <block type="cms/block" name="block_sign_up">
+                <action method="setBlockId"><block_id>block_sign_up</block_id></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="cms/block" name="contacts_map" before="-">
+                <action method="setBlockId"><block_id>contacts_map</block_id></action>
+            </block>
+        </reference>
+    </contacts_index_index>
+
+    <!-- One page checkout main layout -->
+    <checkout_onepage_index>
+        <reference name="breadcrumbs">
+            <action method="addCrumb">
+                <crumbname>Home</crumbname>
+                <crumbInfo>
+                    <label>Home</label>
+                    <title>Home</title>
+                    <link>/</link>
+                </crumbInfo>
+            </action>
+            <action method="addCrumb">
+                <crumbname>Checkout</crumbname>
+                <crumbInfo>
+                    <label>Checkout</label>
+                    <title>Checkout</title>
+                </crumbInfo>
+            </action>
+        </reference>
+        <reference name="root">
+            <block type="core/template" name="page_content_heading" template="cms/content_heading.phtml">
+                <action method="setContentHeading"><value>Checkout</value></action>
+            </block>
+        </reference>
+    </checkout_onepage_index>
+
+    <!-- ajax minicart -->
+    <ajax_cart_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/ajax.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="checkout/cart_minicart" name="minicart_head" template="checkout/cart/minicart.phtml">
+                <block type="checkout/cart_sidebar" name="minicart_content" template="checkout/cart/minicart/items.phtml">
+                    <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>checkout/cart/minicart/default.phtml</template></action>
+                    <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>checkout/cart/minicart/default.phtml</template></action>
+                    <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>checkout/cart/minicart/default.phtml</template></action>
+                    <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>checkout/cart/minicart/default.phtml</template></action>
+
+                    <block type="core/text_list" name="cart_sidebar.cart_promotion" as="cart_promotion" translate="label" module="checkout">
+                        <label>Mini-cart promotion block</label>
+                    </block>
+                    <block type="core/text_list" name="cart_sidebar.extra_actions" as="extra_actions" translate="label" module="checkout">
+                        <label>Shopping Cart Sidebar Extra Actions</label>
+                    </block>
+                </block>
+            </block>
+        </reference>
+    </ajax_cart_index_index>
+    
+    <!-- Customer account pages, rendered for all tabs in dashboard -->
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Overview</label></action>
+            <action method="addLink" translate="label" module="customer"><name>address_book</name><path>customer/address/</path><label>Manage Addresses</label></action>
+            <action method="removeLinkByName"><name>recurring_profiles</name></action>
+            <action method="removeLinkByName"><name>billing_agreements</name></action>
+            <action method="removeLinkByName"><name>OAuth Customer Tokens</name></action>
+            <action method="removeLinkByName"><name>downloadable_products</name></action>
+        </reference>
+    </customer_account>
+    
+    <!-- Customer account home dashboard layout -->
+    <customer_account_index>
+        <reference name="my.account.wrapper">
+            <block type="core/template" name="order.latest.items" template="additional/order--latest-items.phtml"/>
+        </reference>
+    </customer_account_index>
+</layout>

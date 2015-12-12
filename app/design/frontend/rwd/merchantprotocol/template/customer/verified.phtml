@@ -1,0 +1,25 @@
+<h3 calss="hello"><strong>Welcome Back <?php echo $this->getCustomer()->getName() ?>,</strong></h3>
+
+<div class="row" style="margin-bottom:40px">
+<?php 
+//$type =  Mage::helper('idpas400')->getAttributeOptionText($this->getCustomer()->getData('select_customer_type'));
+//if (strtolower($type)=='school'):
+    if (Mage::helper('idpas400')->isVerified( $this->getCustomer() )):
+?>
+    <div class="col-sm-1 text-right">
+        <img src="<?php echo Mage::getDesign()->getSkinUrl() ?>/images/b4s_verified.png"/>
+    </div>
+    <div class="col-sm-11">
+        Account Status:<br/>
+        <h2 style="font-size:14px;">Verified</h2>
+    </div>
+<?php else: ?>
+    <div class="col-sm-1 text-right">
+        <img src="<?php echo Mage::getDesign()->getSkinUrl() ?>/images/b4s_active.png"/>
+    </div>
+    <div class="col-sm-11">
+        Account Status:<br/>
+        <h2 style="font-size:14px;">Active</h2>
+    </div>
+<?php endif;//endif ?>
+</div>

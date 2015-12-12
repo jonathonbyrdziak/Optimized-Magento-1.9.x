@@ -1,0 +1,170 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="col2-set">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h3><?php echo $this->__('Registration Information') ?></h3>
+            </div>
+            <div class="box-content">
+                <p>
+                    <?php 
+                    $type = Mage::helper('idpas400')->getAttributeOptionText($this->getCustomer()->getData('select_customer_type'));
+                    switch (strtolower($type)) {
+                        case 'individual':
+                            echo "Number of People in Household: ".Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('individual_household'),
+                                    'individual_household'
+                                    )."<br/>";
+                            
+                            
+                            break;
+                        case 'nonprofit':
+                            echo ucwords(strtolower($this->getCustomer()->getData('nonprofit_name')))."<br/>";
+                            echo "Number of Employees: ".Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('nonprofit_employees'),
+                                    'nonprofit_employees'
+                                    )."<br/>";
+                            
+                            
+                            break;
+                        case 'government institution':
+                        case 'governmentinstitution':
+                        case 'government-institution':
+                        case 'government':
+                            echo ucwords(strtolower($this->getCustomer()->getData('government_agency')))."<br/>";
+                            echo "Number of Employees: ".Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('government_employees'),
+                                    'government_employees'
+                                    )."<br/>";
+                            
+                            
+                            break;
+                        case 'business':
+                            echo ucwords(strtolower($this->getCustomer()->getData('business_name')))."<br/>";
+                            echo "Number of Employees: ".Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('business_employees'),
+                                    'business_employees'
+                                    )."<br/>";
+                            
+                            
+                            break;
+                        case 'school':
+                            echo ucwords(strtolower(
+                                    $this->escapeHtml($this->getCustomer()->getData('school_name'))
+                                    ))."<br/>";
+                            echo ucwords(strtolower(
+                                    $this->getCustomer()->getData('school_address1')
+                                    ))."<br/>";
+                            if ($this->getCustomer()->getData('school_address2')) {
+                                echo ucwords(strtolower($this->getCustomer()->getData('school_address2')))."<br/>";
+                            }
+                            
+                            
+                            echo ucwords(strtolower(
+                                    $this->escapeHtml($this->getCustomer()->getData('school_city'))
+                                    )).", ";
+                            echo ucwords(strtolower(
+                                    Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('school_state'),
+                                    'school_state')
+                                    ))." ";
+                            echo $this->escapeHtml($this->getCustomer()->getData('school_postal_code'))."<br/>"."<br/>";
+                            
+                            echo "Telephone: ".$this->escapeHtml($this->getCustomer()->getData('school_telephone'))."<br/><br/>";
+                            
+                            $grade_level = Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('school_grade_level'),
+                                    'school_grade_level'
+                                    );
+                            if ($grade_level && strtolower($grade_level) != 'other') {
+                                echo "Grade Level: ".ucwords(strtolower($grade_level))."<br/>";
+                                
+                            } else {
+                                echo "Grade Level: ".ucwords(strtolower(
+                                    $this->getCustomer()->getData('school_grade_level_other')
+                                    ))."<br/>";
+                            }
+                            
+                            $school_type = trim(Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('school_type'),
+                                    'school_type'
+                                    ));
+                            
+                            if ($school_type && strtolower($school_type) != 'other') {
+                                echo "School Type: ".ucwords(strtolower($school_type))."<br/>";
+                            } else {
+                                echo "School Type: ".ucwords(strtolower(
+                                    $this->getCustomer()->getData('school_type_other')
+                                    ))."<br/>";
+                            }
+                            
+                            if ($this->getCustomer()->getData('school_number_students')) {
+                                echo "Number of Students: ".Mage::helper('idpas400')->getAttributeOptionText(
+                                    $this->getCustomer()->getData('school_number_students'),
+                                    'school_number_students'
+                                    )."<br/>";
+                            }
+                            break;
+                    }
+                    ?>
+                </p>
+                <a href="<?php echo $this->getChangePasswordUrl() ?>"><?php echo $this->__('Change Password') ?></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title"><p>&nbsp;</p><br/></div>
+            <?php echo $this->escapeHtml($this->getCustomer()->getName()) ?><br />
+            <?php echo $this->escapeHtml($this->getCustomer()->getEmail()) ?><br />
+            <br />
+            <a class="btn btn-primary" href="<?php echo $this->getUrl('customer/account/edit') ?>">
+                <?php echo $this->__('Edit Registration') ?></a>
+        </div>
+    </div>
+    <?php /*if( $this->isNewsletterEnabled() ): ?>
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title">
+                <h3><?php echo $this->__('Newsletters') ?></h3>
+                <a href="<?php echo $this->getUrl('newsletter/manage') ?>"><?php echo $this->__('Edit') ?></a>
+            </div>
+            <div class="box-content">
+                <p>
+                    <?php if( $this->getIsSubscribed() ): ?>
+                        <?php echo $this->__("You are currently subscribed to 'General Subscription'.") ?>
+                    <?php else: ?>
+                        <?php echo $this->__('You are currently not subscribed to any newsletter.') ?>
+                    <?php endif; ?>
+                </p>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('customer.account.dashboard.info.extra')?>
+    </div>
+    <?php endif;*/ ?>
+</div>

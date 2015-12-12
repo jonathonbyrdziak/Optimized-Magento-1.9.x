@@ -1,0 +1,97 @@
+<?php
+/**
+ * Shopping cart template
+ *
+ * @var $this Mage_Checkout_Block_Cart
+ */
+?>
+<?php $_priceDisplay = ($this->helper('tax')->displayCartBothPrices()) ? 'display-both-prices' : 'display-single-price'; ?>
+    
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost') ?>" method="post">
+        <?php echo $this->getBlockHtml('formkey'); ?>
+        <table id="shopping-cart-table" class="cart-table data-table">
+
+
+            <thead>
+                <tr>
+                    <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                    <th class="a-center cart-price-head"><?php echo $this->__('Unit Price') ?></th>
+                    <th class="a-center product-cart-actions"><?php echo $this->__('Qty') ?></th>
+                    <th class="a-center cart-total-head"><?php echo $this->__('Subtotal') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php foreach($this->getItems() as $_item): ?>
+                <?php echo $this->getItemHtml($_item) ?>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+        <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+    </form>
+    <div class="info-cart row-fluid">
+        <div class="cart-forms col-md-5 col-xs-12 hidden-xs">
+            <div id="checkout-review-submit">
+                <div id="review-buttons-container" style="margin-bottom:30px">
+                    <p class="f-left" style="margin-bottom:30px"><?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>" onclick="return confirm('<?php echo $this->__('Are you sure you want to leave this page? You will need to go through the checkout steps again.'); ?>')"><?php echo $this->__('Edit Your Cart') ?></a></p>
+                    <?php echo $this->getChildHtml('button') ?>
+                    <span class="please-wait" id="review-please-wait" style="display:none;">
+                        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Submitting order information...') ?>" title="<?php echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php echo $this->__('Submitting order information...') ?>
+                    </span>
+                </div>
+                <div class="method-checkout-cart-methods-multishipping">
+                    <!-- Security Seal -->
+                    <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=5Rmh6UOfvBDzVEeLKD40F0h2BN2lk54O37gKMKbkZ4i6dbOMREzkE2w"></script></span>
+                    <a href="HTTPS://PAYTRACE.COM/verify.pay?id=39853&mid=008027306763&img=4" target="_blank">
+                        <img src="https://paytrace.com/images/PayTraceSeal_3t.png">
+                    </a>
+                </div>
+                <script type="text/javascript">
+                //<![CDATA[
+                    review = new Review('<?php echo $this->getUrl('checkout/onepage/saveOrder', array('form_key' => Mage::getSingleton('core/session')->getFormKey())) ?>', '<?php echo $this->getUrl('checkout/onepage/success') ?>', $('checkout-agreements'));
+                //]]>
+                </script>
+            </div>
+        </div>
+        
+        <div class="cart-totals-wrapper col-md-7 col-xs-12">
+            <div class="cart-totals">
+                <?php echo $this->getChildHtml('totals'); ?>
+                <?php if(!$this->hasError()): ?>
+                <ul class="checkout-types bottom">
+                <?php foreach ($this->getMethods('methods') as $method): ?>
+                    <?php if ($methodHtml = $this->getMethodHtml($method)): ?>
+                    <li class="method-<?php echo preg_replace("/[^_a-zA-Z0-9-]/", '-', $method); ?>"><?php echo $methodHtml; ?></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+            </div>
+        </div>
+        
+        <div class="cart-forms col-md-5 col-xs-12 visible-xs">
+            <div id="checkout-review-submit">
+                <div id="review-buttons-container" style="margin-bottom:30px">
+                    <p class="f-left" style="margin-bottom:30px"><?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>" onclick="return confirm('<?php echo $this->__('Are you sure you want to leave this page? You will need to go through the checkout steps again.'); ?>')"><?php echo $this->__('Edit Your Cart') ?></a></p>
+                    <?php echo $this->getChildHtml('button') ?>
+                    <span class="please-wait" id="review-please-wait" style="display:none;">
+                        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Submitting order information...') ?>" title="<?php echo $this->__('Submitting order information...') ?>" class="v-middle" /> <?php echo $this->__('Submitting order information...') ?>
+                    </span>
+                </div>
+                <div class="method-checkout-cart-methods-multishipping">
+                    <!-- Security Seal -->
+                    <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=5Rmh6UOfvBDzVEeLKD40F0h2BN2lk54O37gKMKbkZ4i6dbOMREzkE2w"></script></span>
+                    <a href="HTTPS://PAYTRACE.COM/verify.pay?id=39853&mid=008027306763&img=4" target="_blank">
+                        <img src="https://paytrace.com/images/PayTraceSeal_3t.png">
+                    </a>
+                </div>
+                <script type="text/javascript">
+                //<![CDATA[
+                    review = new Review('<?php echo $this->getUrl('checkout/onepage/saveOrder', array('form_key' => Mage::getSingleton('core/session')->getFormKey())) ?>', '<?php echo $this->getUrl('checkout/onepage/success') ?>', $('checkout-agreements'));
+                //]]>
+                </script>
+            </div>
+        </div>
+        <?php echo $this->getChildHtml('crosssell') ?>
+    </div>

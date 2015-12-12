@@ -1,0 +1,52 @@
+<config>
+    <modules>
+        <Widgetized_Wishlist>
+            <version>1.0.0</version>
+        </Widgetized_Wishlist>
+    </modules>
+  
+    <global>
+        <models>
+            <widgetlist>
+                <class>Widgetized_Wishlist_Model</class>
+                <resourceModel>widgetlist_resource</resourceModel>
+            </widgetlist>
+            <widgetlist_resource>
+                <class>Widgetized_Wishlist_Model_Resource</class>
+                <entities></entities>
+            </widgetlist_resource>
+        </models>
+        <blocks>
+            <widgetlist>
+                <class>Widgetized_Wishlist_Block</class>
+            </widgetlist>
+        </blocks>
+        <resources>
+            <widgetlist_setup>
+                <setup>
+                    <module>Widgetized_Wishlist</module>
+                </setup>
+            </widgetlist_setup>
+        </resources>
+        
+        <helpers>
+            <widgetlist>
+                <class>Widgetized_Wishlist_Helper</class>
+            </widgetlist>
+        </helpers>
+    
+    </global>
+  
+    <frontend>
+        <routers>
+            <wishlist>
+                <args>
+                    <modules>
+                        <Widgetized_Wishlist before="Mage_Wishlist">Widgetized_Wishlist</Widgetized_Wishlist>
+                    </modules>
+                </args>
+            </wishlist>
+        </routers>
+    </frontend>
+    
+</config>

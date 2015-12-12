@@ -1,0 +1,60 @@
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+/* @var $this Mage_Catalog_Block_Product_List */
+?>
+<?php
+    $_productCollection = $this->getLoadedProductCollection();
+    $_helper = $this->helper('catalog/output');
+    $_cookie = Mage::getSingleton('core/cookie');
+    $_productIds = $_cookie->get('vote');
+    if ($_productIds) {
+        $_productIds = unserialize($_productIds);
+    }
+?>
+<?php if ($_productCollection->count()): ?>
+    <?php foreach ($_productCollection as $_product):
+        $_product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
+        <div class="product-box">
+            <div class="product-image">
+                <img id="product-collection-image-<?php echo $_product->getId(); ?>"
+                     src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(294,293); ?>"
+                     alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+            </div>
+            <div class="holder">
+                <h2 class="product-name"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h2>
+                <?php if ($_product->getShortDescription()): ?>
+                    <div class="short-description">
+                        <div class="std">
+                            <p><?php echo $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description') ?></p>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <h3><?php echo $this->__('Would You Like B4Schools to Add This?') ?></h3>
+                <?php
+                $args = array(
+                    '_query' => array('product' => $_product->getId())
+                );
+                $url = Mage::getUrl('ajax-cart/votes', $args);
+                $_class = '';
+                if (in_array($_product->getId(), $_productIds)) {
+                    $_class = ' disabled';
+                }
+
+                $_votes = $_product->getVotes();
+                ?>
+                <span class="votes-block<?php echo $_class ?>" data-url="<?php echo $url ?>">
+                    <span class="text-box"><?php echo $this->__('SUBMIT MY VOTE!') ?></span>
+                    <?php if ($_votes == 1): ?>
+                        <span class="info"><?php echo $this->__('1 Vote!') ?></span>
+                    <?php else: ?>
+                        <span class="info"><?php echo $this->__('%s Votes!', $_votes) ?></span>
+                    <?php endif; ?>
+                </span>
+            </div>
+        </div>
+    <?php endforeach ?>
+<?php endif; ?>

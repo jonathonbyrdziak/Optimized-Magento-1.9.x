@@ -1,0 +1,75 @@
+<?php /**
+ * Create account form template */
+/* @var $this Magestore_Customerattribute_Block_Customer_Form */
+
+// remembering where these fields should be
+$that = Mage::registry('customer_register_object');
+if (!function_exists('extra_field_class')) {
+    function extra_field_class($code) {
+        
+        if ($code=='select_customer_type') return;
+        
+        $code = str_replace('-','',$code);
+        $parts = explode('_',$code);
+        $code = strtolower($parts[0]);
+        echo " starthidden attribute_$code";
+    }
+}
+
+?>
+<div class="additional-attributes">
+<?php if ($this->hasUserDefinedAttributes()): ?>
+<?php if($this->isShowFieldSet()): ?>
+    <ul class="form-list">   
+ <?php endif; ?>
+    <?php
+    $countAttribute= 1; 
+    $shownDefaults = false;
+    $shownPasswords = false;
+    
+    $field_names = 50;
+    $field_passwords = 100;
+    ?>
+    <?php foreach ($this->getUserDefinedAttributes() as $attribute):
+        ?>
+        <?php 
+        if ($attribute->getData('sort_order')>$field_names && !$shownDefaults): 
+            $shownDefaults=true;
+            require_once dirname(__file__).DIRECTORY_SEPARATOR."fields_names-$field_names.phtml";
+        endif;
+        if ($attribute->getData('sort_order')>$field_passwords && !$shownPasswords): 
+            $shownPasswords=true;
+            require_once dirname(__file__).DIRECTORY_SEPARATOR."fields_passwords-$field_passwords.phtml";
+        endif; ?>
+        <?php $frontendInput = $attribute->getFrontendInput() ?>
+        
+        <?php $attributeContent = $this->getAttributeHtml($attribute);?>
+        <?php if ($attributeContent): ?>
+        <?php if(($frontendInput=='image')||($frontendInput=='file')
+                ||($frontendInput=='multiselect')||($frontendInput=='textarea')||($countAttribute==1)):?>
+        <li class="fields">
+        <?php endif ?>
+        <?php echo $attributeContent;?>
+        <?php if(($frontendInput=='image')||($frontendInput=='file')
+                ||($frontendInput=='multiselect')||($frontendInput=='textarea')||($countAttribute==2)): ?>
+        </li>
+            <?php $countAttribute=1; ?>
+        <?php else: ?>
+            <?php $countAttribute++;?>
+        <?php endif ?>
+        
+        <?php endif ?>
+    <?php endforeach;
+    
+    if (!$shownDefaults) {
+        require_once dirname(__file__).DIRECTORY_SEPARATOR."fields_names-$field_names.phtml";
+    }
+    if (!$shownPasswords) {
+        require_once dirname(__file__).DIRECTORY_SEPARATOR."fields_passwords-$field_passwords.phtml";
+    }
+    ?>  
+ <?php if($this->isShowFieldSet()): ?>
+    </ul>
+<?php endif; ?>
+<?php  endif; ?>
+</div>

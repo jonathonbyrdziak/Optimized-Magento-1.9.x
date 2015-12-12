@@ -1,0 +1,131 @@
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     Datta_StoreLocator
+ * @created     Dattatray Yadav  2nd Dec,2013 3:45pm
+ * @author      Clarion magento team<Dattatray Yadav>   
+ * @purpose     Store locator css
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license      http://opensource.org/licenses/osl-3.0.php  Open Software License
+ */ 
+.store-list{
+    float : left;
+    width : 45%;    
+    height : 514px;
+    overflow-y : hidden;
+}
+.store-row{
+    padding-left: 10px;
+}
+.col-address{
+    width : 36%;
+}
+.store-image{
+    width:4%;
+}
+.store-table{
+    border-bottom: 1px solid grey ;
+    width : 100%;
+    padding: 10px;
+}
+.first{
+    border-top: 1px solid grey ;
+} 
+.span-geoloc:active{
+     background-color: #6b1b1b;
+     border-right: 2px solid #696969;      
+     border-bottom: 2px solid #696969;       
+ }
+ .store-name{
+     cursor: pointer;
+     text-decoration: underline;
+     font-size: 14px;
+}
+#map_canvas{          
+    float:left;    
+    width : 50%;
+    margin-left: 4%;
+    height : 514px;
+}
+.store-description{
+     width:350px;
+     padding-top:10px;
+     clear:both;
+     overflow-y: auto;
+     max-height: 100px;
+ } 
+ .store-info{
+     max-height:400px;
+     min-width:300px;            
+     overflow: auto;
+     cursor: default;
+     clear: both;
+     position: relative;
+     background-color: rgb(255, 255, 255);
+     border: 1px solid rgb(204, 204, 204);
+     border-top-left-radius: 10px;
+     border-top-right-radius: 10px;
+     border-bottom-right-radius: 10px;
+     border-bottom-left-radius: 10px;
+     padding: 5px;
+ }
+ .store-image-infoWindow {
+     width:100px;
+ }
+ .span-geoloc{
+    cursor:pointer;
+    background-color: #7e2222;
+    color:#fff;   
+    border-right: 2px solid #808080;   
+    padding : 1px 5px 0px 5px;    
+    float:right;
+    margin-top:5px;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+    border-bottom: 2px solid #808080;
+    clear:both;   
+}
+ .store-image-div-infoWindow{
+     float:left;
+ }   
+ .store-name-infoWindow{
+    width:150px;
+    float:left;
+    margin-left:15px;
+ }      
+ #search{
+    border-bottom: 1px solid #CFCFCF;
+    margin-bottom: 10px;
+    padding: 5px;
+ }    
+#panel{
+    float:left;
+    margin-top:15px;
+}      
+.pac-container .pac-item{
+   text-align:left;
+}
+.store-name-infoWindow h3{
+     font-size:14px;
+ }
+ #search .input-text {
+     width: 300px;
+     padding: 5px;
+ }     

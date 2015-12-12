@@ -1,0 +1,49 @@
+<div class="field <?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    <?php if($this->getValue()): ?>   
+    <?php $filename=explode('/',$this->getValue()); ?>
+    <?php $setup = new Mage_Eav_Model_Entity_Setup('core_setup');
+        $entityTypeId     = $setup->getEntityTypeId('customer'); 
+       if($this->getEntity()->getData('entity_type_id')==$entityTypeId):?>
+            <div id="image-box"> 
+            <a href="javascript:void(0)"  onclick="Download('<?php echo Mage::getBaseUrl('media').'customer'.$this->getValue(); ?>','<?php echo $filename[3];  ?>')">
+                <?php echo $this->__('Download'); ?>     
+            </a>
+            </div>
+       <?php else:?>
+            <div id="image-address-box">
+            <a href="javascript:void(0)"  onclick="Download('<?php echo Mage::getBaseUrl('media').'customer_address'.$this->getValue(); ?>','<?php echo $filename[3];  ?>')">
+                <?php echo $this->__('Download'); ?>     
+            </a>
+            </div>            
+            <?php endif;?>
+        
+        <?php endif; ?>
+    <script>
+        function Download( url, name ) {                   
+            var click, save_link, event;
+            save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+            if( !("download" in save_link) ) return false; // a[download] not supported on this browser
+            save_link.href = url;
+            save_link.download = name;
+            event = document.createEvent("MouseEvents");
+            event.initMouseEvent(
+                "click", true, false, window, 0, 0, 0, 0, 0
+                , false, false, false, false, 0, null
+            );
+            return save_link.dispatchEvent(event); // false if event was cancelled
+                }
+    </script>
+    <input type="file" id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>" value="" class="input-file" />
+    <input type="hidden" id="<?php echo $this->getHtmlId()?>_value" value="<?php echo $this->getEscapedValue()?>" <?php if ($this->isRequired()): ?>class="required-entry" <?php endif;?>/>
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>
+    <script type="text/javascript">
+//<![CDATA[
+    new Varien.FileElement('<?php echo $this->getHtmlId()?>');
+//]]>
+    </script>
+</div>
+</div>

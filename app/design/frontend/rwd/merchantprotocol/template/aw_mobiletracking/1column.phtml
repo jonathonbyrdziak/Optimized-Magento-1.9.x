@@ -1,0 +1,117 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This package designed for Magento community edition
+ * aheadWorks does not guarantee correct work of this extension
+ * on any other Magento edition except Magento community edition.
+ * aheadWorks does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Mobiletracking
+ * @version    1.0.2
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php // Mobile view ?>
+<?php  if(Mage::helper('mobiletracking/track')->isMobile()): ?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>">
+<head>
+<?php echo $this->getChildHtml('head') ?>
+     <!-- <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" /> -->
+    <meta name="viewport" content="user-scalable=no, width=device-width" /> 
+</head>
+    <body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>>
+      <?php echo $this->getChildHtml('global_messages') ?>
+     <?php if($this->getMode() === 0): ?>
+       
+        <form method = "post" action = "<?php echo Mage::getUrl('awmobiletracking/tracking/collectTracks') ?>">       
+            <div class ="aw-mobiletracing-center-contents">               
+                <div class = "aw-mt-credentials">                       
+                    <a href = "<?php echo Mage::getBaseUrl(); ?>"><img src ="<?php echo $this->getAwMobileTracker()->getLogoUrl('tracking_icon'); ?>" alt = "" /></a>
+                    <label for="aw_mobiletracking_order_number"><?php echo $this->__('Order ID #'); ?></label>
+                    <input id = "aw_mobiletracking_order_number" type = "text" value = "<?php echo Mage::getSingleton('customer/session')->getData(AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_NUMBER); ?>" name = "<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_NUMBER; ?>" />
+                    <label for="aw_mobiletracking_order_email"><?php echo $this->__('Email'); ?></label>
+                    <input id = "aw_mobiletracking_order_email" type = "text" value = "<?php echo Mage::getSingleton('customer/session')->getData(AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_EMAIL); ?>" name = "<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_EMAIL; ?>" />
+                    <input type ="submit" name = "submit-tracking" value = "<?php echo $this->__('Track Order'); ?>" />
+                </div>
+            </div>            
+        </form>
+      <?php elseif($this->getMode() === 1): ?>
+        <div class ="aw-mobiletracing-center-contents">         
+              <div class = "aw-mt-credentials"> 
+                    <?php echo $this->getChildHtml('global_messages') ?>
+                  
+                    <a href = "<?php echo Mage::getBaseUrl(); ?>"><img src ="<?php echo $this->getAwMobileTracker()->getLogoUrl('tracking_icon'); ?>" alt = "" /></a>
+                    
+                    <h2>
+                        <?php echo $this->getAwMobileTracker()->__('Order #%s',$this->getAwMobileTracker()->getOrder()->getIncrementId()); ?>
+                    </h2>                    
+                    
+                    <p><?php echo $this->getAwMobileTracker()->__('Order status is %s',ucfirst($this->getAwMobileTracker()->getOrder()->getStatusLabel())); ?></p>
+                     
+                    
+                    <?php echo $this->getAwMobileTracker()->getTrackingInfo(); ?>                    
+              </div>  
+        </div>  
+        <style>   
+              .aw-mobiletracing-center-contents { width: 100%!important; }
+         </style>
+                       
+     <?php endif; ?>
+     
+    </body>
+</html>
+
+<?php else: ?>
+ <?php // Desktop view ?>
+     <?php if($this->getMode() === 0): ?>
+        
+        <form method = "post" action = "<?php echo Mage::getUrl('awmobiletracking/tracking/collectTracks') ?>">       
+            <div class ="aw-mobiletracing-center-contents">               
+                <div class = "aw-mt-credentials">                       
+                    <img src ="<?php echo $this->getAwMobileTracker()->getLogoUrl('tracking_icon'); ?>" alt = "" />
+                    <label for="aw_mobiletracking_order_number"><?php echo $this->__('Order ID #'); ?></label>
+                    <input id = "aw_mobiletracking_order_number" type = "text" value = "<?php echo Mage::getSingleton('customer/session')->getData(AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_NUMBER); ?>" name = "<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_NUMBER; ?>" />
+                    <label for="aw_mobiletracking_order_email"><?php echo $this->__('Email'); ?></label>
+                    <input id = "aw_mobiletracking_order_email" type = "text" value = "<?php echo Mage::getSingleton('customer/session')->getData(AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_EMAIL); ?>" name = "<?php echo AW_Mobiletracking_Helper_Data::MOBILETRACKING_ORDER_EMAIL; ?>" />
+                    <input type ="submit" name = "submit-tracking" value = "<?php echo $this->__('Track Order'); ?>" />
+                </div>
+            </div>            
+        </form>
+      <?php elseif($this->getMode() === 1): ?>
+        <div class ="aw-mobiletracing-center-contents">         
+              <div class = "aw-mt-credentials"> 
+                    <?php echo $this->getChildHtml('global_messages') ?>
+                  
+                    <img src ="<?php echo $this->getAwMobileTracker()->getLogoUrl('tracking_icon'); ?>" alt = "" />
+                    
+                    <h2>
+                        <?php echo $this->getAwMobileTracker()->__('Order #%s',$this->getAwMobileTracker()->getOrder()->getIncrementId()); ?>
+                    </h2>                    
+                    
+                    <p><?php echo $this->getAwMobileTracker()->__('Order status is %s',ucfirst($this->getAwMobileTracker()->getOrder()->getStatusLabel())); ?></p>
+                     
+                    
+                    <?php echo $this->getAwMobileTracker()->getTrackingInfo(); ?>                    
+              </div>  
+        </div> 
+                 
+     <?php endif; ?>
+     
+<?php endif; ?>

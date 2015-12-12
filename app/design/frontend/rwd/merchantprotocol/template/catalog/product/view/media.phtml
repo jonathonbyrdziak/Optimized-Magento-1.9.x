@@ -1,0 +1,60 @@
+<?php
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+
+/* @var $this Mage_Catalog_Block_Product_View_Media */
+?>
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+$i = 0;
+?>
+<div class="slideshow">
+    <div class="holder">
+        <?php if (date("Y-m-d") >= substr($_product->getNewsFromDate(), 0, 10) && date("Y-m-d") <= substr($_product->getNewsToDate(), 0, 10)): ?>
+            <span class="info-new"><?php echo $this->__('New') ?></span>
+        <?php endif; ?>
+        <div class="slideset">
+            <?php foreach ($this->getGalleryImages() as $_image): ?>
+                <?php
+                ++$i;
+                $_imageUrl = $this->helper('catalog/image')
+                    ->init($_product, 'image', $_image->getFile())
+                    ->keepFrame(false)
+                    ->constrainOnly(true)
+                    ->resize(295, 294);
+                ?>
+                <div class="slide">
+                    <img src="<?php echo $_imageUrl; ?>" alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php /*if (count($this->getGalleryImages()) > 0): ?>
+        <div class="thumbnails">
+            <div class="thumbnails-holder">
+                <div class="gmask">
+                    <ul>
+                    <?php foreach ($this->getGalleryImages() as $_image): ?>
+                        <li>
+                            <a href="#">
+                                <img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(64); ?>" alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" />
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+            <?php if ($i > 4): ?>
+                <div class="btn-holder">
+                    <a class="btn-prev" href="#"><?php echo $this->__('Previous') ?></a>
+                    <a class="btn-next" href="#"><?php echo $this->__('Next') ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif;*/ ?>
+</div>
+<?php echo $this->getChildHtml('after'); ?>

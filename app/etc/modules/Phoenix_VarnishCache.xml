@@ -22,7 +22,7 @@
 <config>
   <modules>
     <Phoenix_VarnishCache>
-      <active>true</active>
+      <active>false</active>
       <codePool>community</codePool>
     </Phoenix_VarnishCache>
   </modules>

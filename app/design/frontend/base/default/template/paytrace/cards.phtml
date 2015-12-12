@@ -1,0 +1,97 @@
+<?php
+/**
+ * 
+ */
+
+//$cards = $this->getCards();
+
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+$card = Mage::helper('level3')->getPrimaryCard( $customer->getId() );
+?>
+<?php echo $this->getMessagesBlock()->toHtml(); ?>
+<div class="page-title">
+    <h1>Manage Payment Methods</h1>
+</div>
+
+<?php if ( $card->getId() ): ?>
+<?php // foreach($cards as $card): ?>
+<?php // if (!$card->getPrimary()) continue; ?>
+<div style="margin-bottom:30px;" class="row-fluid">
+    <div style="border:1px solid #eee;padding:0;" 
+         class="col-lg-offset-1 col-md-offset-1 col-lg-8 col-md-8">
+        
+        <div style="margin-top:0;" class="autoship_header row-fluid">
+            <h3>
+                <?php echo $card->getPrimary()?'Primary ':'' ?>
+                <?php echo $card->getToken()?'Disabled ':'' ?>Payment Method
+            </h3>
+        </div>
+
+        <div style="padding:20px;">
+            <div class="row-fluid">
+                
+                <?php if ($card->getToken()): ?>
+                <div class="col-lg-12 col-md-12">
+                    <ul class="messages"><li class="error-msg"><ul><li><span>
+                        <?php echo $card->getToken() ?></span></li></ul></li>
+                    </ul>
+                </div>
+                <?php endif ?>
+                
+                <div class="col-lg-6 col-md-6">Credit Card Type: </div>
+                <div class="col-lg-6 col-md-6 a-right"><?php 
+                switch ($card->getData('type')) {
+                    case 'VI': echo 'Visa'; break;
+                    case 'MC': echo 'Mastercard'; break;
+                    case 'AE': echo 'American Express'; break;
+                    case 'DI': echo 'Discover Card'; break;
+                }
+                ?></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-lg-6 col-md-6">Name on Card: </div>
+                <div class="col-lg-6 col-md-6 a-right"><?php echo $card->getData('name') ?></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-lg-6 col-md-6">Card # ending in  </div>
+                <div class="col-lg-6 col-md-6 a-right">****-****-****-<?php echo $card->getData('number') ?></div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-lg-6 col-md-6">Exp. Month: </div>
+                <div class="col-lg-6 col-md-6 a-right"><?php echo $card->getData('month') ?></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="row-fluid">
+                <div class="col-lg-6 col-md-6">Exp. Year: </div>
+                <div class="col-lg-6 col-md-6 a-right"><?php echo $card->getData('year') ?></div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        
+        <div style="padding:20px" class="row-fluid a-right">
+            <a style="float:right;text-decoration:underline;margin-top:5px;color:#555" 
+               href="<?php echo Mage::getUrl('level3/cc/delete') ?>?card_id=<?php echo $card->getId() ?>">
+                <?php echo $this->__('or Delete Card') ?>
+            </a>
+            <a style="float:right;margin-right:20px" class="btn btn-primary" 
+               href="<?php echo Mage::getUrl('level3/cc/edit') ?>?card_id=<?php echo $card->getId() ?>">
+                <?php echo $this->__('Edit Card') ?>
+            </a>
+            <div class="clearfix"></div>
+        </div>
+            
+    </div>
+    <div class="clearfix"></div>
+</div>
+<?php // endforeach ?>
+
+<?php else: ?>
+<a class="btn btn-primary" href="<?php echo Mage::getUrl('level3/cc/edit') ?>">
+    <?php echo $this->__('Create a New Saved Card') ?>
+</a>
+
+<?php endif ?>

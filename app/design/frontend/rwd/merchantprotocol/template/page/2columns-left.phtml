@@ -1,0 +1,39 @@
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<?php echo $this->getChildHtml('head') ?>
+</head>
+<body class="<?php echo $this->getBodyClass()?$this->getBodyClass():''; echo Mage::helper('customer')->isLoggedIn()?' is-logged-in':' is-logged-out' ?>">
+<?php echo $this->getChildHtml('after_body_start') ?>
+    <div id="wrapper">
+        <?php echo $this->getChildHtml('global_notices') ?>
+        <div class="page">
+            <?php echo $this->getChildHtml('header') ?>
+            <div class="main-container col2-left-layout">
+                <div class="main">
+                    <?php echo $this->getChildHtml('breadcrumbs') ?>
+                    <?php echo $this->getChildHtml('page_content_heading') ?>
+                    <?php echo $this->getChildHtml('content_additional') ?>
+                    <div class="col-left sidebar col-left-first">
+                        <?php echo $this->getChildHtml('left_first') ?>
+                    </div>
+                    <div class="col-main">
+                        <?php echo $this->getChildHtml('global_messages') ?>
+                        <?php echo $this->getChildHtml('content') ?>
+                    </div>
+                </div>
+            </div>
+            <?php echo $this->getChildHtml('footer_before') ?>
+            <?php echo $this->getChildHtml('footer') ?>
+            <?php echo $this->getChildHtml('global_cookie_notice') ?>
+            <?php echo $this->getChildHtml('before_body_end') ?>
+        </div>
+    </div>
+<?php echo $this->getAbsoluteFooter() ?>
+</body>
+</html>

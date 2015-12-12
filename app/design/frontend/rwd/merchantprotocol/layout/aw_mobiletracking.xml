@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<layout version="0.1.0"> 
+    <mobiletracking_email_order_link>
+        <block type="mobiletracking/order_email_tracker" name="items_bytems" template="aw_mobiletracking/order/email/tracker.phtml"></block>
+    </mobiletracking_email_order_link>
+</layout>

@@ -1,0 +1,103 @@
+<?php 
+ /**
+ * Magento 
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *                                                                       * 
+ * @category    design
+ * @package     default_default
+ * @created     Dattatray Yadav  2nd Dec,2013 3:20pm
+ * @author      Clarion magento team<Dattatray Yadav>   
+ * @purpose     Manage store locator view page 
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License    
+ */    
+?>
+<h2><?php echo $this->__('Schools');?></h2>       
+ <div id="search">
+     <label for="address"><?php echo $this->__('Find Store : ');?></label>
+     <input type="text" name="address" id="address" class="input-text"/>
+ </div>                                                                 
+<div class="store-list">
+    <?php foreach($this->getStores() as $store) :?>                     
+            <table id="store-table" class="store-table">                
+                <tbody>                                                 
+                    <tr>
+                        <td rowspan="8" class="store-image">
+                            <img src="<?php echo $store->getImage(); ?>" alt="<?php echo $store->getName()?>" width="150">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class='store-name' id="store<?php echo $store->getId(); ?>"><?php echo $store->getName()?></h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-address">
+                            <?php echo $store->getAddress()?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-address">
+                            <?php echo $store->getZipcode()." ".$store->getCity()?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-address">
+                            <?php echo $store->getCountryId(); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php if(!is_null($store->getStoreUrl()) && $store->getStoreUrl() != ''):?>
+                                <?php echo $this->__('Website : %s', "<a href='".$store->getStoreUrl()."' target='_blank'>");?><?php echo $this->__('%s', $store->getStoreUrl());?></a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php if(!is_null($store->getPhone())&& $store->getPhone()!= ''):?>
+                                <?php echo $this->__('Phone : %s', $store->getPhone()); ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                         <?php if(!is_null($store->getFax()) && $store->getFax() != ''):?>
+                               <?php echo $this->__('Fax : %s', $store->getFax());?>
+                        <?php endif; ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    <?php endforeach;?>
+</div>
+<div id="maps">
+    <div id="map_canvas"></div>
+</div>
+<div id="panel"></div>                                                  
+<script type="text/javascript">
+    var estimateDirectionLabel = '<?php echo $this->__('Calculating the estimated'); ?>';
+    var gmapUrl = '<?php echo $this->getGoogleApiUrl(); ?>';
+    var apiSensor = <?php echo Mage::getStoreConfig('storelocator/general/apisensor'); ?>;
+    var stores = <?php echo Mage::helper('core')->jsonEncode($this->getStores()->toArray()); ?>;
+    var mediaUrl = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>';
+    var pathMarker = '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) ?>';
+    var defaultMarker = '<?php echo $this->getDefaultMarker(); ?>';
+    var directionEnable = <?php echo Mage::getStoreConfig('storelocator/general/direction'); ?>;
+    window.onload = loadScript;
+</script>

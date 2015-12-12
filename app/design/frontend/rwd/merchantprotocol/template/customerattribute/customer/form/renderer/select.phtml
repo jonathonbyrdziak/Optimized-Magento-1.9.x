@@ -1,0 +1,50 @@
+<?php
+// hide this field when the user is logged in
+if ($this->getFieldName()=='select_customer_type' && Mage::helper('customer')->isLoggedIn()): ?>
+    <input id="<?php echo $this->getHtmlId()?>-hidden" name="<?php echo $this->getFieldName()?>"
+           type="hidden" value="<?php echo $this->getValue() ?>" 
+           data-va="<?php echo Mage::helper('idpas400')->getAttributeOptionText($this->getValue(),'select_customer_type') ?>" <?php if($this->getHtmlClass()):?>class="<?php echo $this->getHtmlClass();?>"<?php endif;?> />
+
+            
+<?php elseif($this->getHtmlId()=='school_country'): ?>
+
+<div class="field<?php  extra_field_class($this->getFieldName());  ?> field-<?php echo $this->getHtmlId()?> <?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    
+    
+    <?php foreach ($this->getOptions() as $option):?>
+    <?php if (!$option['value']) continue; ?>
+    <input id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>"
+            <?php if($this->getHtmlClass()):?> class="<?php echo $this->getHtmlClass();?>"<?php endif;?>
+           value="<?php echo $option['value']?>" type="hidden"/>
+    <input style="height: 35px;" input="text" class="form-control" 
+           readonly="readonly" placehold="<?php echo $this->htmlEscape($option['label'])?>" 
+           value="<?php echo $this->htmlEscape($option['label'])?>" />
+    
+    <?php endforeach;?>
+    
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>    
+</div>
+</div>
+<?php else: ?>
+
+<div class="field<?php  extra_field_class($this->getFieldName());  ?> field-<?php echo $this->getHtmlId()?> <?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    <select id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>"
+        <?php if($this->getHtmlClass()):?> class="form-control <?php echo $this->getHtmlClass();?>"<?php endif;?>>
+        <option></option>
+        <?php foreach ($this->getOptions() as $option):?>
+        <?php if (!$option['value']) continue; ?>
+    <option value="<?php echo $option['value']?>"<?php if ($option['value'] == $this->getValue()):?> selected="selected"<?php endif;?>><?php echo $this->htmlEscape($option['label'])?></option>
+    <?php endforeach;?>
+    </select>
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>    
+</div>
+</div>
+<?php endif ?>

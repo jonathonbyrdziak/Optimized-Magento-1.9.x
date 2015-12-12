@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <joomlart translate="label" module="jmmegamenu">
+            <label>JoomlArt</label>
+            <sort_order>210</sort_order>
+        </joomlart>
+    </tabs>  
+   <sections>
+        <wavethemes_jmmegamenu>
+            <label>JM Mega menu</label>
+            <tab>joomlart</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+            	<wavethemes_jmmegamenu translate="label">
+                    <label>JM Mega Menu: Config General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>  
+                    	<show translate="label" module="core">
+							<label>Enabled</label>
+							<sort_order>10</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</show>
+                        <animation translate="label">
+                            <label>Animation Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>jmmegamenu/system_config_source_listAnimationType</source_model>
+                            <sort_order>10</sort_order>
+                            <comment>Animation effect you want to display sub-menu items</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </animation>
+                        <shownumproduct translate="label">
+                            <label>Show Qty of product</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>20</sort_order>
+                            <comment>Apply for Category Menu Type only</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shownumproduct>
+					</fields>
+            	</wavethemes_jmmegamenu>
+            </groups>
+        </wavethemes_jmmegamenu>
+    </sections>       
+</config>

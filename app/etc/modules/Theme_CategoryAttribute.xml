@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Theme_CategoryAttribute>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Theme_CategoryAttribute>
+    </modules>
+</config>

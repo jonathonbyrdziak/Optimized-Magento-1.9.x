@@ -1,0 +1,69 @@
+<layout version="0.1.0">
+    <customer_account>
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="aw_sarp2" ifconfig="aw_sarp2/settings/enabled">
+                <name>aw_sarp2</name>
+                <path>aw_recurring/customer/index</path>
+                <label>My Subscriptions</label>
+            </action>
+        </reference>
+    </customer_account>
+    
+    <aw_recurring_customer_index>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="aw_sarp2/customer_profile_grid" name="aw_sarp2.customer.profile.grid" template="aw_sarp2/customer/profile/grid.phtml" />
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </aw_recurring_customer_index>
+    
+    <aw_recurring_customer_view>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="aw_sarp2/customer_profile_view" name="aw_sarp2.customer.profile.view" template="aw_sarp2/customer/profile/view.phtml">
+                <block type="aw_sarp2/customer_profile_buttons" name="aw_sarp2.customer.profile.view.buttons" template="aw_sarp2/customer/profile/buttons.phtml" as="buttons"/>
+                <block type="aw_sarp2/customer_profile_view_reference" name="aw_sarp2.customer.profile.view.reference" template="aw_sarp2/customer/profile/view/infobox.phtml" as="reference" />
+                <block type="aw_sarp2/customer_profile_view_purchase" name="aw_sarp2.customer.profile.view.purchase" template="aw_sarp2/customer/profile/view/infobox.phtml" as="purchase" />
+                <block type="aw_sarp2/customer_profile_view_schedule" name="aw_sarp2.customer.profile.view.schedule" template="aw_sarp2/customer/profile/view/infobox.phtml" as="schedule" />
+                <block type="aw_sarp2/customer_profile_view_payments" name="aw_sarp2.customer.profile.view.payments" template="aw_sarp2/customer/profile/view/infobox.phtml" as="payments" />
+                <block type="aw_sarp2/customer_profile_view_billing" name="aw_sarp2.customer.profile.view.billing" template="aw_sarp2/customer/profile/view/addressbox.phtml" as="billing" />
+                <block type="aw_sarp2/customer_profile_view_shipping" name="aw_sarp2.customer.profile.view.shipping" template="aw_sarp2/customer/profile/view/addressbox.phtml" as="shipping" />
+            </block>
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </aw_recurring_customer_view>
+    
+    <aw_recurring_customer_orders>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="aw_sarp2/customer_profile_orders" name="aw_sarp2.customer.profile.orders" template="aw_sarp2/customer/profile/orders.phtml">
+                <block type="aw_sarp2/customer_profile_buttons" name="aw_sarp2.customer.profile.view.buttons" template="aw_sarp2/customer/profile/buttons.phtml" as="buttons"/>
+            </block>
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+    </aw_recurring_customer_orders>
+    
+    <catalog_product_view>
+        <reference name="product.info.options.wrapper">
+            <block type="aw_sarp2/catalog_product_view_options_type_calendar" name="aw_sarp2.product.view.options.type.calendar" template="aw_sarp2/catalog/product/view/options/type/calendar.phtml"/>
+        </reference>
+        <reference name="product.info.options.wrapper.bottom">
+            <block type="aw_sarp2/catalog_product_view_prices" name="aw_sarp2.product.view.prices" template="aw_sarp2/catalog/product/view/prices.phtml"/>
+        </reference>
+    </catalog_product_view>
+    
+    <aw_recurring_express_review>
+        <update handle="paypal_express_review" />
+    </aw_recurring_express_review>
+    
+    <aw_recurring_express_review_details>
+        <update handle="paypal_express_review_details" />
+    </aw_recurring_express_review_details>
+    
+    <checkout_onepage_success translate="label">
+        <reference name="content">
+            <remove name="checkout.success" />
+            <block type="aw_sarp2/checkout_onepage_success" name="aw.sarp2.checkout.success" template="checkout/success.phtml" before="-"/>
+        </reference>
+    </checkout_onepage_success>
+</layout>

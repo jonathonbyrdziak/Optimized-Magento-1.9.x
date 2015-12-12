@@ -1,0 +1,179 @@
+<?php
+/**
+ * Open Biz Ltd
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file OPEN-BIZ-LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://mageconsult.net/terms-and-conditions
+ *
+ * @category   Magecon
+ * @package    Magecon_Rma
+ * @version    1.0.0
+ * @copyright  Copyright (c) 2013 Open Biz Ltd (http://www.mageconsult.net)
+ * @license    http://mageconsult.net/terms-and-conditions
+ */
+?>
+<?php $_order = $this->getOrder() ?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="page-title title-buttons">
+    <h1><?php echo $this->__('Create RMA') ?></h1>
+</div>
+<?php if (!$_order->getIsVirtual()): ?>
+    <!-- TODO: Check if the items in the order are REFUNDABLE!!!! -->
+    <form action="<?php echo $this->getUrl('rma/order/submit') ?>" method="post">
+        <div class="col2-set order-info-box cart-table">
+            <div class="col-1">
+                <div class="box">
+                    <div class="box-title">
+                        <h2><?php echo $this->__('RMA Shipping Method') ?></h2>
+                    </div>
+                    <div class="box-content">
+                        <?php echo Mage::getStoreConfig('rma/settings/shipping_method'); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="box">
+                    <div class="box-title">
+                        <h2><?php echo $this->__('RMA Shipping Address') ?></h2>
+                    </div>
+                    <div class="box-content">
+                        <address><?php //echo $_order->getShippingAddress()->format('html')    ?></address>
+                        <?php if ($this->customerHasAddresses()): ?>
+                            <div class="input-box">
+                                <?php echo $this->getAddressesHtmlSelect('shipping') ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="input-box">
+                                <?php echo "<b>Order shipping address will be used: </b><br />" . $_order->getShippingAddress()->format('html'); ?>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?><div class="cart">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <thead>
+                    <tr>
+                        <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                        <th class="a-center"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
+                        <?php
+                        $conditions = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/condition'));
+                        if (!empty($conditions)):
+                            ?>
+                            <th class="a-center"><?php echo $this->__('Item Condition'); ?></th>
+                            <?php
+                        endif;
+                        $reasons = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/reason'));
+                        if (!empty($reasons)):
+                            ?>
+                            <th class="a-center"><?php echo $this->__('Reason'); ?></th>
+                            <?php
+                        endif;
+                        $requests = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/request'));
+                        if (!empty($requests)):
+                            ?>
+                            <th class="a-center"><?php echo $this->__('Request'); ?></th>
+                        <?php endif; ?>
+                        <?php if (Mage::getStoreConfig('rma/item_attributes_settings/comment_enable') == 1): ?>
+                            <th><?php echo $this->__('Comment') ?></th>
+                        <?php endif; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->getItems() as $_item): ?>
+                        <tr>
+                            <td><?php echo $_item->getName() ?></td>
+                            <td>
+                                <select id="qty" name="qty[]" onchange="return checkSelect();">
+                                    <?php for ($i = 0; $i <= $_item->getQtyInvoiced(); $i++): ?>
+                                        <option value=<?php echo $i ?>><?php echo $i; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </td>
+                            <?php if (!empty($conditions)): ?>
+                                <td>
+                                    <select name="condition[]" id="condition">
+                                        <?php
+                                        foreach ($conditions as $condition):
+                                            if (trim($condition['value']) != "") :
+                                                ?>
+                                                <option value="<?php echo $condition['value']; ?>"><?php echo $condition['value']; ?></option>
+                                            <?php
+                                            endif;
+                                        endforeach;
+                                        ?>
+                                    </select>
+                                </td>
+    <?php endif; ?>
+                                    <?php if (!empty($reasons)): ?>
+                                <td>
+                                    <select name="reason[]" id="reason">
+                                        <?php
+                                        foreach ($reasons as $reason) :
+                                            if (trim($reason['value']) != "") :
+                                                ?>
+                                                <option value="<?php echo $reason['value']; ?>"><?php echo $reason['value']; ?></option>
+            <?php
+            endif;
+        endforeach;
+        ?>
+                                    </select>
+                                </td>
+                                    <?php endif; ?>
+                                    <?php if (!empty($requests)): ?>
+                                <td>
+                                    <select name="request[]" id="request">
+                                        <?php
+                                        foreach ($requests as $request) :
+                                            if (trim($request['value']) != "") :
+                                                ?>
+                                                <option value="<?php echo $request['value']; ?>"><?php echo $request['value']; ?></option>
+                                    <?php
+                                    endif;
+                                endforeach;
+                                ?>
+                                    </select>
+                                </td>
+                    <?php endif; ?>
+                    <?php if (Mage::getStoreConfig('rma/item_attributes_settings/comment_enable') == 1): ?>
+                                <td><textarea name="comment[]" id="comment" cols="30" rows="2"></textarea></td>
+    <?php endif; ?>
+                        </tr>
+                    <input type="hidden" name="name[]" value="<?php echo $_item->getName(); ?>" />
+                    <input type="hidden" name="sku[]" value="<?php echo $_item->getSku(); ?>" />
+<?php endforeach ?>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="50" class="a-right">
+
+                        </td>
+                    </tr>
+                </tfoot>
+                <input type="hidden" name="real_order_id" value="<?php echo $_order->getRealOrderId(); ?>" />
+                <input type="hidden" name="order_id" value="<?php echo $_order->getId(); ?>" />
+                <input type="hidden" name="scan_date" value="<?php echo $_order->getCreatedAt(); ?>" />
+                <input type="hidden" name="customer_id" value="<?php echo Mage::getModel('customer/session')->getCustomer()->getId(); ?>" />
+                <input type="hidden" name="customer_name" value="<?php echo Mage::getModel('customer/session')->getCustomer()->getName(); ?>" />
+            </table>
+            <div></div>
+            <div class="a-right cart-table">
+                <button type="submit" title="<?php echo $this->__('Request RMA') ?>" class="button btn-update"><span><span><?php echo $this->__('Request RMA') ?></span></span></button>
+            </div>
+            <a href="<?php echo $this->getUrl('rma/order/completed') ?>"><small>&laquo;</small><?php echo $this->__('Back to My RMAs') ?></a>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </fieldset>
+</form>
+</div>
+<br />
+<br />
+

@@ -1,0 +1,48 @@
+<?php
+    $_faqCollection=$this->getCollection();
+    $_faqCollection->clear();
+    $_faqCollection->setPageSize(100);
+    $processor = Mage::helper('zeon_faq')->getBlockTemplateProcessor();
+?>
+
+<?php if(!$_faqCollection->count()): ?>
+    <p class="note-msg"><?php echo $this->__('There are no faq matching the selection.') ?></p>
+<?php else: ?>
+    <ul class="accordion">
+    <?php $i = 0; foreach ($_faqCollection as $_faq): ++$i; ?>
+        <li id="<?php echo $_faq->getId() ?>li" style="height:0px!important;border:none!important;"></li>
+        <li <?php // if ($i == 1) echo ' class="active"' // open the first LI by default ?>>
+            <a class="opener-link" href="#"><span>Q:</span> <?php echo $this->htmlEscape($_faq->getTitle()) ?></a>
+            <div class="slide">
+                <div class="slide-holder">
+                    <p><?php echo $processor->filter($_faq->getDescription()) ?></p>
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+    <div class="help-info">
+        <p><?php echo $this->__('Don’t see what you need and still want help?') ?> <a href="<?php echo $this->getUrl('contacts') ?>"><?php echo $this->__('Contact Us!') ?></a></p>
+    </div>
+<?php endif; ?>
+    
+    
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <iframe src="<?php echo Mage::getUrl() ?>media/UPS_MAP.pdf" style="width:700px; height:520px;" frameborder="0"></iframe>
+  </div>
+</div>
+    
+<script type="text/javascript">
+    jQuery(window).load(function(){
+        if (!window.location.hash) return;
+        jQuery(window.location.hash+'li').next().find('a').click();
+        setTimeout(function(){
+          if(window.location.hash+'li') {
+              jQuery('html, body').animate({
+                        scrollTop: jQuery(window.location.hash+'li').offset().top
+                    }, 1000);
+          }
+        },500);
+    });
+</script>

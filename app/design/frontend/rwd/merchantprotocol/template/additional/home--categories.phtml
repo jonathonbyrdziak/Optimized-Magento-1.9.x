@@ -1,0 +1,85 @@
+<?php
+/**
+ * Get store categories
+ */
+$_categories = Mage::getModel('catalog/category')
+        ->getCollection()
+        ->addAttributeToSelect('*')
+        ->addFieldToFilter('level', 2)
+        ->addIsActiveFilter();
+
+$cms = Mage::getModel('cms/page')->load(12);
+$cmsLink = $cms->getData('is_active') 
+        ? Mage::helper('cms/page')->getPageUrl( 12 )
+        : '#';
+
+?>
+<?php if (count($_categories)): ?>
+    <div class="carousel-holder">
+        <div class="heading">
+            <h2>Our Products</h2>
+        </div>
+        <div class="carousel">
+            <div class="gmask">
+                <div class="mask">
+                    <div class="slideset">
+                        <?php foreach ($_categories as $_category): ?>
+                            <?php if ($_category->getIsActive()): ?>
+                                <?php
+                                $_vote = false;
+                                $_new = false;
+                                $_linkTitle = $this->__('SHOP NOW');
+                                $_class = '';
+                                if ($_category->getLabel_vote()) {
+                                    $_vote = true;
+                                }
+                                if ($_category->getLabel_new()) {
+                                    $_new = true;
+                                }
+                                if ($_category->getLink_title()) {
+                                    $_linkTitle = $_category->getLink_title();
+                                }
+                                if ($_category->getBox_class()) {
+                                    $_class = ' ' . $_category->getBox_class();
+                                }
+                                ?>
+                                <div class="slide">
+                                    <div class="box<?php echo $_class ?>">
+                                        <?php if (!strpos($_class, 'alt')): ?>
+                                            <h3><?php echo $this->htmlEscape($_category->getName()) ?></h3>
+                                        <?php endif; ?>
+                                            <?php 
+                                            $url = $_vote
+                                                    ? $cmsLink
+                                                    : $this->getCategoryUrl($_category);
+                                            ?>
+                                        <a class="holder" href="<?php echo $url ?>">
+                                            <?php if ($_new): ?>
+                                                <span class="info-new"><?php echo $this->__('New') ?></span>
+                                            <?php endif; ?>
+                                            <?php if ($_vote): ?>
+                                                <span class="info-vote"><?php echo $this->__('vote') ?></span>
+                                            <?php endif; ?>
+                                            <?php if ($_imgUrl = $_category->getImageUrl()): ?>
+                                                <p class="category-image">
+                                                    <img src="<?php echo $_imgUrl ?>" alt="<?php echo $this->escapeHtml($_category->getName()) ?>" />
+                                                </p>
+                                            <?php endif; ?>
+                                            <span class="btn btn-primary"><?php echo $_linkTitle ?></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            <?php if (count($_categories) > 3): ?>
+                <div class="btn-holder">
+                    <a class="btn-prev" href="#"><?php echo $this->__('Previous') ?></a>
+                    <a class="btn-next" href="#"><?php echo $this->__('Next') ?></a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>

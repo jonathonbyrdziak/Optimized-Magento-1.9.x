@@ -1,0 +1,50 @@
+
+<div class="field<?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+    <label <?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo ' <em>*</em>'; echo $this->getLabel(); ?></label>
+        <div class="input-box">
+			<?php if($this->getValue()): ?>        
+			<?php $setup = new Mage_Eav_Model_Entity_Setup('core_setup');
+			$entityTypeId     = $setup->getEntityTypeId('customer'); 
+		   if($this->getEntity()->getData('entity_type_id')==$entityTypeId):?>
+		   <div id="image-box">
+            <a href="<?php echo Mage::getBaseUrl('media').'customer'.$this->getValue(); ?>" onclick="imagePreview('_item_<?php echo $this->getHtmlId() ?>_image'); return false;">
+                <img  height='50' src="<?php echo Mage::getBaseUrl('media').'customer'.$this->getValue(); ?>" id="_item_<?php echo $this->getHtmlId() ?>_image" alt="View Full Size" title="View Full Size"/>
+            </a>
+			</div>
+			<?php else:?>
+			<div id="image-address-box">
+			<a href="<?php echo Mage::getBaseUrl('media').'customer_address'.$this->getValue(); ?>" onclick="imagePreview('_item_<?php echo $this->getHtmlId() ?>_image'); return false;">
+                <img height='50' src="<?php echo Mage::getBaseUrl('media').'customer_address'.$this->getValue(); ?>" id="_item_<?php echo $this->getHtmlId() ?>_image" alt="View Full Size" title="View Full Size"/>
+            </a>
+			</div>
+			<?php endif;?>
+        <script type="text/javascript">
+            //<![CDATA[
+            function imagePreview(element){
+                if($(element)){
+                    var win = window.open('', 'preview', 'width=400,height=400,resizable=1,scrollbars=1');
+                    win.document.open();
+                    win.document.write('<body style="padding:0;margin:0"><img src="'+$(element).src+'" id="image_preview"/></body>');
+                    win.document.close();
+                    Event.observe(win, 'load', function(){
+                        var img = win.document.getElementById('image_preview');
+                        win.resizeTo(img.width+40, img.height+80)
+                    });
+                }
+            }
+            //]]>
+        </script>
+        <?php endif; ?>
+            <input type="file" id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>" value="" <?php if ($this->isRequired()): ?>class="input-file required-file" <?php endif;?> />
+            <input type="hidden" id="<?php echo $this->getHtmlId()?>_value" name="<?php echo $this->getFieldName()?>_value" value="<?php echo $this->getValue() ?>" />
+            <script type="text/javascript">
+            //<![CDATA[
+                new Varien.FileElement('<?php echo $this->getHtmlId()?>');
+            //]]>
+            </script>
+        </div>
+        
+        <?php if ($_message = $this->getAdditionalDescription()) : ?>
+        <div class="validation-advice"><?php echo $_message; ?></div>
+        <?php endif; ?>
+</div>

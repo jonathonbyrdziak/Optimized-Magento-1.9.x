@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Fooman Order = Invoice Number
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@fooman.co.nz so we can send you a copy immediately.
+ *
+ *
+ * @category   Fooman
+ * @package    SameOrderInvoiceNumber
+ * @copyright  Copyright (c) 2009 Fooman Limited (http://www.fooman.co.nz)
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Fooman_SameOrderInvoiceNumber>
+            <version>2.0.7</version>
+            <depends>
+                <Mage_Sales />
+            </depends>
+        </Fooman_SameOrderInvoiceNumber>
+    </modules>
+
+    <global>
+        <models>
+            <sameorderinvoicenumber>
+                <class>Fooman_SameOrderInvoiceNumber_Model</class>
+            </sameorderinvoicenumber>
+        </models>
+        <helpers>
+            <sameorderinvoicenumber>
+                <class>Fooman_SameOrderInvoiceNumber_Helper</class>
+            </sameorderinvoicenumber>
+        </helpers>
+        <events>
+            <sales_order_invoice_save_before>
+                <observers>
+                    <sales_order_invoice_save_before>
+                        <type>singleton</type>
+                        <class>Fooman_SameOrderInvoiceNumber_Model_Observer</class>
+                        <method>sales_order_invoice_save_before</method>
+                    </sales_order_invoice_save_before>
+                </observers>
+            </sales_order_invoice_save_before>
+            <sales_order_shipment_save_before>
+                <observers>
+                    <sales_order_shipment_save_before>
+                        <type>singleton</type>
+                        <class>Fooman_SameOrderInvoiceNumber_Model_Observer</class>
+                        <method>sales_order_shipment_save_before</method>
+                    </sales_order_shipment_save_before>
+                </observers>
+            </sales_order_shipment_save_before>
+            <sales_order_creditmemo_save_before>
+                <observers>
+                    <sales_order_creditmemo_save_before>
+                        <type>singleton</type>
+                        <class>Fooman_SameOrderInvoiceNumber_Model_Observer</class>
+                        <method>sales_order_creditmemo_save_before</method>
+                    </sales_order_creditmemo_save_before>
+                </observers>
+            </sales_order_creditmemo_save_before>
+        </events>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <sameorderinvoicenumber>
+                                            <title>Order numbers by Fooman</title>
+                                        </sameorderinvoicenumber>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+        <sameorderinvoicenumber>
+            <settings>
+                <preventduplicates>0</preventduplicates>
+                <invoiceprefix></invoiceprefix>
+                <shipmentprefix></shipmentprefix>
+                <creditmemoprefix></creditmemoprefix>
+            </settings>
+        </sameorderinvoicenumber>
+    </default>
+
+</config>

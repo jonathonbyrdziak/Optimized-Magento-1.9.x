@@ -1,0 +1,14 @@
+<?php $posts = $this->getPosts(); ?>
+<?php if (count($posts)): ?>
+    <div class="news-block">
+        <h2><?php echo $this->__('Latest News') ?></h2>
+        <ul class="news-list">
+            <?php foreach ($posts as $post): ?>
+                <li>
+                    <h3><a href="<?php echo $post->getAddress(); ?>"><?php echo $post->getTitle(); ?></a></h3>
+                    <?php echo substr(strip_tags($post->getPostContent()),0,100); ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Widgetized_Recorder>
+            <version>1.0.9</version>
+        </Widgetized_Recorder>
+    </modules>
+    
+    <global>
+        <models>
+            <recorder>
+                <class>Widgetized_Recorder_Model</class>
+                <resourceModel>recorder_resources</resourceModel>
+            </recorder>
+            <recorder_resources>
+                <class>Widgetized_Recorder_Model_Resources</class>
+                <entities>
+                    <order>
+                        <table>recurring_orders</table>
+                    </order>
+                    <paymentmethods>
+                        <table>recorder_stored_payment_methods</table>
+                    </paymentmethods>
+                </entities>
+            </recorder_resources>
+        </models>
+        <resources>
+            <recorder_setup>
+                <setup>
+                    <module>Widgetized_Recorder</module>
+                </setup>
+            </recorder_setup>
+        </resources>
+        <blocks>
+            <recorder>
+                <class>Widgetized_Recorder_Block</class>
+            </recorder>
+        </blocks>
+        <helpers>
+            <recorder>
+                <class>Widgetized_Recorder_Helper</class>
+            </recorder>
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+            <recurring_order_list>
+                <use>admin</use>
+                <args>
+                    <module>Widgetized_Recorder</module>
+                    <frontName>recorder</frontName>
+                </args>
+            </recurring_order_list>
+        </routers>
+    </admin>
+    
+    <crontab>
+        <jobs>
+            <recurring_orders_cron>
+                <schedule>
+                    <!-- 
+                    server is seven hours behind, 19:00 here is 12:00pm on the server
+                    3:am is 10:00
+                    <cron_expr>0 20 * * *</cron_expr>
+                    -->
+                    <cron_expr>* * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>recorder/observer::cron_check_order</model>
+                </run>
+            </recurring_orders_cron>
+        </jobs>
+    </crontab>
+    
+    <frontend>
+        <routers>
+            <recorder>
+                <use>standard</use>
+                <args>
+                    <module>Widgetized_Recorder</module>
+                    <frontName>recurring</frontName>
+                </args>
+            </recorder>
+        </routers>
+        <layout>
+            <updates>
+                <recorder>
+                    <file>recorder.xml</file>
+                </recorder>
+            </updates>
+        </layout>
+    </frontend>
+</config>

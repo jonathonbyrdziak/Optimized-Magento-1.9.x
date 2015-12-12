@@ -1,0 +1,70 @@
+.banner .text-holder{background:#fff;}
+body{
+	min-width:1300px;
+}
+.page-header {
+	max-width: 1300px;
+	padding:0 10px;
+}
+.main-container{
+	max-width: 1300px;
+	padding:19px 10px 64px;
+}
+.footer{
+	max-width: 1300px;
+	padding:47px 10px 4px;
+}
+.page-header-container{position:relative;}
+.social-networks .facebook a{background-position:0 -221px;}
+.social-networks .twitter a{background-position:-25px -221px;}
+.social-networks .pinterest a{background-position:-50px -221px;}
+.social-networks .linkedin a{background-position:-75px -221px;}
+.social-networks .youtube a{background-position:-100px -221px;}
+.products-grid{
+	margin:0 -36px 0 0;
+}
+.products-grid > li{
+	width: 30%;
+	margin-right:3%;
+}
+.block-layered-nav .block-content > dl > dt {
+	font:12px/16px "open_sansregular", Arial, Helvetica, sans-serif;
+	color:#3e3520;
+	padding:11px 8px;
+	text-transform:none;
+	background:none;
+	border:none;
+	font-weight:bold;
+}
+.block-layered-nav .block-content > dl > dt:after {
+	display: none;
+}
+.block-layered-nav .block-content > dl > dd{
+	padding:0;
+	border:none;
+}
+.block-layered-nav dd ol{
+	font-size:12px;
+	line-height:20px;
+}
+.block-layered-nav dl dd ol > li > span,
+.block-layered-nav dl dd ol > li > a{
+	display:block;
+	padding:10px 8px;
+	color:#444;
+}
+.block-layered-nav dd ol a:hover{
+	text-decoration:none;
+	background:#eee;
+}
+.block-layered-nav dd ol .active a{
+	text-decoration:none;
+	background:#ff6633;
+	color:#fff;
+}
+.block-layered-nav dd ol .active a .count{
+	color:#fff;
+}
+.block-layered-nav dl{
+	margin:0 0 40px;
+}

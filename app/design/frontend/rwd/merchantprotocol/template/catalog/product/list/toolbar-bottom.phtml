@@ -1,0 +1,12 @@
+<?php
+/**
+ * Product list toolbar
+ *
+ * @see Mage_Catalog_Block_Product_List_Toolbar
+ */
+?>
+<?php if($this->getCollection()->getSize()): ?>
+<div class="pager pager-no-toolbar">
+    <?php echo $this->getPagerHtml() ?>
+</div>
+<?php endif ?>

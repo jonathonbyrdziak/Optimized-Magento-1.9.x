@@ -1,0 +1,43 @@
+<?php if ($this->getCategories()->count() && Mage::getStoreConfig('blog/menu/category')): 
+    
+    $baseUrl = Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+    $route = Mage::getStoreConfig('blog/blog/route');
+    if ($route == "") {
+        $route = "blog";
+    }
+    
+    ?>
+    <div class="block block-layered-nav block-layered-nav--no-filters">
+        <div class="block-title">
+            <strong><span><?php echo Mage::helper('blog')->__('Blog Categories'); ?></span></strong>
+        </div>
+        <div class="block-content toggle-content">
+            <p class="block-subtitle block-subtitle--filter"><?php echo Mage::helper('blog')->__('Blog Categories'); ?></p>
+            <ul class="categories-list">
+                <?php $cats = $this->getCategories(); ?>
+                <?php foreach ($cats as $cat): ?>
+                    <li><a href="<?php echo $cat->getAddress(); ?>" ><?php echo $cat->getTitle(); ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>
+<div class="block block-layered-nav block-layered-nav--no-filters">
+	<div class="block-title">
+		<strong><span>Archives</span></strong>
+	</div>
+	<div class="block-content toggle-content">
+		<p class="block-subtitle block-subtitle--filter">Categories</p>
+		<ul class="categories-list">
+                    <?php
+                    $today = date('Y-m-d');
+                    for ($i=1; $i<=5; $i++): 
+                        $displayYear = date('Y', strtotime(" -$i month"));
+                        $displayMonth = date('M', strtotime(" -$i month"));
+                        ?>
+			<li><a href="<?php echo $baseUrl.$route ?>?m=<?php echo $displayMonth ?>&y=<?php echo $displayYear ?>"><?php echo $displayMonth.' '.$displayYear ?></a></li>
+                    <?php endfor; ?>
+		</ul>
+	</div>
+</div>
+<?php echo $this->getChildHtml('blog_tags'); ?>

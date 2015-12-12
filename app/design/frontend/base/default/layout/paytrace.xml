@@ -1,0 +1,17 @@
+<layout version="0.1.0">
+
+    <level3_cc_index>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="level3/account_cards" name="cards" template="paytrace/cards.phtml"/>
+        </reference>
+    </level3_cc_index>
+    
+    <level3_cc_edit>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="level3/account_card_edit" name="cards" template="paytrace/card/edit.phtml"/>
+        </reference>
+    </level3_cc_edit>
+    
+</layout>

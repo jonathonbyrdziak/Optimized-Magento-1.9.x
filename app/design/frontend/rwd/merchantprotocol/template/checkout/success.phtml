@@ -1,0 +1,26 @@
+
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout Receipt') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your order!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<div class="col2-right-layout" style="margin-bottom:30px;">
+    <div class="main">
+        <div class="col-main" style="float:left">
+            <p>B4Schools wants to thank you for shopping with us. Every order helps all of our schools and communities! Please check your email for confirmation details about your order. Remember to visit the My Account section where you can easily set up automatic ordering, shipping, and reminders!</p>
+       </div>
+        <div class="col-right sidebar" style="text-align: center;">
+            <a target="_blank" style="padding: 11px 45px;" class="btn btn-primary" title="<?php echo $this->__('Print') ?>" href="<?php echo $this->getPrintUrl() ?>">
+                <span><span><?php echo $this->__('Print Receipt') ?></span></span>
+            </a>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+
+<?php 
+//var_dump($this->_children);
+?>

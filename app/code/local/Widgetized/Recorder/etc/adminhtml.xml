@@ -1,0 +1,30 @@
+
+<config>
+    <menu>
+        <sales>
+            <children>
+                
+                <recorder_list_menu translate="title" module="recorder">
+                    <title>Recurring Orders</title> 
+                    <sort_order>11</sort_order>
+                    <action>recorder/list/index</action>
+                </recorder_list_menu>
+<!--                
+                <recorder_list_reset translate="title" module="recorder">
+                    <title>Reset Orders</title> 
+                    <sort_order>11</sort_order>
+                    <action>recorder/list/reset</action>
+                </recorder_list_reset>
+                -->
+            </children>
+        </sales>
+    </menu>
+    
+<!--    <layout>
+        <updates>
+            <recorder_adminhtml>
+                <file>recurringorders.xml</file>
+            </recorder_adminhtml>
+        </updates>
+    </layout>-->
+</config>

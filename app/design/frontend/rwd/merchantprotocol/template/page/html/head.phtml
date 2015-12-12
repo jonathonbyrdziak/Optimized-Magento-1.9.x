@@ -1,0 +1,25 @@
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+
+<?php 
+$product = Mage::registry('current_product');
+if ($product): ?>
+<meta property="og:title" content="<?php echo $product->getName(); ?>" />
+<meta property="og:type" content="product" />
+<meta property="og:url" content="<?php echo $this->helper('catalog/product')->getProductUrl($product); ?>" />
+<meta property="og:image" content="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(100, 100); ?>" />
+<meta property="og:description" content="<?php echo strip_tags($product->getShortDescription()); ?>" />
+<meta property="og:site_name" content="<?php echo Mage::app()->getStore()->getName() ?>" />
+<?php endif; ?> 
+
+<title><?php echo $this->getTitle() ?></title>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>" />
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>

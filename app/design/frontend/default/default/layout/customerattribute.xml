@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Customerattribute
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<layout version="0.1.0">
+    <default>   
+          
+        <reference name="before_body_end">
+            <block type="customerattribute/checkout_onepage_addinformation" 
+                               template="customerattribute/checkout/onepage/addinformation.phtml" 
+                               name="add_billing"> 
+                <block type="customerattribute/customer_form" template="customerattribute/customer/form/userattributes.phtml" name="customer_form_user_attributes">
+                    <action method="setFormCode"><code>checkout_register</code></action> 
+                    <action method="setEntityModelClass"><class>customer/customer</class></action>			  
+                </block>
+                <block type="customerattribute/customer_form" template="customerattribute/customer/form/userattributes.phtml" name="customer_form_user_address_attributes">
+                    <action method="setFormCode"><code>customer_register_address</code></action>				 
+                </block>
+            </block>           
+        </reference>   
+        <update handle="customerattribute_customer_form_template_handle" />  
+    </default>
+	
+    <customer_account_create>         
+        <reference name="customer_form_register">
+        </reference>
+        <update handle="customerattribute_customer_form_template_handle" />
+    </customer_account_create>
+    <customer_account_edit>
+       <!--  <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/magestore/customerattribute.css</stylesheet>
+            </action>
+        </reference> -->
+        <block type="customerattribute/customer_form" 
+               template="customerattribute/customer/form/userattributes.phtml" 
+               name="customer_form_user_attributes">
+            <action method="setFormCode">
+                <code>customer_account_edit</code>
+            </action> 
+        </block>    
+        <update handle="customerattribute_customer_form_template_handle" />
+    </customer_account_edit>
+    <customer_address_form>       
+         <reference name="before_body_end">
+               <block type="customerattribute/customer_form_address" template="customerattribute/customer/form/addaddress.phtml" name="add_address" >                
+               <block type="customerattribute/customer_form" 
+                   template="customerattribute/customer/form/userattributes.phtml" 
+                   name="customer_form_user_address_attributes">
+                    <action method="setFormCode">
+                         <code>customer_address_edit</code>
+                    </action> 
+               </block>                
+            </block>             
+        </reference>      
+        <update handle="customerattribute_customer_form_template_handle" />
+    </customer_address_form>
+    
+    <customerattribute_customer_form_template_handle>
+        <reference name="content">
+            <block name="customerattribute_customer_form_template" type="customerattribute/customer_form_template">
+                <action method="addRenderer">
+                    <type>text</type>
+                    <renderer_block>customerattribute/customer_form_renderer_text</renderer_block>
+                    <template>customerattribute/customer/form/renderer/text.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>textarea</type>
+                    <renderer_block>customerattribute/customer_form_renderer_textarea</renderer_block>
+                    <template>customerattribute/customer/form/renderer/textarea.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>multiline</type>
+                    <renderer_block>customerattribute/customer_form_renderer_multiline</renderer_block>
+                    <template>customerattribute/customer/form/renderer/multiline.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>date</type>
+                    <renderer_block>customerattribute/customer_form_renderer_date</renderer_block>
+                    <template>customerattribute/customer/form/renderer/date.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>select</type>
+                    <renderer_block>customerattribute/customer_form_renderer_select</renderer_block>
+                    <template>customerattribute/customer/form/renderer/select.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>multiselect</type>
+                    <renderer_block>customerattribute/customer_form_renderer_multiselect</renderer_block>
+                    <template>customerattribute/customer/form/renderer/multiselect.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>boolean</type>
+                    <renderer_block>customerattribute/customer_form_renderer_boolean</renderer_block>
+                    <template>customerattribute/customer/form/renderer/boolean.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>file</type>
+                    <renderer_block>customerattribute/customer_form_renderer_file</renderer_block>
+                    <template>customerattribute/customer/form/renderer/file.phtml</template>
+                </action>
+                <action method="addRenderer">
+                    <type>image</type>
+                    <renderer_block>customerattribute/customer_form_renderer_image</renderer_block>
+                    <template>customerattribute/customer/form/renderer/image.phtml</template>
+                </action>
+            </block>
+        </reference>
+    </customerattribute_customer_form_template_handle>
+</layout>

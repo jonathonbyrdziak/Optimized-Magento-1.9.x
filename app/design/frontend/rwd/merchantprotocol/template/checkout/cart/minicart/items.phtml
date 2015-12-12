@@ -1,0 +1,69 @@
+<?php
+/**
+ * Shoping cart sidebar
+ *
+ * @var Mage_Checkout_Block_Cart_Minicart $this
+ */
+?>
+
+<?php
+$_cartQty = $this->getSummaryCount();
+if(empty($_cartQty)) {
+    $_cartQty = 0;
+}
+?>
+        <script type="text/javascript">
+            FORM_KEY = "<?php echo $this->getFormKey();?>";
+        </script>
+<div id="minicart-error-message" class="minicart-message"></div>
+<div id="minicart-success-message" class="minicart-message"></div>
+
+<div class="minicart-wrapper">
+
+    <p class="block-subtitle">
+        <?php echo $this->__('Recently added item(s)') ?>
+        <a class="close skip-link-close" href="#" title="<?php echo $this->__('Close'); ?>">×</a>
+    </p>
+
+    <?php $_items = $this->getRecentItems() ?>
+    <?php $countItems = count($_items); ?>
+    <?php if($countItems): ?>
+        <div>
+            <ul id="cart-sidebar" class="mini-products-list">
+                <?php foreach($_items as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            decorateList('cart-sidebar', 'none-recursive');
+            FORM_KEY = "<?php echo $this->getFormKey();?>";
+            $j('document').ready(function() {
+                var minicartOptions  = {
+                    formKey:           "<?php echo $this->getFormKey();?>"
+                }
+                var Mini = new Minicart(minicartOptions);
+                Mini.init();
+            });
+        </script>
+
+        <div id="minicart-widgets">
+            <?php echo $this->getChildHtml('cart_promotion') ?>
+        </div>
+
+        <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+            <div class="minicart-actions">
+                <a class="cart-link" href="<?php echo $this->getUrl('checkout/cart'); ?>">
+                    <?php echo $this->__('View Shopping Cart'); ?>
+                </a>
+                <ul class="checkout-types minicart">
+                    <?php echo $this->getChildHtml('extra_actions') ?>
+                    <li><a title="<?php echo $this->__('Checkout') ?>" class="button checkout-button" href="<?php echo $this->getCheckoutUrl() ?>"><?php echo $this->__('Proceed to Checkout') ?></a></li>
+                </ul>
+            </div>
+        <?php endif ?>
+
+    <?php else: ?>
+        <p class="empty"><?php echo $this->__('You have no items in your shopping cart.') ?></p>
+    <?php endif ?>
+</div>

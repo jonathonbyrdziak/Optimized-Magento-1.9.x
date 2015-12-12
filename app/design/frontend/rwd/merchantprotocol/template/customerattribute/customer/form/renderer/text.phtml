@@ -1,0 +1,10 @@
+
+<div class="field field-<?php echo $this->getHtmlId()?><?php extra_field_class($this->getFieldName());  ?><?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    <input type="<?php echo ($this->getFieldName()=='school_telephone')?'tel':'text' ?>" id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>" value="<?php echo $this->getEscapedValue() ?>" class="form-control input-text<?php echo $this->getHtmlClass(); ?>" />
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>
+</div>
+</div>

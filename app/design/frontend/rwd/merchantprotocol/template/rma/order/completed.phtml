@@ -1,0 +1,143 @@
+<?php
+/**
+ * Open Biz Ltd
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file OPEN-BIZ-LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://mageconsult.net/terms-and-conditions
+ *
+ * @category   Magecon
+ * @package    Magecon_Rma
+ * @version    1.0.0
+ * @copyright  Copyright (c) 2013 Open Biz Ltd (http://www.mageconsult.net)
+ * @license    http://mageconsult.net/terms-and-conditions
+ */
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php
+$customer_id = $this->getCustomer()->getId();
+$_orders = Mage::getModel('sales/order')->getCollection()->addAttributeToFilter('status', array('eq' => 'complete'))
+                ->addAttributeToFilter('customer_id', array('eq' => $customer_id))->load();
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Available Orders for RMA') ?></h1>
+</div>
+<?php echo $this->getPagerOrdersHtml(); ?>
+<?php if ($_orders->getSize()): ?>
+    <table class="data-table" id="my-orders-table">
+        <col width="1" />
+        <col width="1" />
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr>
+                <th><?php echo $this->__('Order #') ?></th>
+                <th><?php echo $this->__('Date') ?></th>
+                <th><?php echo $this->__('Ship To') ?></th>
+                <th><span class="nobr"><?php echo $this->__('Order Total') ?></span></th>
+                <th><span class="nobr"><?php echo $this->__('Order Status') ?></span></th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $_odd = ''; ?>
+            <?php foreach ($_orders as $_order): ?>
+                <?php if (!$_order->getIsVirtual()) : ?>
+
+                    <tr>
+                        <td><?php echo $_order->getRealOrderId() ?></td>
+                        <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
+                        <td><?php echo $_order->getShippingAddress() ? $this->htmlEscape($_order->getShippingAddress()->getName()) : '&nbsp;' ?></td>
+                        <td><?php echo $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                        <td><em><?php echo $_order->getStatusLabel() ?></em></td>
+                        <td class="a-center">
+                            <span class="nobr">
+                                <?php
+                                // Get current date and time object.
+                                $oNow = new DateTime();
+                                // Get last order update data and time with status completed and for current customer.
+                                $oOrderDateTime = new DateTime($_order->getUpdatedAt());
+                                // Calculate difference between the two dates and get days.
+                                $sDayInterval = $oOrderDateTime->diff($oNow)->format("%d");
+                                
+                                if (!(Mage::getStoreConfig('rma/settings/rma_period') == null) && ($sDayInterval >= Mage::getStoreConfig('rma/settings/rma_period'))):
+                                    echo "<div title='RMA period has expired.'>N/A for RMA.</div>";
+                                elseif ($this->isRequested($_order)):
+                                    echo "<div title='RMA exists.'>N/A for RMA</div>";
+                                else:
+                                    ?>
+                                    <a href="<?php echo $this->getRequestUrl($_order) ?>" class="link-reorder"><?php echo $this->__('Request RMA') ?></a>
+            <?php endif; ?>
+                            </span>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+    <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('my-orders-table');</script>
+    <?php echo $this->getPagerOrdersHtml(); ?>
+<?php else: ?>
+    <p><?php echo $this->__('There aren\'t any orders available for RMA.'); ?></p>
+<?php endif; ?>
+
+
+<br />
+<?php $rmas = Mage::getModel('rma/rma')->getCollection()->addAttributeToFilter('is_deleted', array('eq' => 0))->addAttributeToFilter('customer_id', array('eq' => $customer_id))->load(); ?>
+<div class="page-title">
+    <h1><?php echo $this->__('My RMAs') ?></h1>
+</div>
+<?php echo $this->getPagerRmasHtml(); ?>
+<?php if ($rmas->getSize()): ?>
+    <table class="data-table" id="my-orders-table">
+        <col width="1" />
+        <col width="1" />
+        <col />
+        <col width="1" />
+        <col width="1" />
+        <col width="1" />
+        <thead>
+            <tr>
+                <th><?php echo $this->__('RMA #') ?></th>
+                <th><?php echo $this->__('Date') ?></th>
+                <th><?php echo $this->__('Ship To') ?></th>
+                <th><span class="nobr"><?php echo $this->__('RMA Status') ?></span></th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+    <?php foreach ($rmas as $rma): ?>
+                <tr>
+                    <td><?php echo $rma->getRmaId() ?></td>
+                    <td><span class="nobr"><?php echo $this->formatDate($rma->getCreationDate()) ?></span></td>
+                    <td><?php echo $rma->getShipTo(); ?></td>
+                    <td><em><?php echo $rma->getStatus(); ?></em></td>
+                    <td class="a-center">
+        <?php if ($rma->getStatusCode() == 'pending'): ?>
+                            <span class="nobr">
+                                <a href="<?php echo $this->getCancelUrl($rma) ?>" onclick="confirm('Are you sure you want to do this?')"><?php echo $this->__('Cancel') ?></a> |
+                                <a href="<?php echo $this->getViewRmaUrl($rma) ?>"><?php echo $this->__('View RMA') ?></a>
+                            </span>
+        <?php else: ?>
+                            <span class="nobr">
+                                <a href="<?php echo $this->getViewRmaUrl($rma) ?>"><?php echo $this->__('View RMA') ?></a>
+                            </span>
+        <?php endif; ?>
+                    </td>
+                </tr>
+    <?php endforeach; ?>
+        </tbody>
+    </table>
+    <script type="text/javascript">decorateTable('my-orders-table');</script>
+    <?php echo $this->getPagerRmasHtml(); ?>
+<?php else: ?>
+    <p><?php echo $this->__('You have placed no RMAs.'); ?></p>
+<?php endif ?>
+<div class="buttons-set">
+    <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+</div>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+* zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/shop/license-community.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento Community edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento COMMUNITY edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    default_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://www.zeonsolutions.com/shop/license-community.txt
+ */
+
+-->
+<layout version="0.1.0">
+    <adminhtml_faq_list_index>
+        <reference name="content">
+            <block type="zeon_faq/adminhtml_faq" name="faq_list" />
+        </reference>
+    </adminhtml_faq_list_index>
+     <adminhtml_faq_list_edit>
+        <update handle="editor"/>
+        <reference name="left">
+            <block type="zeon_faq/adminhtml_faq_edit_tabs" name="faq_edit_tabs">
+                <block type="zeon_faq/adminhtml_faq_edit_tab_form" name="faq_edit_tab_form"/>
+                <action method="addTab"><name>information_section</name><block>faq_edit_tab_form</block></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="zeon_faq/adminhtml_faq_edit" name="faq_edit_information"/>
+        </reference>
+    </adminhtml_faq_list_edit>
+    <adminhtml_faq_list_grid>
+        <remove name="root"/>
+        <block type="zeon_faq/adminhtml_faq_grid" name="faq_grid" output="toHtml"/>
+    </adminhtml_faq_list_grid>
+    <adminhtml_faq_category_index>
+        <reference name="content">
+            <block type="zeon_faq/adminhtml_category" name="faq_category" />
+        </reference>
+    </adminhtml_faq_category_index>
+    <adminhtml_faq_category_edit>
+        <update handle="editor"/>
+        <reference name="left">
+            <block type="zeon_faq/adminhtml_category_edit_tabs" name="category_edit_tabs">
+                <block type="zeon_faq/adminhtml_category_edit_tab_form" name="category_edit_tab_form"/>
+                <action method="addTab"><name>information_section</name><block>category_edit_tab_form</block></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="zeon_faq/adminhtml_category_edit" name="category_edit_information"/>
+        </reference>
+    </adminhtml_faq_category_edit>
+    <adminhtml_faq_category_grid>
+        <remove name="root"/>
+        <block type="zeon_faq/adminhtml_category_grid" name="faq_category_grid" output="toHtml"/>
+    </adminhtml_faq_category_grid>
+</layout>

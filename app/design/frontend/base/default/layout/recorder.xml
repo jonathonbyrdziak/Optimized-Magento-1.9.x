@@ -1,0 +1,48 @@
+<layout version="0.1.0">
+    <customer_account>
+        <reference name="customer_account_navigation">
+                <action method="addLink" translate="label" module="review"><name>reviews</name><path>review/customer</path><label>My Product Reviews</label></action>
+        </reference>
+    </customer_account>
+    
+    <recorder_orders_index>
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+            <block type="recorder/account_orders" name="orders" template="recurring/orders.phtml"/>
+        </reference>
+    </recorder_orders_index>
+    
+    <recorder_orders_view>
+        <update handle="customer_account" />
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/jquery-ui.min.css</name></action>
+            <action method="removeItem"><type>skin_js</type><name>js/jquery-ui.min.js</name></action>
+        </reference>
+        <reference name="my.account.wrapper">
+            <block type="recorder/account_order" name="recurring_details" template="recurring/order/wrapper.phtml">
+                <block type="recorder/account_order" name="order" template="recurring/order/info.phtml"/>
+                <block type="recorder/account_order" name="sales.order.view" template="recurring/order/view.phtml">
+                    <block type="recorder/account_items" name="order_items" template="recurring/order/items.phtml">
+                        <action method="addItemRender">
+                            <type>simple</type>
+                            <block>checkout/cart_item_renderer</block>
+                            <template>recurring/order/render/default.phtml</template>
+                        </action>
+                    </block>
+                </block>
+                <!--<block type="recorder/account_totals" name="totals" template="recurring/order/totals.phtml"/>-->
+                
+            </block>
+        </reference>
+    </recorder_orders_view>
+    
+	<!-- Email layouts section -->
+    <email_reminder_items>
+        <block type="recorder/email_items" name="items" template="recurring/email/items.phtml">
+            <action method="addItemRender"><type>default</type><block>recorder/email_items_order_default</block><template>recurring/email/items/order/default.phtml</template></action>
+            <action method="addItemRender"><type>grouped</type><block>recorder/email_items_order_grouped</block><template>recurring/email/items/order/default.phtml</template></action>
+        </block>
+        <block type="core/text_list" name="additional.product.info" template="recurring/email/totals.phtml"/>
+    </email_reminder_items>
+    
+</layout>

@@ -1,0 +1,21 @@
+<?php
+$_product = $this->getProduct(); ?>
+<?php if ($this->displayProductStockStatus()): ?>
+    <?php if ($_product->isAvailable()): ?>
+        <dt><?php echo $this->helper('catalog')->__('Availability:') ?></dt>
+        <?php if ($_product->getTypeId() == 'simple'): ?>
+            <?php $num = Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty(); ?>
+            
+            <?php if ($num<10): ?>
+            <dd><i>(<?php echo '<span style="color:red">'.$this->__('Just %s Left', (int)$num).'</span>' ?>)</i></dd>
+            <?php else: ?>
+            <dd><i>(<?php echo $this->helper('catalog')->__('In stock') ?>)</i></dd>
+            <?php endif ?>
+        <?php else: ?>
+            <dd><i>(<?php echo $this->helper('catalog')->__('In stock') ?>)</i></dd>
+        <?php endif; ?>
+    <?php else: ?>
+        <dt><?php echo $this->helper('catalog')->__('Availability:') ?></dt>
+        <dd><i style="color:red"><?php echo $this->helper('catalog')->__('(Out of stock. Check back in 1-3 days)') ?></i></dd>
+    <?php endif; ?>
+<?php endif; ?>

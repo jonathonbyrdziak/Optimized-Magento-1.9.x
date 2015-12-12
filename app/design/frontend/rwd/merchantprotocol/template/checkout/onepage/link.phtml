@@ -1,0 +1,10 @@
+<?php if ($this->isPossibleOnepageCheckout()):?>
+    <button type="button" title="<?php echo $this->__('Proceed to Checkout') ?>" class="btn btn-primary btn-proceed-checkout btn-checkout<?php if ($this->isDisabled()):?> no-checkout<?php endif; ?>"<?php if ($this->isDisabled()):?> disabled="disabled"<?php endif; ?> onclick="window.location='<?php echo $this->getCheckoutUrl() ?>';"><span><span><?php echo $this->__('Proceed to Checkout') ?></span></span></button>
+<?php endif?>
+<li class="method-checkout-cart-methods-multishipping">
+    <!-- Security Seal -->
+    <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=5Rmh6UOfvBDzVEeLKD40F0h2BN2lk54O37gKMKbkZ4i6dbOMREzkE2w"></script></span>
+    <a href="HTTPS://PAYTRACE.COM/verify.pay?id=39853&mid=008027306763&img=4" target="_blank">
+        <img src="https://paytrace.com/images/PayTraceSeal_3t.png">
+    </a>
+</li>

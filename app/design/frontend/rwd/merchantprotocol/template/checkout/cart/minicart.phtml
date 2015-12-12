@@ -1,0 +1,23 @@
+<?php
+/**
+ * Shoping cart sidebar
+ *
+ * @see Mage_Checkout_Block_Cart_Sidebar
+ */
+$_helper = $this->getHelper('checkout/cart_sidebar');
+?>
+<?php
+    $_cartQty = $this->getSummaryCount();
+    if(empty($_cartQty)) {
+        $_cartQty = 0;
+    }
+?>
+<div class="header-minicart">
+    <a href="#header-cart" class="skip-link skip-cart <?php if($_cartQty <= 0): ?> no-count<?php endif; ?>">
+        <span class="label"><?php echo $this->__('Cart'); ?></span>
+        <span class="count"><?php echo Mage::helper('core')->currency($_helper->getSubtotal(), true, false) ?></span>
+    </a>
+    <div id="header-cart" class="block block-cart skip-content">
+        <?php echo $this->getChildHtml('minicart_content');?>
+    </div>
+</div>

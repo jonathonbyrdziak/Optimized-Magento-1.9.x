@@ -1,0 +1,168 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+$_quote = Mage::getSingleton('checkout/session')->getQuote();
+
+// Must collect our custom rates first
+$_quote->getShippingAddress()->collectTotals();
+
+?>
+<?php /** @var $this Mage_Checkout_Block_Onepage_Shipping_Method_Available */ ?>
+<?php $_shippingRateGroups = $this->getShippingRates(); ?>
+<?php if (!$_shippingRateGroups): ?>
+    <h3><?php echo $this->__('Shipping Options'); ?></h3>
+    
+    <?php if ($_quote->getShippingAddress()->getIsUpsInvalid()): ?>
+    <ul class="messages"><li class="error-msg"><ul><li><span style="font-weight:normal;">
+        We could not determine if your address was valid or not. Please double check your address below.
+        
+    </span></li></ul></li></ul>
+    
+    <blockquote>
+        <?php echo $_quote->getShippingAddress()->getData('company'); ?><br/>
+        <?php echo $_quote->getShippingAddress()->getData('street'); ?><br/>
+        <?php echo $_quote->getShippingAddress()->getData('city'); ?>, 
+        <?php echo $_quote->getShippingAddress()->getData('region'); ?>, 
+        <?php echo $_quote->getShippingAddress()->getData('postcode'); ?><br/>
+    </blockquote>
+    <p>If your address is wrong, please <a href="#" onclick="checkout.back(); return false;"><?php echo $this->__('go back') ?></a> to fix it. 
+        Otherwise, please contact support at <a href="mailto:info@b4schools.com">info@b4schools.com</a></p>
+    <?php endif ?>
+
+<?php else: ?>
+    <dl class="sp-methods">
+    <?php $shippingCodePrice = array(); ?>
+    <?php $_sole = count($_shippingRateGroups) == 1; foreach ($_shippingRateGroups as $code => $_rates): ?>
+        <dt>
+            <h3><?php echo $this->escapeHtml($this->getCarrierName($code)) ?></h3>
+            <?php if ($code == 'ups'): ?>
+            <p style="margin-bottom:30px;">When purchasing from B4Schools, if your <strong>Shipping Address</strong> is within certain shipping zones, your shipping is FREE! You will also typically receive your order within 24-48 hours.</p>
+            <?php endif ?>
+            <h3><?php 
+                if ($_quote->getShippingDescription())
+                    echo $_quote->getShippingDescription();
+                ?>
+                <?php echo $this->__('Shipping Options'); ?></h3>
+            
+            
+            <?php if (Mage::getStoreConfig('carriers/ups/debug', Mage::app()->getStore())): ?>
+            <p style="font-weight:normal;"><small>This address type is <?php
+            echo $_quote->getShippingDescription()
+                    ? $_quote->getShippingDescription()
+                    : 'Unknown'
+            ?>. The Negotiated Rate is $<?php echo Mage::getModel('customer/session')->getData('shippingRate') ?>
+            minus the ERP discount of $<?php echo Mage::getModel('customer/session')->getData('shippingDiscount') ?>
+            </small></p>
+            <?php endif ?>
+            
+            <?php 
+                if ($_quote->getShippingAddress()->getIsUpsInvalid()): ?>
+            <ul class="messages"><li class="error-msg"><ul><li><span style="font-weight:normal;">
+                We could not determine if your address was valid or not. Please double check your address,
+                it is listed to the right of your screen. If you are confident that your address is accurate,
+                you may proceed.
+            </span></li></ul></li></ul>
+            <?php endif ?>
+            
+            
+            
+            
+        </dt>
+        <dd>
+            <ul style="margin-bottom:30px">
+            <?php $_sole = $_sole && count($_rates) == 1; foreach ($_rates as $_rate): ?>
+                <?php $shippingCodePrice[] = "'".$_rate->getCode()."':".(float)$_rate->getPrice(); ?>
+                <li>
+                   <?php if ($_rate->getErrorMessage()): ?>
+                    <ul class="messages"><li class="error-msg"><ul><li><?php echo $this->escapeHtml($_rate->getErrorMessage()) ?></li></ul></li></ul>
+                   <?php else: ?>
+                        <?php if ($_sole) : ?>
+                        <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>" checked="checked" /></span>
+                        <?php else: ?>
+                        <input name="shipping_method" type="radio" value="<?php echo $_rate->getCode() ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio"/>
+
+                        <?php if ($_rate->getCode() === $this->getAddressShippingMethod()): ?>
+                        <script type="text/javascript">
+                            //<![CDATA[
+                                lastPrice = <?php echo (float)$_rate->getPrice(); ?>;
+                            //]]>
+                        </script>
+                        <?php endif; ?>
+
+                        <?php endif; //$_rate->getCode()=='ups_03' ?>
+                        <label for="s_method_<?php echo $_rate->getCode() ?>">
+                        <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
+                        <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
+                        <?php echo $this->escapeHtml($_rate->getMethodTitle()); ?>
+                        
+                        <?php if ($_rate->getPrice() <=0): ?>
+                            <strong>FREE!</strong> (Your Shipping Address qualifies for free shipping.)
+                        <?php else: ?>
+                            <?php echo $_excl; ?>
+                            <?php if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl): ?>
+                                (<?php echo $this->__('Incl. Tax'); ?> <?php echo $_incl; ?>)
+                            <?php endif; ?>
+                        <?php endif ?>
+                        </label>
+                   <?php endif ?>
+                </li>
+            <?php endforeach; ?>
+            </ul>
+            <p>- Paid UPS Ground shipping takes 2-7 days</p>
+            <p>- FREE UPS Ground shipping takes 24-48 hours.</p>
+            <p>- Shipping is only available to the United States.</p>
+        </dd>
+    <?php endforeach; ?>
+    </dl>
+<script type="text/javascript">
+//<![CDATA[
+    <?php if (!empty($shippingCodePrice)): ?>
+        var shippingCodePrice = {<?php echo implode(',',$shippingCodePrice); ?>};
+    <?php endif; ?>
+
+    $$('input[type="radio"][name="shipping_method"]').each(function(el){
+        Event.observe(el, 'click', function(){
+            if (el.checked == true) {
+                var getShippingCode = el.getValue();
+                <?php if (!empty($shippingCodePrice)): ?>
+                    var newPrice = shippingCodePrice[getShippingCode];
+                    if (!lastPrice) {
+                        lastPrice = newPrice;
+                        quoteBaseGrandTotal += newPrice;
+                    }
+                    if (newPrice != lastPrice) {
+                        quoteBaseGrandTotal += (newPrice-lastPrice);
+                        lastPrice = newPrice;
+                    }
+                <?php endif; ?>
+                checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+                return false;
+            }
+       });
+    });
+//]]>
+</script>
+<?php endif; ?>

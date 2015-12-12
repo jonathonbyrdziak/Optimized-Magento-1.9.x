@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * By Jonathon Byrd http://merchantprotocol.com Copyright 2014. All Rights Reserved.
+ * 
+ */
+-->
+<config>
+    <modules>
+        <Widgetized_Level3>
+            <version>1.0.2</version>
+        </Widgetized_Level3>
+    </modules>
+    
+    <global>
+        <models>
+            <level3>
+                <class>Widgetized_Level3_Model</class>
+                <resourceModel>level3_resource</resourceModel>
+            </level3>
+            <level3_resource>
+                <class>Widgetized_Level3_Model_Resource</class>
+                <entities>
+                    <quote><table>sales_quote_level3</table></quote>
+                    <order><table>sales_order_level3</table></order>
+                    <card><table>level3_payment_methods</table></card>
+                </entities>
+            </level3_resource>
+        </models>
+        <resources>
+            <level3_setup>
+                <setup>
+                    <module>Widgetized_Level3</module>
+                </setup>
+            </level3_setup>
+        </resources>
+        <blocks>
+            <level3>
+                <class>Widgetized_Level3_Block</class>
+            </level3>
+        </blocks>
+        <helpers>
+            <level3>
+                <class>Widgetized_Level3_Helper</class>
+            </level3>
+        </helpers>
+        <events>
+            <sales_quote_save_before> <!-- Event Called Before Quote Object is saved -->
+                <observers>
+                    <save_before>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>saveQuoteBefore</method> <!-- name of function -->
+                    </save_before>
+                </observers>
+            </sales_quote_save_before>
+            <sales_quote_save_after> <!-- Event called After Quote Object is saved -->
+                <observers>
+                    <save_after>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>saveQuoteAfter</method> <!-- name of function -->
+                    </save_after>
+                </observers>
+            </sales_quote_save_after>
+            <sales_quote_load_after> <!-- Event called when Quote Object is loaded -->
+                <observers>
+                    <load_after>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>loadQuoteAfter</method> <!-- name of function -->
+                    </load_after>
+                </observers>
+            </sales_quote_load_after>
+            <sales_model_service_quote_submit_after> <!--  Event called after order placed -->
+                <observers>
+                    <sales_model_service_quote_submit_after>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>convertQuoteToOrder</method> <!-- name of function -->
+                    </sales_model_service_quote_submit_after>
+                </observers>
+            </sales_model_service_quote_submit_after>
+            <sales_order_save_after> <!--  Event called after order saved -->
+                <observers>
+                    <sales_model_service_quote_submit_after>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>saveOrderAfter</method> <!-- name of function -->
+                    </sales_model_service_quote_submit_after>
+                </observers>
+            </sales_order_save_after>
+            <sales_order_load_after> <!-- Event called after Order Object is loaded -->
+                <observers>
+                    <level3>
+                        <type>singleton</type>
+                        <class>Widgetized_Level3_Model_Observer</class> <!-- Over Model Class -->
+                        <method>loadOrderAfter</method> <!-- name of function -->
+                    </level3>
+                </observers>
+            </sales_order_load_after>
+        </events>
+    </global>
+    
+    <frontend>
+        <secure_url>
+            <revolution_level3>/level3/revolution</revolution_level3>
+        </secure_url>
+        <routers>
+            <level3>
+                <use>standard</use>
+                <args>
+                    <module>Widgetized_Level3</module>
+                    <frontName>level3</frontName>
+                </args>
+            </level3>
+        </routers>
+        <layout>
+            <updates>
+                <recorder>
+                    <file>paytrace.xml</file>
+                </recorder>
+            </updates>
+        </layout>
+        
+    </frontend>
+    
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Widgetized_Level3 before="Mage_Adminhtml">Widgetized_Level3_Adminhtml</Widgetized_Level3>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <level3 translate="title" module="level3">
+                                            <title>Merchant Protocol CC Processing</title>
+                                        </level3>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+
+    <default>
+        <payment>
+            <revolution>
+                <title>Credit, Debit and/or Purchase Card</title>
+                <active>0</active>
+                <enable_level3>1</enable_level3>
+                <cctypes>AE,VI,MC,DI</cctypes>
+                <cgi_url>https://PayTrace.com/API/gateway.pay</cgi_url>
+                <debug>0</debug>
+                <email_customer>0</email_customer>
+                <login backend_model="adminhtml/system_config_backend_encrypted"/>
+                <merchant_email/>
+                <model>level3/revolution</model>
+                <order_status>processing</order_status>
+                <payment_action>authorize</payment_action>
+                <test>1</test>
+                <tax_id></tax_id>
+                <trans_key backend_model="adminhtml/system_config_backend_encrypted"/>
+                <allowspecific>0</allowspecific>
+                <currency>USD</currency>
+                <partial_authorization_checksum_checking>1</partial_authorization_checksum_checking>
+            </revolution>
+        </payment>
+    </default>
+</config>

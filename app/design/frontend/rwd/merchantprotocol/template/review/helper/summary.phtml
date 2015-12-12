@@ -1,0 +1,21 @@
+<?php
+$product = Mage::registry('current_product');
+if (!$product) {
+    $product = $this->getProduct();
+}
+?>
+<?php if ($this->getReviewsCount()): ?>
+    <div class="ratings">
+        <?php if ($this->getRatingSummary()):?>
+            <div class="rating-box">
+                <div class="rating" style="width:<?php echo $this->getRatingSummary() ?>%"></div>
+            </div>
+        <?php endif;?>
+        <p class="rating-links">
+            <a href="<?php echo $product->getProductUrl() ?>"><?php echo $this->__('%d Review(s)', $this->getReviewsCount()) ?></a>
+            <a class="link" href="<?php echo $product->getProductUrl() ?>#review-form"><?php echo $this->__('Add Your Review') ?></a>
+        </p>
+    </div>
+<?php else: ?>
+    <p class="no-rating"><a href="<?php echo $product->getProductUrl() ?>#review-form"><?php echo $this->__('Be the first to review this product') ?></a></p>
+<?php endif; ?>

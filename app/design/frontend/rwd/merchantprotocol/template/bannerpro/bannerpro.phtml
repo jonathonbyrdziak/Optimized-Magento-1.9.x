@@ -1,0 +1,76 @@
+<?php if (!Mage::getSingleton('customer/session')->getCustomerId()): ?>
+<?php
+    $bannerCollection = $this->getCollection();
+    $configData = Mage::getStoreConfig('bannerpro');
+    if($configData['settings']['time_delay'] != null) {
+        $timeDelay = $configData['settings']['time_delay'];
+    }
+    else {
+        $timeDelay = 5000;
+    }
+    $i = 1;
+?>
+<div class="gallery">
+    <div id="top_banner">
+        <div class="mask" id="divSimpleSlider">
+            <?php foreach ($bannerCollection as $banner): $effects .= $banner->getEffects().", "; ?>
+                <div class="banner">
+                    <?php if ($banner->getWeblink()): ?>
+                        <a href="<?php echo $banner->getWeblink() ?>" title="<?php echo $banner->getWeblink() ?>">
+                            <img title="<?php echo $banner->getTitle() ?>" alt="<?php echo $banner->getTitle() ?>" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $banner->getFilename() ?>" width="100%" />
+                        </a>
+                    <?php else: ?>
+                        <img title="<?php echo $banner->getTitle() ?>" alt="<?php echo $banner->getTitle() ?>" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $banner->getFilename() ?>" width="100%" />
+                    <?php endif; ?>
+                    <?php if ($configData['settings']['show_description'] == '1' && $banner->getText() != ""):?>
+                        <article class="text-holder">
+                            <strong class="title"><?php echo $banner->getTitle() ?></strong>
+                            <?php if ($banner->getText()): ?>
+                                <p><?php echo $banner->getText() ?></p>
+                            <?php endif; ?>
+                        </article>
+                    <?php endif; ?>
+                </div>
+            <?php $i++; endforeach; ?>
+        </div>
+        <ul class="navigate">
+            <li class="prev"><a href="#" title="Previous">&nbsp;</a></li>
+            <li class="next"><a href="#" title="Next">&nbsp;</a></li>
+        </ul>
+        <div class="banner_down">
+            <div id="divSimpleSliderRotate">&nbsp;</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+// <![CDATA[
+    jQuery(window).load(function() {
+            var slider = jQuery("#divSimpleSlider").cycle({
+                fx: '<?php echo $effects; ?>',
+                speed: 1000,
+                timeout: <?php echo $timeDelay ?>,
+                prev: '.prev',
+                next: '.next',
+                pager: '#divSimpleSliderRotate',
+                pagerEvent: 'click',
+                fastOnEvent: false,
+                pause: 0,
+                pause_btn: '#pause_btn',
+                play_btn: '#play_btn',
+                randomizeEffects: false
+            });
+    	});
+        jQuery('#pause_btn').click(function() {
+            jQuery('#divSimpleSlider').cycle('pause');
+            document.getElementById('pause_btn').className = 'no-display';
+            document.getElementById('play_btn').className = 'play';
+        });
+
+        jQuery('#play_btn').click(function() {
+            jQuery('#divSimpleSlider').cycle('resume');
+            document.getElementById('play_btn').className = 'no-display';
+            document.getElementById('pause_btn').className = 'pause';
+        });
+// ]]>
+</script>
+<?php endif ?>

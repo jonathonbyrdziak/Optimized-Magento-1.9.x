@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<config>
+	<modules>
+		<Wavethemes_Jmmegamenu>
+		<active>true</active>
+		<codePool>local</codePool>
+		</Wavethemes_Jmmegamenu>
+	</modules>
+</config>

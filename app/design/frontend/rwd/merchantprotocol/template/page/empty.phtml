@@ -1,0 +1,21 @@
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html>
+<!--[if IE 9 ]>    <html lang="en" id="top" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" id="top" class="no-js"> <!--<![endif]-->
+<head>
+    <?php echo $this->getChildHtml('head') ?>
+</head>
+<body class="page-empty <?php echo $this->getBodyClass()?$this->getBodyClass():'' ?>">
+    <div>
+        <?php echo $this->getChildHtml('after_body_start') ?>
+        <?php echo $this->getChildHtml('global_messages') ?>
+        <?php echo $this->getChildHtml('content') ?>
+        <?php echo $this->getChildHtml('before_body_end') ?>
+        <?php echo $this->getAbsoluteFooter() ?>
+    </div>
+</body>
+</html>

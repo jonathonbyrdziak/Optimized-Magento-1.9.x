@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * RocketWeb
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * @category   RocketWeb
+ * @package    RocketWeb_UpsAddressTypeValidator
+ * @copyright  Copyright (c) 2012 RocketWeb (http://rocketweb.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author     RocketWeb
+ */
+-->
+<config>
+    <tabs>
+        <rocketweb_tab>
+            <label>Rocket Web Extensions</label>
+            <sort_order>1005001</sort_order>
+        </rocketweb_tab>
+    </tabs>
+    <sections>
+        <rocketweb_addressvalidator translate="label" module="ups_address_validator">
+            <label>Address Validation</label>
+            <tab>rocketweb_tab</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>300</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <validation_type translate="label comment">
+                            <label>Address Validation Type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ups_address_validator/system_config_source_addressvalidationtype</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Address validation works for US only. This setting is ignored for addresses outside the US. Validation is done via UPS, so the UPS shipping method must be properly configured. See the extension's documentation on how to configure it properly.</comment>
+                        </validation_type>
+                        <customer_warning_message>
+                            <label>Customer warning message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Message to display when the address is invalid and Address Validation Type is set to "Warn customer about invalid addresses"</comment>
+                            <depends><validation_type>warn_customer</validation_type></depends>
+                        </customer_warning_message>
+                        <checkout_stop_message>
+                            <label>Invalid address message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Message to display when the address is invalid and Address Validation Type is set to "Do not allow checkout if address is invalid"</comment>
+                            <depends><validation_type>disallow_checkout</validation_type></depends>
+                        </checkout_stop_message>
+                        <admin_warn_invalid_address translate="label">
+                            <label>Warn admin if address is invalid</label>
+                            <comment>Display a warning in the admin order view screen if the address is detected as invalid by UPS</comment>
+                            <sort_order>40</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </admin_warn_invalid_address>
+                        <run_validation_scope>
+                            <label>Run validation in</label>
+                            <comment>Specify the scopes for the validation</comment>
+                            <sort_order>50</sort_order>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>ups_address_validator/system_config_source_validationscope</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </run_validation_scope>
+                    </fields>
+                </general>
+            </groups>
+        </rocketweb_addressvalidator>
+        <carriers>
+            <groups>
+                <ups translate="label" module="usa">
+                    <label>UPS</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <ups_xml_override_defaults translate="label">
+                            <label>Override default UPS Destination Type with Address Indicator for rate lookups</label>
+                            <sort_order>1132</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_xml_override_defaults>
+
+                        <ups_xml_add_indicator translate="label">
+                            <label>Enable Adding Address Indicator Suffix to Shipping Description (UPS Shipping Method)</label>
+                            <sort_order>1133</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_xml_add_indicator>
+
+                        <ups_xml_add_indicator_all_other translate="label">
+                            <label>Enable Adding Address Indicator Suffix to Shipping Description (all other shipping methods)</label>
+                            <sort_order>1134</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_xml_add_indicator_all_other>
+
+                        <ups_xml_commercial_indicator translate="label">
+                            <label>Commercial indicator suffix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1135</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_xml_commercial_indicator>
+
+                        <ups_xml_residential_indicator translate="label">
+                            <label>Residential indicator suffix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1136</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ups_xml_residential_indicator>
+
+                        <xav_xml_url translate="label">
+                            <label>Address Validation XML URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </xav_xml_url>
+                    </fields>
+                </ups>
+
+            </groups>
+        </carriers>
+    </sections>
+</config>

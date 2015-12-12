@@ -1,0 +1,45 @@
+<form id="discount-coupon-form" class="discount-holder" action="<?php echo $this->getUrl('checkout/cart/couponPost') ?>" method="post">
+    <div class="discount">
+        <h2><?php echo $this->__('Discount Codes') ?></h2>
+        <p class="discount-desc"><?php echo $this->__('Enter your coupon code if you have one.') ?></p>
+        <div class="discount-form">
+            <input type="hidden" name="remove" id="remove-coupone" value="0" />
+            <div class="field-wrapper">
+                <?php
+                $_code = $this->__('Enter Coupon Code');
+                if ($this->escapeHtml($this->getCouponCode())) {
+                    $_code = $this->escapeHtml($this->getCouponCode());
+                }
+                ?>
+                <input class="form-control" type="text" id="coupon_code" name="coupon_code" value="<?php echo $_code ?>" placeholder="<?php echo $_code ?>" />
+                <div class="button-wrapper">
+                    <button type="button" title="<?php echo $this->__('Apply') ?>" class="btn btn-primary button2" onclick="discountForm.submit(false)" value="<?php echo $this->__('Apply') ?>"><span><span><?php echo $this->__('Apply') ?></span></span></button>
+                    <?php if(strlen($this->getCouponCode())): ?>
+                        <button type="button" title="<?php echo $this->__('Cancel') ?>" class="btn btn-primary button2 cancel-coupon" onclick="discountForm.submit(true)" value="<?php echo $this->__('Cancel') ?>"><span><span><?php echo $this->__('Cancel') ?></span></span>
+                        </button>
+                    <?php endif;?>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+jQuery('#coupon_code').focus(function(){
+    if (jQuery(this).val()==jQuery(this).attr('placeholder')) {
+        jQuery(this).val('');
+    }
+});
+var discountForm = new VarienForm('discount-coupon-form');
+discountForm.submit = function (isRemove) {
+    if (isRemove) {
+        $('coupon_code').removeClassName('required-entry');
+        $('remove-coupone').value = "1";
+    } else {
+        $('coupon_code').addClassName('required-entry');
+        $('remove-coupone').value = "0";
+    }
+    return VarienForm.prototype.submit.bind(discountForm)();
+}
+//]]>
+</script>

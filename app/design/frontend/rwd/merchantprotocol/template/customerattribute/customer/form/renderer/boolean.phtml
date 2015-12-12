@@ -1,0 +1,14 @@
+
+<div class="field<?php  extra_field_class($this->getFieldName());  ?><?php if(!$this->getShowOnguest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    <select id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>"<?php if($this->getHtmlClass()):?> class="<?php echo $this->getHtmlClass();?>"<?php endif;?>>
+    <?php foreach ($this->getOptions() as $option):?>
+    <option value="<?php echo $option['value']?>"<?php if ($option['value'] == $this->getValue()):?> selected="selected"<?php endif;?>><?php echo $this->htmlEscape($option['label'])?></option>
+    <?php endforeach;?>
+    </select>
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>
+</div>
+</div>

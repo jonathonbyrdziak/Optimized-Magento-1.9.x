@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<layout version="0.1.0">
+	<jmmegamenu_adminhtml_jmmegamenu_index>
+		<reference name="content">
+		   <block type="jmmegamenu/adminhtml_jmmegamenu" name="jmmegamenu" />
+		</reference>
+	</jmmegamenu_adminhtml_jmmegamenu_index>
+	<jmmegamenu_adminhtml_jmmegamenu_group>
+		<reference name="content">
+		   <block type="jmmegamenu/adminhtml_jmmegamenugroup" name="jmmegamenugroup" />
+		</reference>
+	</jmmegamenu_adminhtml_jmmegamenu_group>
+	<jmmegamenu_adminhtml_jmmegamenu_edit>
+        <reference name="head">
+            <action method="addItem" ><type>js</type><name>joomlart/jmmegamenu/event.simulate.js</name></action>
+          </reference>
+    </jmmegamenu_adminhtml_jmmegamenu_edit>
+</layout>

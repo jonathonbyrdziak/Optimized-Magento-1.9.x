@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Theme_CategoryAttribute>
+            <version>1.0.0</version>
+        </Theme_CategoryAttribute>
+    </modules>
+    <global>
+        <resources>
+            <theme_categoryattribute>
+                <setup>
+                    <module>Theme_CategoryAttribute</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+            </theme_categoryattribute>
+            <theme_categoryattribute_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </theme_categoryattribute_write>
+            <theme_categoryattribute_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </theme_categoryattribute_read>
+        </resources>
+    </global>
+</config>

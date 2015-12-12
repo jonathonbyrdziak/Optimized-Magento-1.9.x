@@ -1,0 +1,23 @@
+<?php
+/**
+ * Get store categories
+ */
+$_categories = $this->getStoreCategories();
+?>
+<?php if (count($_categories)): ?>
+    <div class="block block-layered-nav block-layered-nav--no-filters">
+        <div class="block-title">
+            <strong><span><?php echo $this->__('Categories') ?></span></strong>
+        </div>
+        <div class="block-content toggle-content">
+            <p class="block-subtitle block-subtitle--filter"><?php echo $this->__('Categories') ?></p>
+            <ul class="categories-list">
+                <?php foreach ($_categories as $_category): ?>
+                    <?php if ($_category->getIsActive()): ?>
+                        <li<?php if ($this->isCategoryActive($_category)) echo ' class="active"'; ?>><a href="<?php echo $this->getCategoryUrl($_category) ?>"><?php echo $this->htmlEscape($_category->getName()) ?></a></li>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>

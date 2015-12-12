@@ -1,0 +1,71 @@
+<?php
+/**
+ * Open Biz Ltd
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file OPEN-BIZ-LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://mageconsult.net/terms-and-conditions
+ *
+ * @category   Magecon
+ * @package    Magecon_Rma
+ * @version    1.0.0
+ * @copyright  Copyright (c) 2013 Open Biz Ltd (http://www.mageconsult.net)
+ * @license    http://mageconsult.net/terms-and-conditions
+ */
+?>
+<?php $rma = $this->getRma() ?>
+<table cellspacing="0" cellpadding="0" border="0" width="650" style="border:1px solid #EAEAEA;">
+    <thead>
+        <tr>
+            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+            <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><span class="nobr"><?php echo $this->__('Qty') ?></span></th>
+            <?php
+            $conditions = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/condition'));
+            if (!empty($conditions)):
+                ?>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Item Condition'); ?></th>
+                <?php
+            endif;
+            $reasons = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/reason'));
+            if (!empty($reasons)):
+                ?>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Reason'); ?></th>
+                <?php
+            endif;
+            $requests = unserialize(Mage::getStoreConfig('rma/item_attributes_settings/request'));
+            if (!empty($requests)):
+                ?>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Request'); ?></th>
+            <?php endif; ?>
+            <?php if (Mage::getStoreConfig('rma/item_attributes_settings/comment_enable') == 1): ?>
+                <th align="left" bgcolor="#EAEAEA" style="font-size:13px; padding:3px 9px"><?php echo $this->__('Comment') ?></th>
+            <?php endif; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rma->getItems() as $_item): ?>
+            <tr>
+                <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getProductName() ?></td>
+                <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getRmaQty() ?></td>
+                <?php if (!empty($conditions)): ?>
+                    <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getCondition() ?></td>
+                <?php endif; ?>
+                <?php if (!empty($reasons)): ?>
+                    <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getReason() ?></td>
+                <?php endif; ?>
+                <?php if (!empty($requests)): ?>
+                    <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getRequestType() ?></td>
+                <?php endif; ?>
+                <?php if (Mage::getStoreConfig('rma/item_attributes_settings/comment_enable') == 1 && trim($_item->getComment()) != ""): ?>
+                    <td align="left" style="font-size:13px; padding:3px 9px"><?php echo $_item->getComment() ?></td>
+                <?php else : ?>
+                    <td align="left" style="font-size:13px; padding:3px 9px"><?php echo "No comment" ?></td>
+                <?php endif; ?>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('my-orders-table', {'tbody' : ['odd', 'even'], 'tbody tr' : ['first', 'last']})</script>

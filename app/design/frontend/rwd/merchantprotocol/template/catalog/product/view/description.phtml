@@ -1,0 +1,32 @@
+<?php
+/**
+ * Product description template
+ *
+ * @see Mage_Catalog_Block_Product_View_Description
+ */
+?>
+<?php $_description = $this->getProduct()->getDescription(); ?>
+<?php if ($_description): ?>
+    <?php echo $this->helper('catalog/output')->productAttribute($this->getProduct(), $_description, 'description') ?>
+<?php endif; ?>
+<div class="clearfix"></div>
+<?php
+
+$categoryIds = $this->getProduct()->getCategoryIds();
+$isPaper = false;
+$isPlastic = false;
+foreach($categoryIds as $id) {
+    if ($id == 3) $isPaper = true;
+    if ($id == 4) $isPlastic = true;
+}
+
+if ($isPaper) {
+    echo '<br/><a target="_blank" href="'.Mage::getUrl().'/skin/frontend/rwd/4schools/B4S_Paper.pdf">View PDF'
+    . '<img style="margin-top:30px;width:100%;" src="'.Mage::getUrl().'/skin/frontend/rwd/4schools/paper.png" />'
+            . '</a>';
+}
+if ($isPlastic) {
+    echo '<br/><a target="_blank" href="'.Mage::getUrl().'/skin/frontend/rwd/4schools/B4S_Plastic.pdf">View PDF'
+    . '<img style="margin-top:30px;width:100%;" src="'.Mage::getUrl().'/skin/frontend/rwd/4schools/plastic.png" />'
+            . '</a>';
+}

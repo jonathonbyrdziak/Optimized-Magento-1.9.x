@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <sameorderinvoicenumber translate="label" module="sameorderinvoicenumber">
+            <label>Order Numbers</label>
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>850</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <settings translate="label">
+                    <label>Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <invoiceprefix translate="label">
+                            <label>Invoice Prefix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoiceprefix>
+                        <shipmentprefix translate="label">
+                            <label>Shipment Prefix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipmentprefix>
+                        <creditmemoprefix translate="label">
+                            <label>Creditmemo Prefix</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </creditmemoprefix>
+                    </fields>
+                </settings>
+            </groups>
+        </sameorderinvoicenumber>
+    </sections>
+</config>

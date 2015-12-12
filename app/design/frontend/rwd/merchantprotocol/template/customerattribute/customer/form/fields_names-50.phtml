@@ -1,0 +1,47 @@
+<?php if (isset($that)): ?>
+<li class="attribute_business starthidden">
+    <p>(Number of employees is helpful information so that we can better manage inventory.)</p>
+</li>
+<li class="attribute_government starthidden">
+    <p>(Number of employees is helpful information so that we can better manage inventory.)</p>
+</li>
+<li class="attribute_nonprofit starthidden">
+    <p>(Number of employees is helpful information so that we can better manage inventory.)</p>
+</li>
+<li class="attribute_individual starthidden">
+    <p>(Number of people in household is helpful information so that way can better manage inventory.)</p>
+</li>
+
+    <li class="fields">
+        <?php echo $that->getLayout()->createBlock('customer/widget_name')->setObject($that->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+    </li>
+    <li>
+        <label for="email_address" class="required"><em>*</em><?php echo $that->__('Email Address') ?></label>
+        <div class="input-box">
+            <input type="text" name="email" id="email_address" value="<?php echo $that->escapeHtml($that->getFormData()->getEmail()) ?>" title="<?php echo $that->__('Email Address') ?>" class="form-control input-text validate-email required-entry" />
+        </div>
+    </li>
+    <?php /*if ($that->isNewsletterEnabled()): ?>
+    <li class="control">
+        <div class="input-box">
+            <input type="checkbox" name="is_subscribed" title="<?php echo $that->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if($that->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
+        </div>
+        <label for="is_subscribed"><?php echo $that->__('Sign Up for Newsletter') ?></label>
+        <?php echo $that->getChildHtml('customer.form.register.newsletter')?>
+    </li>
+    <?php endif*/ ?>
+
+
+<?php $_dob = $that->getLayout()->createBlock('customer/widget_dob') ?>
+<?php if ($_dob->isEnabled()): ?>
+    <li><?php echo $_dob->setDate($that->getFormData()->getDob())->toHtml() ?></li>
+<?php endif ?>
+<?php $_taxvat = $that->getLayout()->createBlock('customer/widget_taxvat') ?>
+<?php if ($_taxvat->isEnabled()): ?>
+    <li><?php echo $_taxvat->setTaxvat($that->getFormData()->getTaxvat())->toHtml() ?></li>
+<?php endif ?>
+<?php $_gender = $that->getLayout()->createBlock('customer/widget_gender') ?>
+<?php if ($_gender->isEnabled()): ?>
+    <li><?php echo $_gender->setGender($that->getFormData()->getGender())->toHtml() ?></li>
+<?php endif ?>
+<?php endif ?>

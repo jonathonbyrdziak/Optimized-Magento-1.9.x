@@ -1,0 +1,301 @@
+<?php 
+    $customerattributes = $this->getCustomerAttribute();
+    $addressattributes = $this->getCustomerAddressAttribute();
+	
+	$customerAttributeChecked=Mage::getSingleton('core/session')->getData('customerAttribute');
+	$customerAttributeChecked=unserialize($customerAttributeChecked);
+	$customerAddressAttributeChecked=Mage::getSingleton('core/session')->getData('customerAddressAttribute');
+	$customerAddressAttributeChecked=unserialize($customerAddressAttributeChecked);
+	$orderChecked=Mage::getSingleton('core/session')->getData('order');
+	$orderChecked=unserialize($orderChecked);
+	$createdAt=Mage::getSingleton('core/session')->getData('created_at');
+	$createdAt=unserialize($createdAt);
+	$show_empty_value=Mage::getSingleton('core/session')->getData('show_empty_value');
+	$show_empty_value=unserialize($show_empty_value);
+	$option_labels = Mage::helper('customerattribute')->getAllOptionLabel();
+	//zend_debug::dump($option_labels);die();
+	
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<div class="content-header">
+    <h3><?php echo $this->__('Customer Report');?></h3>
+</div>
+<div class="entry-edit">
+    <div class="entry-edit-head" style="border:1px solid #6f8992;width:100%;padding:0;">
+        <a style="text-decoration:none;padding:0 10px;"><?php echo $this->__('Attributes to Filter');?></a>
+    </div>
+</div>
+<div class="content-container">
+    <form method="post" id="attributes-filter" action="<?php echo $this->getUrl('customerattribute/adminhtml_report_customerreport/showReport')?>">
+        <div><input id="form_key" name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>"></div>
+		<div class="customer-attribute block-attribute">
+            <h4><?php echo $this->__('Customer Attributes')?></h4>
+        <?php foreach ($customerattributes as $customerattribute):?>
+		<div class="attribute">
+            <div class="select_attribute">
+				<input type="checkbox" id="attribute_<?php echo $customerattribute->getAttributeId();?>"/>   
+				<span class="span_attribute" id="span_<?php echo $customerattribute->getAttributeId(); ?>"><?php echo ' '.$customerattribute->getFrontendLabel(); ?></span>
+            </div>
+            <a class="select_options" id="select_<?php echo $customerattribute->getAttributeId()?>" href="javascript:void(0)" style="display:none"><?php echo $this->__('Select') ?></a>
+            <div  class="box_options" id="box_options_<?php echo $customerattribute->getAttributeId()?>" style="display:none">
+				<a class="close-box" href="javascript:void(0)" onclick="chooseOption(<?php echo $customerattribute->getAttributeId(); ?>)">[X]</a>
+				<select id="box_select_<?php echo $customerattribute->getAttributeId(); ?>" multiple="multiple" name="<?php echo $customerattribute->getAttributeCode().'[]'?>">
+				<?php if($customerattribute->getFrontendInput()=='boolean') { $options=array('false'=>'No','true'=>'Yes'); 
+				foreach($options as $optionLabel=>$option): ?>
+				  <option id="option_<?php echo $customerattribute->getAttributeCode().'_'.$optionLabel;  ?>" value="<?php echo $optionLabel ?>" width="50"><?php echo ' '.$option;?></option>
+				  <?php endforeach;?>
+				<?php }else{ if($customerattribute->getAttributeCode()=='group_id') $options = Mage::helper('customerattribute/report')->getOptionsGroup(); else $options = Mage::helper('customerattribute')->getOptions($customerattribute->getAttributeId());
+                foreach($options as $optionLabel=>$option): ?>
+				  <option id="option_<?php echo $optionLabel;  ?>" value="<?php echo $optionLabel ?>" width="50"><?php if(strlen($option)>=23) echo ' '.substr($option,0,20).'...'; else echo ' '.$option;?></option>
+				  <?php endforeach;}?>
+				</select> 
+            </div>      
+            </br>
+            <script>
+                $('select_<?php echo $customerattribute->getAttributeId(); ?>').observe('click',function(){
+                    $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = '';
+                });
+                $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked){
+                        $('select_<?php echo $customerattribute->getAttributeId(); ?>').style.display = '';
+                        var opt1 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt1.each(function(el){
+                            el.selected = true;
+                        });
+                     }else{
+                        $('select_<?php echo $customerattribute->getAttributeId(); ?>').style.display = 'none';
+                        $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt1 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt1.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $customerattribute->getAttributeId();?>').update('<?php echo $this->__('Select') ?>');
+                     }
+                });
+				$('span_<?php echo $customerattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked){
+                        $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked = false;
+                        $('select_<?php echo $customerattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $customerattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt2 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt2.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $customerattribute->getAttributeId(); ?>').update('<?php echo $this->__('Select') ?>');
+                    }else{
+                        $('attribute_<?php echo $customerattribute->getAttributeId(); ?>').checked = true;
+                        $('select_<?php echo $customerattribute->getAttributeId(); ?>').style.display = '';
+                        var opt2 = $$('#box_options_<?php echo $customerattribute->getAttributeId(); ?> option');
+                        opt2.each(function(el){
+                            el.selected = true;
+                        });
+                    }
+                });
+				function chooseOption(id){
+                    var select = $('box_select_'+id);
+                    var label = '';
+                    for(var i = 0;i<select.options.length;i++){
+                        var opt = select.options[i];
+                        if(opt.selected == true)
+                            label = label+opt.text+', ';
+                    }
+                    if(label.length > 20) label = label.substring(0,20)+'...';
+                    if(label.length == 0) label = '<?php echo $this->__("Select") ?>';
+                    $('select_'+id).update(label);
+                    $('box_options_'+id).hide();
+                }
+				
+				<?php if(count($customerAttributeChecked) !=0 ): ?>            
+                  <?php foreach ($customerAttributeChecked as $lab=>$val){
+                      $attId = Mage::getModel('customer/attribute')->getCollection()->addFieldToFilter('attribute_code',$lab)
+                                ->getFirstItem()->getAttributeId();
+						$customer_group = new Mage_Customer_Model_Group();
+						$allGroups  = $customer_group->getCollection()->toOptionHash();?>
+                      document.getElementById("attribute_<?php echo $attId ?>").checked=true;
+                     var label=' ';//alert('<?php echo $lab;?>');
+                     <?php foreach ($val as $va){?>
+                         //$('option_<?php echo $va ?>').defaultSelected = true;
+						 <?php $vaArr=explode('/',$va);if(count($vaArr)==1){?>
+                         <?php if(is_numeric($va)){ ?>
+						 $('option_<?php echo $va ?>').defaultSelected = true;
+                            label = label+'<?php echo $option_labels[$va].", ";//Mage::helper("customerattribute")->getOptionLabel($va).", "?>';
+                         <?php }else if($va == 'true'){ ?>
+						 $('option_<?php echo $lab.'_'.$va ?>').defaultSelected = true;
+                             label = label+'<?php echo $this->__("Yes").", " ?>';
+                        <?php }else if($va == 'false'){ ?>
+						$('option_<?php echo $lab.'_'.$va ?>').defaultSelected = true;
+                            label = label+'<?php echo $this->__("No").", " ?>';
+                         <?php } ?>
+						 <?php }else{?>
+						 $('option_<?php echo $va ?>').defaultSelected = true;
+						 label = label+'<?php echo $allGroups[$vaArr[1]].", " ?>';
+						 <?php }?>
+                     <?php } ?>
+                         if(label.length > 20)
+                            label = label.substring(0,20)+'...';
+                     if($('attribute_<?php echo $attId; ?>').checked){
+                        $('select_<?php echo $attId ?>').style.display = '';
+                        $('select_<?php echo $attId ?>').update(label);
+                     }
+                  <?php } ?>                    
+               
+               <?php endif; ?>
+            </script>
+		</div>
+        <?php endforeach ;?>
+        </div>
+        <div class="address-attribute block-attribute">
+            <h4><?php echo $this->__('Address Attributes');?></h4>
+        <?php foreach($addressattributes as $addressattribute): ?>
+		<div class="attribute">
+                    <div class="select_attribute">
+            <input type="checkbox" id="addressattribute_<?php echo $addressattribute->getAttributeId();?>"/>
+            <span class="span_attribute" id="span_<?php echo $addressattribute->getAttributeId();?>"><?php echo ' '.$this->getEavAddressAttribute($addressattribute->getAttributeId())->getFrontendLabel(); ?></span>
+                    </div>
+            <a class="select_options" id="select_<?php echo $addressattribute->getAttributeId()?>" href="javascript:void(0)" style="display:none" ><?php echo $this->__('Select') ?></a>
+            <div class="box_options" id="box_options_<?php echo $addressattribute->getAttributeId()?>" style="display:none">
+				<a class="close-box" href="javascript:void(0)" onclick="chooseOption(<?php echo $addressattribute->getAttributeId(); ?>)">[X]</a>
+				<select id="box_select_<?php echo $addressattribute->getAttributeId(); ?>" multiple="multiple" name="<?php echo 'address,'.$addressattribute->getAttributeCode().'[]'?>">
+				<?php if($addressattribute->getFrontendInput()=='boolean') { $options=array('false'=>'No','true'=>'Yes'); 
+				foreach($options as $optionLabel=>$option): ?>
+				  <option id="option_<?php echo $addressattribute->getAttributeCode().'_'.$optionLabel;  ?>" value="<?php echo $optionLabel ?>" width="50"><?php echo ' '.$option;?></option>
+				  <?php endforeach;?>
+				<?php }else { if($addressattribute->getAttributeCode()=='country_id')$options = Mage::helper('customerattribute/report')->getOptionCountry(); else $options = Mage::helper('customerattribute')->getOptions($addressattribute->getAttributeId());
+                foreach($options as $optionLabel=>$option): ?>
+				  <option id="option_<?php echo $optionLabel;  ?>" value="<?php echo $optionLabel ?>"><?php if(strlen($option)>=23) echo ' '.substr($option,0,20).'...'; else echo ' '.$option;?></option>
+				  <?php endforeach;}?>
+				</select> 
+            </div>      
+            </br>
+            <script>
+				$('select_<?php echo $addressattribute->getAttributeId() ; ?>').observe('click',function(){
+                    $('box_options_<?php echo $addressattribute->getAttributeId(); ?>').style.display = '';
+                });
+               $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked){
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = '';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = true;
+                        });
+                     }else{
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').style.display = 'none';
+                        $('box_options_<?php echo $addressattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $addressattribute->getAttributeId(); ?>').update('<?php echo $this->__('Select') ?>');
+                     }
+                });
+				$('span_<?php echo $addressattribute->getAttributeId(); ?>').observe('click',function(){
+                    if($('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked){
+                       $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked = false;
+                       $('select_<?php echo $addressattribute->getAttributeId(); ?>').style.display = 'none';
+                        $('box_options_<?php echo $addressattribute->getAttributeId(); ?>').style.display = 'none';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = false;
+                        });
+                        $('select_<?php echo $addressattribute->getAttributeId() ?>').update('<?php echo $this->__('Select') ?>'); 
+                     }else{
+                        $('addressattribute_<?php echo $addressattribute->getAttributeId(); ?>').checked = true;
+                        $('select_<?php echo $addressattribute->getAttributeId(); ?>').style.display = '';
+                        var opt3 = $$('#box_options_<?php echo $addressattribute->getAttributeId(); ?> option');
+                        opt3.each(function(el){
+                            el.selected = true;
+                        });
+                     }
+                });
+				<?php if(count($customerAddressAttributeChecked) !=0 ): ?>
+                  <?php foreach ($customerAddressAttributeChecked as $addresslab=>$addressval){
+                      $entityTypeId = Mage::getModel('customer/entity_setup', 'core_setup')->getEntityTypeId('customer_address');
+                      $addressattId = Mage::getResourceModel('eav/entity_attribute_collection')->setEntityTypeFilter($entityTypeId)
+                        ->addFieldToFilter('attribute_code',$addresslab)->getFirstItem()->getAttributeId();
+						$country = Mage::helper('customerattribute/report')->getOptionCountry();?>
+                      document.getElementById("addressattribute_<?php echo $addressattId ?>").checked=true;
+                     var label=' ';
+                     <?php foreach ($addressval as $adva){?>
+					 //alert('<?php echo $adva; ?>');
+                         // $('option_<?php echo $adva ?>').defaultSelected = true;
+						 <?php if(is_numeric($adva)){ ?>  
+						 $('option_<?php echo $adva ?>').defaultSelected = true;
+                            label = label+'<?php echo $option_labels[$adva].", ";//Mage::helper("customerattribute")->getOptionLabel($adva).", "?>';
+						<?php }else if($adva=='false'){?>
+						$('option_<?php echo $addresslab.'_'.$adva ?>').defaultSelected = true;
+                            label = label+'<?php echo $this->__("No").", " ?>';
+						<?php }else if($adva=='true'){?>
+						$('option_<?php echo $addresslab.'_'.$adva ?>').defaultSelected = true;
+                             label = label+'<?php echo $this->__("Yes").", " ?>';
+						<?php }else{?>
+						$('option_<?php echo $adva ?>').defaultSelected = true;
+                        label = label+'<?php echo $country[$adva].", " ?>';
+                     <?php } ?>
+                     <?php } ?>
+                         if(label.length > 20)
+                            label = label.substring(0,20)+'...';
+                     if($('addressattribute_<?php echo $addressattId; ?>').checked){
+                        $('select_<?php echo $addressattId ?>').style.display = '';
+                        $('select_<?php echo $addressattId ?>').update(label);
+                     }
+                  <?php } ?>                    
+              
+               <?php endif; ?>
+            </script>
+		</div>
+     <?php endforeach; ?>    
+        </div> 
+        <div class="order-status">
+            <h4><?php echo $this->__('Purchase Status');?></h4>
+				<select style="width:175px;" id="box_select_purcharse" multiple="multiple" name="order_value[]">
+					<option id="option_Yes" <?php if(in_array('Ordered',$orderChecked)): ?>selected <?php endif; ?> value="<?php echo 'Ordered';?>"><?php echo $this->__('Ordered');?></option>
+					<option id="option_No"  <?php if(in_array('Haven’t ordered',$orderChecked)): ?>selected <?php endif; ?> value="<?php echo 'Haven’t ordered';?>"><?php echo $this->__('Haven’t ordered');?></option>
+				</select>
+        </div>
+        <div class="range">
+            <!--<h4><?php //echo $this->__('Created At Filter:') ?></h4>-->
+            <div class="range-line date">              
+                <span class="label">From:</span>
+                <input type="text" name="created_at[from]" id="created_from" value="<?php if(!empty($createdAt['from'])) echo date("m/d/Y",strtotime($createdAt['from'])); ?>" class="input-text no-changes">
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>" alt="" class="v-middle" id="created_from_trig" title="Date selector">
+            </div>
+            <div class="range-line date">
+                <span class="label">To :</span>
+                <input type="text" name="created_at[to]" id="created_to" value="<?php if(!empty($createdAt['to'])) echo date("m/d/Y",strtotime($createdAt['to'])); ?>" class="input-text no-changes">
+                <img src="<?php echo $this->getSkinUrl('images/grid-cal.gif');?>" alt="" class="v-middle" id="created_to_trig" title="Date selector">
+            </div>
+			<div class="show_empty_row" style="float: left; margin-left:15px;">
+				<label><?php echo $this->__('Show empty rows: ');?></label>
+				<select style="width:50px;" id="box_select_filter_empty" name="show_empty_value">
+					<option id="option_No"  <?php if($show_empty_value=='Donn’t show'): ?>selected <?php endif; ?> value="<?php echo 'Donn’t show';?>"><?php echo $this->__('No');?></option>
+					<option id="option_Yes" <?php if($show_empty_value=='Show'): ?>selected <?php endif; ?> value="<?php echo 'Show';?>"><?php echo $this->__('Yes');?></option>
+				</select>
+			</div>
+        </div>
+		
+        <script type="text/javascript">
+            Calendar.setup({
+                inputField : "created_from",
+                ifFormat : "%m/%e/%Y",
+                button : "created_from_trig",
+                showsTime: false,
+                align : "Bl",
+                singleClick : true
+            });
+            Calendar.setup({
+                inputField : "created_to",
+                ifFormat : "%m/%e/%Y",
+                button : "created_to_trig",
+                showsTime: false,
+                align : "Bl",
+                singleClick : true
+            });
+        </script>
+        <div class="button-sets">
+            <button class="button1" type="submit" ><span><span><?php echo $this->__('Show report');?></span></span></button>
+        </div>
+    </form>    
+</div> 
+<div class="report" >
+    <?php echo $this->getChildHtml('report-graph') ?>
+</div>

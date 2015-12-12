@@ -1,0 +1,27 @@
+<!--
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-53a8421a1dd3f76a"></script>
+<div class="social-box">
+	<div class="holder">
+		<div class="addthis_sharing_toolbox"></div>
+	</div>
+</div>
+-->
+<?php
+
+$product = Mage::registry('current_product');
+$title = $product->getName();
+$url = $product->getProductUrl();
+        
+?>
+<ul class="social-list">
+    <li><span class='st_facebook_large' displayText='Facebook'></span></li>
+    <li><span class='st_googleplus_large' displayText='Google +'></span></li>
+    <li><span class='st_twitter_large' displayText='Tweet'></span></li>
+    <li><span class='st_pinterest_large' displayText='Pinterest'></span></li>
+    <li><span class='st_linkedin_large' displayText='LinkedIn'></span></li>
+    <li><span class='st_sharethis_large' displayText='ShareThis'></span></li>
+</ul>
+
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "3099af55-3ce7-4c72-9d8b-4186eb675147", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>

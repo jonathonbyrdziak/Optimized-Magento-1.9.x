@@ -1,0 +1,19 @@
+<?php
+/* @var $this Mage_Core_Block_Template */
+/* @var $catalogSearchHelper Mage_Catalogsearch_Helper_Data */
+$catalogSearchHelper =  $this->helper('catalogsearch');
+$baseUrl = Mage::app()->getStore($storeId)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
+$route = Mage::getStoreConfig('blog/blog/route');
+if ($route == "") {
+    $route = "blog";
+}
+
+?>
+
+<form id="search_mini_form" action="<?php echo $baseUrl.$route ?>" method="get">
+    <div class="form-search">
+        <label for="search"><?php echo $this->__('Search:') ?></label>
+        <input id="search" type="search" name="<?php echo $catalogSearchHelper->getQueryParamName() ?>" value="<?php echo $catalogSearchHelper->getEscapedQueryText() ?>" class="input-text required-entry" maxlength="<?php echo $catalogSearchHelper->getMaxQueryLength();?>" placeholder="<?php echo $this->__('Search Here') ?>" />
+        <button type="submit" title="<?php echo $this->__('Search') ?>" class="button"><span><span><?php echo $this->__('Search') ?></span></span></button>
+    </div>
+</form>

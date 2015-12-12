@@ -1,0 +1,394 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+/** @var Magestore_Customerattribute_Block_checkout_Onepage_Billing $this */
+
+?>
+<script type="text/javascript">
+//customer attribute
+if($('billing-new-address-form')){
+<?php $userCustomerAttribute = $this->getLayout()->getBlock('customer_form_user_attributes');?>
+<?php $userCustomerAttributeship = $this->getLayout()->getBlock('customer_form_user_attributes');?>
+            <?php if($userCustomerAttribute): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttribute->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttribute->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttribute->setFieldIdFormat('billing:%1$s');?>
+                <?php $userCustomerAttribute->setFieldNameFormat('billing[%1$s]');?>
+                <?php $userCustomerAttribute->setShowFieldSet(FALSE); ?>
+                <?php $htmlString= json_encode($userCustomerAttribute->toHtml()); ?>				
+		
+                    var test =<?php echo $htmlString ?>;      
+                    
+                    var listbill=document.getElementById('billing-new-address-form').getElementsByTagName("ul");     
+                    var listlibill=listbill[0].getElementsByTagName("li");
+                    listlibill[1].insert({after:test});                   
+               <?php endif; ?>
+                   
+
+            <?php if($userCustomerAttributeship): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttributeship->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttributeship->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttributeship->setFieldIdFormat('shippinh:%1$s');?>
+                <?php $userCustomerAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                <?php $userCustomerAttributeship->setShowFieldSet(FALSE); ?>
+                <?php $htmlStringship= json_encode($userCustomerAttributeship->toHtml()); ?>				
+		
+                    var testship =<?php echo $htmlStringship ?>;
+                    
+                    var listship=document.getElementById('shipping-new-address-form').getElementsByTagName("ul");     
+                    var listliship=listship[0].getElementsByTagName("li");
+                    listliship[1].insert({after:testship});
+        
+               <?php endif; ?>
+                       
+//customer address attribute
+   
+               <?php $userAddressAttribute = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttribute): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttribute->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttribute->setFieldIdFormat('billing:%1$s');?>
+                        <?php $userAddressAttribute->setFieldNameFormat('billing[%1$s]');?>
+                        <?php $userAddressAttribute->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecond=json_encode($userAddressAttribute->toHtml());?>  
+                            
+                                 var addAddress = <?php echo $htmlStringSecond ?>;                                
+                                                     
+                                 var listlibill= $$('#billing-new-address-form ul li.fields');
+                                 listlibill[listlibill.length-1].insert({after:addAddress});
+                               
+                <?php endif ?>
+                    
+               <?php $userAddressAttributeship = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttributeship): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttributeship->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttributeship->setFieldIdFormat('shipping:%1$s');?>
+                        <?php $userAddressAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                        <?php $userAddressAttributeship->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecondShip=json_encode($userAddressAttributeship->toHtml());?>  
+                            
+                                 var addAddressShip = <?php echo $htmlStringSecondShip ?>;
+                                 
+                                 var listliship= $$('#shipping-new-address-form ul li.fields');
+                                 listliship[listliship.length-1].insert({after:addAddressShip});
+                                 
+                <?php endif ?>
+
+var checkout_method = '<?php echo Mage::getSingleton('checkout/session')->getData('method'); ?>';
+if(checkout_method =='guest'){
+    var bill_flags = $$('#billing-new-address-form div.flag');
+    var ship_flags = $$('#shipping-new-address-form div.flag');
+     bill_flags.each(function(el1){
+        el1.remove();
+    });
+    ship_flags.each(function(el2){
+        el2.remove();
+    });
+};
+if($('create_account_checkbox_id')) {   
+Event.observe('create_account_checkbox_id', 'click', function() { 
+    var billflags = $$('#billing-new-address-form div.flag');
+    var shipflags = $$('#shipping-new-address-form div.flag');
+    if ($('create_account_checkbox_id').checked){ 
+        var div_attribute = $$('div.additional-attributes');
+            div_attribute.each(function(element){
+                element.remove();
+            });
+            <?php if($userCustomerAttribute): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttribute->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttribute->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttribute->setFieldIdFormat('billing:%1$s');?>
+                <?php $userCustomerAttribute->setFieldNameFormat('billing[%1$s]');?>
+                <?php $userCustomerAttribute->setShowFieldSet(FALSE); ?>
+                <?php $htmlString= json_encode($userCustomerAttribute->toHtml()); ?>				
+		
+                    var test =<?php echo $htmlString ?>;      
+                    
+                    var listbill=document.getElementById('billing-new-address-form').getElementsByTagName("ul");     
+                    var listlibill=listbill[0].getElementsByTagName("li");
+                    listlibill[1].insert({after:test});                   
+               <?php endif; ?>
+                   
+
+            <?php if($userCustomerAttributeship): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttributeship->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttributeship->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttributeship->setFieldIdFormat('shippinh:%1$s');?>
+                <?php $userCustomerAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                <?php $userCustomerAttributeship->setShowFieldSet(FALSE); ?>
+                <?php $htmlStringship= json_encode($userCustomerAttributeship->toHtml()); ?>				
+		
+                    var testship =<?php echo $htmlStringship ?>;
+                    
+                    var listship=document.getElementById('shipping-new-address-form').getElementsByTagName("ul");     
+                    var listliship=listship[0].getElementsByTagName("li");
+                    listliship[1].insert({after:testship});
+        
+               <?php endif; ?>
+                       
+//customer address attribute
+   
+               <?php $userAddressAttribute = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttribute): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttribute->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttribute->setFieldIdFormat('billing:%1$s');?>
+                        <?php $userAddressAttribute->setFieldNameFormat('billing[%1$s]');?>
+                        <?php $userAddressAttribute->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecond=json_encode($userAddressAttribute->toHtml());?>  
+                            
+                                 var addAddress = <?php echo $htmlStringSecond ?>;                                
+                                                     
+                                 var listlibill= $$('#billing-new-address-form ul li.fields');
+                                 listlibill[listlibill.length-1].insert({after:addAddress});
+                               
+                <?php endif ?>
+                    
+               <?php $userAddressAttributeship = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttributeship): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttributeship->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttributeship->setFieldIdFormat('shipping:%1$s');?>
+                        <?php $userAddressAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                        <?php $userAddressAttributeship->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecondShip=json_encode($userAddressAttributeship->toHtml());?>  
+                            
+                                 var addAddressShip = <?php echo $htmlStringSecondShip ?>;
+                                 
+                                 var listliship= $$('#shipping-new-address-form ul li.fields');
+                                 listliship[listliship.length-1].insert({after:addAddressShip});
+                                 
+                <?php endif ?>  
+    }else{ 
+             billflags.each(function(el1){
+                el1.remove();
+            });
+            shipflags.each(function(el2){
+                el2.remove();
+            });
+    }
+});
+}
+if($('onepage-guest-register-button')){
+$('onepage-guest-register-button').observe('click',function(){    
+        var method;
+        var input_guest = $('login:guest');
+        if(input_guest.checked) method = 'guest';
+        var bill_flags = $$('#billing-new-address-form div.flag');
+        var ship_flags = $$('#shipping-new-address-form div.flag');
+        if(method =='guest'){
+            bill_flags.each(function(el1){
+                el1.remove();
+            });
+            ship_flags.each(function(el2){
+                el2.remove();
+            });
+        }else{
+            var div_attribute = $$('div.additional-attributes');
+            div_attribute.each(function(element){
+                element.remove();
+            });
+            <?php if($userCustomerAttribute): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttribute->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttribute->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttribute->setFieldIdFormat('billing:%1$s');?>
+                <?php $userCustomerAttribute->setFieldNameFormat('billing[%1$s]');?>
+                <?php $userCustomerAttribute->setShowFieldSet(FALSE); ?>
+                <?php $htmlString= json_encode($userCustomerAttribute->toHtml()); ?>				
+		
+                    var test =<?php echo $htmlString ?>;      
+                    
+                    var listbill=document.getElementById('billing-new-address-form').getElementsByTagName("ul");     
+                    var listlibill=listbill[0].getElementsByTagName("li");
+                    listlibill[1].insert({after:test});                   
+               <?php endif; ?>
+                   
+
+            <?php if($userCustomerAttributeship): ?>                
+                <?php if ($this->isCustomerLoggedIn()): ?>
+                <?php $userCustomerAttributeship->setEntity(Mage::getSingleton('customer/session')->getCustomer()); ?>
+                <?php else:  ?>
+                <?php $userCustomerAttributeship->setEntityModelClass('customer/customer')?>
+                <?php endif ?>
+                <?php $userCustomerAttributeship->setFieldIdFormat('shippinh:%1$s');?>
+                <?php $userCustomerAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                <?php $userCustomerAttributeship->setShowFieldSet(FALSE); ?>
+                <?php $htmlStringship= json_encode($userCustomerAttributeship->toHtml()); ?>				
+		
+                    var testship =<?php echo $htmlStringship ?>;
+                    
+                    var listship=document.getElementById('shipping-new-address-form').getElementsByTagName("ul");     
+                    var listliship=listship[0].getElementsByTagName("li");
+                    listliship[1].insert({after:testship});
+        
+               <?php endif; ?>
+                       
+//customer address attribute
+   
+               <?php $userAddressAttribute = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttribute): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttribute->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttribute->setFieldIdFormat('billing:%1$s');?>
+                        <?php $userAddressAttribute->setFieldNameFormat('billing[%1$s]');?>
+                        <?php $userAddressAttribute->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecond=json_encode($userAddressAttribute->toHtml());?>  
+                            
+                                 var addAddress = <?php echo $htmlStringSecond ?>;                                
+                                                     
+                                 var listlibill= $$('#billing-new-address-form ul li.fields');
+                                 listlibill[listlibill.length-1].insert({after:addAddress});
+                               
+                <?php endif ?>
+                    
+               <?php $userAddressAttributeship = $this->getChild('customer_form_user_address_attributes');?>
+                     <?php if($userAddressAttributeship): ?>
+                        <?php $addressAdd = $this->getAddress();?>
+                        <?php if($this->isCustomerLoggedIn()): ?>
+                        <?php
+                            $addresses = Mage::getSingleton('customer/session')->getCustomer()->getAddresses();
+                            foreach($addresses as $item){
+                                $customerAddress = $item->toArray();
+                            }
+                            $form = Mage::getModel('customer/form');
+                            $form->setFormCode('customer_register_address');
+                            $form->setEntityType('customer_address');
+                            $attributes = $form->getUserAttributes();
+                            foreach ($attributes as $attribute) {
+                            //echo $attribute->getAttributeCode();
+                            $addressAdd->setData($attribute->getAttributeCode(), $customerAddress[$attribute->getAttributeCode()]);
+                        } ?>
+                        <?php endif; ?>
+                        <?php $userAddressAttributeship->setEntity($addressAdd)->setEntityType('customer_address');?>                                        
+                        <?php $userAddressAttributeship->setFieldIdFormat('shipping:%1$s');?>
+                        <?php $userAddressAttributeship->setFieldNameFormat('shipping[%1$s]');?>
+                        <?php $userAddressAttributeship->setShowFieldSet(FALSE);?>
+                        <?php $htmlStringSecondShip=json_encode($userAddressAttributeship->toHtml());?>  
+                            
+                                 var addAddressShip = <?php echo $htmlStringSecondShip ?>;
+                                 
+                                 var listliship= $$('#shipping-new-address-form ul li.fields');
+                                 listliship[listliship.length-1].insert({after:addAddressShip});
+                                 
+                <?php endif ?>   
+        }
+    });
+   }  
+}
+</script>
+   			
+			
+		 

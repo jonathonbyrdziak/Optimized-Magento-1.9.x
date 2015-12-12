@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+<div id="loadingbar-frame"></div>
+<?php echo $this->getChildHtml('header_message') ?>
+<div id="header" class="page-header">
+    <div class="page-header-container">
+        <div class="header-frame">
+            <strong class="logo"><a href="<?php echo $this->getUrl('') ?>"><?php echo $this->getLogoAlt() ?></a></strong>
+            <nav class="mega-menu">
+                <?php echo $this->getChildHtml('menupro_group_1') ?>
+            </nav>
+            <?php //echo $this->getChildHtml('header_social_networks') ?>
+        </div>
+        <?php echo $this->getChildHtml('header_free_shipping') ?>
+        
+        <a href="#" class="opener"><span>open</span></a>
+        <div class="nav-holder">
+            <div class="nav-drop">
+                <div class="heade-holder">
+                    <?php if (Mage::helper('customer')->isLoggedIn()): ?>
+                    <span class="visible-md-block hidden-xs welcome-msg welcome-msg-toplinks"><?php echo $this->getChildHtml('welcome') ?></span>
+                    <?php endif ?>
+                    <?php echo $this->getChildHtml('topLinks') ?>
+                    <?php echo $this->getChildHtml('minicart_head'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->getChildHtml('topContainer'); ?>

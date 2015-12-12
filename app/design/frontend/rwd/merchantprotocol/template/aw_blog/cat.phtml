@@ -1,0 +1,84 @@
+<?php $posts = $this->getPosts(); ?>
+<?php if (count($posts)): ?>
+     <?php foreach ($posts as $post): ?>
+        <div class="post">
+            <div class="info-box">
+                <div class="date">
+                    <?php $_date = strtotime($post->getCreatedTime()); ?>
+                    <strong><?php echo date('d', $_date) ?></strong>
+                    <span><?php echo date('F', $_date) ?></span>
+                </div>
+            <ul class="social-list">
+                <!--li class="like-icon"><a href="#">891</a></li>
+                <li> <a href="http://digg.com/submit?phase=2&amp;url=<?php echo $post->getAddress(); ?>&amp;title=<?php echo $post->getTitle(); ?>&amp;bodytext=<?php echo $post->getTitle(); ?>&amp;topic=" class="bm">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-digg-com.gif" width="16" height="16" alt = "" /><br/><?php echo $this->__('Digg.com'); ?></a></li>
+                <li><a href="http://www.stumbleupon.com/submit?url=<?php echo $post->getAddress(); ?>&amp;title=<?php echo $post->getTitle(); ?>&amp;newcomment=<?php echo $post->getTitle(); ?>" class="bm">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-stumbleupon-com.gif" width="16" height="16" alt = "" /><br/><?php echo $this->__('Stumbleupon.com'); ?></a></li>
+                <li><a href="http://del.icio.us/post/?url=<?php echo $post->getAddress(); ?>&amp;title=<?php echo $post->getTitle(); ?>&amp;notes=<?php echo $post->getTitle(); ?>" class="bm">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-del-icio-us.gif" width="16" height="16" alt = "" /><br/><?php echo $this->__('Del.icio.us'); ?></a></li>
+                <li><a href="http://www.google.com/bookmarks/mark?op=add&amp;bkmk=<?php echo $post->getAddress();?>&amp;title=<?php echo $post->getTitle();?>&amp;annotation=<?php echo $post->getTitle();?>&amp;cd=bm&amp;btnA=Add" class="bm">
+                            <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-google-com-bookmarks.gif" width="16" border="0" height="16"><br/>Google.com</a></li>
+                <li><a href="http://www.facebook.com/sharer.php?u=<?php echo $post->getAddress(); ?>&amp;t=<?php echo $post->getTitle(); ?>" class="bm">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-www-facebook-com-.gif" width="16" height="16" alt = "" /><br/><?php echo $this->__('Facebook'); ?></a></li>
+                <li><a href="http://reddit.com/submit?url=<?php echo $post->getAddress(); ?>&amp;title=<?php echo $post->getTitle(); ?>" class="bm">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('aw_blog/images/communityIcons'); ?>/http-reddit-com.gif" width="16" height="16" alt = "" /><br/><?php echo $this->__('Reddit.com'); ?></a></li>
+                <li class="share-icon"><a href="#">Share</a></li>
+                -->
+                
+                
+                <li><span class='st_facebook_large' displayText='Facebook'></span></li>
+                <li><span class='st_googleplus_large' displayText='Google +'></span></li>
+                <li><span class='st_twitter_large' displayText='Tweet'></span></li>
+                <li><span class='st_pinterest_large' displayText='Pinterest'></span></li>
+                <li><span class='st_linkedin_large' displayText='LinkedIn'></span></li>
+                <li><span class='st_sharethis_large' displayText='ShareThis'></span></li>
+            </ul>
+            
+            <script type="text/javascript">var switchTo5x=true;</script>
+            <script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+            <script type="text/javascript">stLight.options({publisher: "3099af55-3ce7-4c72-9d8b-4186eb675147", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+            </div>
+            <div class="holder">
+            <?php
+            $_img = '';
+            if (method_exists($post, 'getPostImage')) {
+                $_img = $post->getPostImage();
+            }
+            ?>
+            <?php if ($_img): ?>
+                <div class="img-box">
+                    <?php echo $_img ?>
+                </div>
+            <?php endif; ?>
+                <h2><a href="<?php echo $post->getAddress(); ?>" ><?php echo $post->getTitle(); ?></a></h2>
+                <ul class="list">
+                    <li><?php echo $post->getUser(); ?></li>
+                    <?php $postCats = $post->getCats(); ?>
+                    <?php if (!empty($postCats)): ?>
+                        <li>
+                        <?php foreach ($postCats as $data): ?>
+                            <a href="<?php echo $data['url']; ?>"><?php echo $data['title']; ?></a>
+                        <?php endforeach; ?>
+                        </li>
+                    <?php endif; ?>
+                    <?php if ($this->getCommentsEnabled()): ?>
+                        <?php
+                        $_comments = 'Comments';
+                        if ($post->getCommentCount() == 1) {
+                            $_comments = 'Comment';
+                        }
+                        ?>
+                        <li class="comments"><a href="<?php echo $post->getAddress(); ?>#commentBox"><?php echo Mage::helper('blog')->__('%s %s', $post->getCommentCount(), $_comments); ?></a></li>
+                    <?php endif; ?>
+                </ul>
+                <div class="std">
+                    <?php echo $post->getPostContent(); ?>
+                </div>
+                <a href="<?php echo $post->getAddress(); ?>" class="link-more"><?php echo Mage::helper('blog')->__('Read More') ?></a>
+            </div>
+        </div>
+    <?php endforeach; ?>
+ <?php echo $this->getChildHtml('aw_blog_comments_toolbar'); ?>
+<?php else: ?>
+    <?php echo Mage::helper('blog')->__('No Posts in this Category.'); ?>
+<?php endif; ?>

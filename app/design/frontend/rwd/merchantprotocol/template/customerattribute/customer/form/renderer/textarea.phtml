@@ -1,0 +1,9 @@
+<div class="field<?php if(!$this->getShowOnGuest()) echo ' flag'?>">
+<label for="<?php echo $this->getHtmlId()?>"<?php if ($this->isRequired()) echo ' class="required"' ?>><?php if ($this->isRequired()) echo '<em>*</em>' ?><?php echo $this->getLabel() ?></label>
+<div class="input-box">
+    <textarea id="<?php echo $this->getHtmlId()?>" name="<?php echo $this->getFieldName()?>" rows="5" cols="25" class="form-control input-text<?php echo $this->getHtmlClass(); ?>"><?php echo $this->getEscapedValue() ?></textarea>
+    <?php if ($_message = $this->getAdditionalDescription()) : ?>
+    <div class="validation-advice"><?php echo $_message; ?></div>
+    <?php endif; ?>    
+</div>
+</div>

@@ -1,0 +1,38 @@
+<?php /**
+ * Create account form template */
+/* @var $this Magestore_Customerattribute_Block_Customer_Form */
+?>
+<div class="additional-attributes">
+<?php if ($this->hasUserDefinedAttributes()): ?>
+<?php if($this->isShowFieldSet()): ?>
+    <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Additional Information') ?></h2>
+    <ul class="form-list">   
+ <?php endif; ?>
+    <?php $countAttribute=1; ?>
+    <?php foreach ($this->getUserDefinedAttributes() as $attribute):?>
+        <?php $frontendInput=$attribute->getFrontendInput() ?>
+        
+        <?php $attributeContent = $this->getAttributeHtml($attribute);?>
+        <?php if ($attributeContent): ?>
+        <?php if(($frontendInput=='image')||($frontendInput=='file')
+                ||($frontendInput=='multiselect')||($frontendInput=='textarea')||($countAttribute==1)):?>
+        <li class="fields">
+        <?php endif ?>
+        <?php echo $attributeContent;?>
+        <?php if(($frontendInput=='image')||($frontendInput=='file')
+                ||($frontendInput=='multiselect')||($frontendInput=='textarea')||($countAttribute==2)): ?>
+            </li>
+            <?php $countAttribute=1; ?>
+        <?php else: ?>
+            <?php $countAttribute++;?>
+        <?php endif ?>
+        
+        <?php endif ?>
+    <?php endforeach;?>  
+ <?php if($this->isShowFieldSet()): ?>
+    </ul>         
+    </div>  
+<?php endif; ?>
+<?php  endif; ?>
+</div>

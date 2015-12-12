@@ -1,0 +1,96 @@
+<?php
+$subscriptions = $this->getSubscriptions();
+$helper = Mage::helper('recorder');
+?>
+<div class="dashboard">
+
+    <?php echo $this->getMessagesBlock()->toHtml(); ?>
+    <div class="page-title">
+        <h1>My Recurring Orders</h1>
+    </div>
+
+    <?php if (!Mage::helper('level3')->getPrimaryCard()): ?>
+        <ul class="messages"><li class="error-msg"><ul><li><span>
+                            You must have a valid credit card on file. Please add a credit card <a href="<?php echo Mage::getUrl('level3/cc/edit') ?>">here</a>
+                        </span></li></ul></li></ul>
+    <?php endif ?>
+
+    <p>Recurring Orders are designed to make your life easier. We treat Recurring 
+        Orders like a "Subscription" which allows you to schedule products you buy 
+        frequently to be automatically charged to your card on file and shipped to 
+        you according to your settings.</p>
+    <br/>
+    <p>You can effortlessly add, remove, change quantities or reschedule dates for 
+        individual products. Or, you can simply cancel your subscriptions. To create 
+        a new Recurring Order click the button below to view your order history and 
+        then click "Create Recurring Order"</p>
+    <br/>
+
+    <div class="box-account box-recent">
+        <?php $_orders = $this->getOrders(); ?>
+        <div class="box-head">
+            <h2><?php echo $this->__('Recurring Orders') ?></h2>
+        </div>
+        <?php if (sizeof($subscriptions) > 0): ?>
+            <?php
+            foreach ($subscriptions as $_order):
+                $_items = $_order->getAllItems();
+                $_item = $_items[0];
+                ?>
+                <div class="product">
+                    <?php $_product = $_item->getProduct(); ?>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <?php if ($msg = $_order->getErrorMessage()): ?>
+                                <ul class="messages"><li class="error-msg"><ul><li><span><?php echo $msg ?></span></li></ul></li></ul>
+                            <?php elseif ($msg = $_order->getStatusMessage()): ?>
+                                <ul class="messages"><li class="success-msg"><ul><li><span><?php echo $msg ?></span></li></ul></li></ul>
+                            <?php endif ?>
+                        </div>
+                    </div>
+
+
+                    <div class="product-img">
+                        <a href="<?php echo $this->escapeHtml($_product->getProductUrl()) ?>">
+                            <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(120); ?>" 
+                                 alt="<?php echo $this->escapeHtml($_product->getName()) ?>" />
+                        </a>
+                    </div>
+
+                    <div class="btn-holder">
+                        <a href="<?php echo Mage::helper('recorder')->editOrderUrl($_order->getId(), true) ?>" class="btn">Edit Recurring Order</a>
+                    </div>
+
+                    <div class="text-holder">
+
+                        <div class="pull-right" style="padding-right:10px">
+                            <img src="<?php echo Mage::getDesign()->getSkinUrl() ?>/images/recurring_icon.png" title="This is a Recurring Order" />
+                        </div>
+
+                        <h3><?php echo $this->escapeHtml($_item->getName()) ?></h3>
+                        <dl class="info">
+                            <dt><?php echo $this->__('Recurring Order #:') . ' ' . $_order->getId() ?></dt>
+                            <dt><?php echo $this->__('Next Order Date:') ?></dt>
+                            <dd><?php echo $this->__('%s', $this->formatDate($_order->getData('start_date'))) ?></dd>
+
+                            <dt><?php echo $this->__('Order Period:') ?></dt>
+                            <dd><?php echo $_order->getInterval() ?></dd>
+
+                            <dt><?php echo $this->__('Ship To:') ?> </dt>
+                            <dd><?php echo $_order->getShippingAddressObj() ? $this->escapeHtml($_order->getShippingAddressObj()->getName()) : '&nbsp;' ?></dd>
+                            <dt><?php echo $this->__('Grand Total:') ?> </dt>
+                            <dd><strong><?php echo Mage::helper('core')->currency($_order->getData('grand_total')) ?></strong></dd>
+                        </dl>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+    <div style="padding:10px 0" class="pull-right">
+        <a class="btn btn-primary" href="<?php echo Mage::getUrl('sales/order/history') ?>">
+            <?php echo $this->__('Create New Recurring Order From Previous Order') ?>
+        </a>
+        <br/>
+    </div>
+</div>
