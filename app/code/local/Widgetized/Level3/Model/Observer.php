@@ -19,10 +19,10 @@ class Widgetized_Level3_Model_Observer {
      */
     public function __construct() {
         $this->_attributes['is_recurring'] = 'options.'.
-                Widgetized_Recorder_Helper_Data::OPTIONSID.'.is_recurring';
+                Widgetized_Level3_Helper_Data::OPTIONSID.'.is_recurring';
         
         $this->_attributes['recurring_start_date'] = 'options.'.
-                Widgetized_Recorder_Helper_Data::OPTIONSID.'.start_date';
+                Widgetized_Level3_Helper_Data::OPTIONSID.'.start_date';
     }
     
     /**

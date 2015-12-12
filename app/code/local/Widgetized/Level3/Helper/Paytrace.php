@@ -1,6 +1,6 @@
 <?php
 /**
- * By Jonathon Byrd http://widgetized.co Copyright 2014. All Rights Reserved.
+ * By Jonathon Byrd http://http://magentosupport.help Copyright 2014. All Rights Reserved.
  * 
  */
 

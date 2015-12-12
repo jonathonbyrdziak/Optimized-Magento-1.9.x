@@ -1,36 +1,12 @@
 <?php
 /**
- * By Jonathon Byrd http://widgetized.co Copyright 2014. All Rights Reserved.
+ * By Jonathon Byrd http://http://magentosupport.help Copyright 2014. All Rights Reserved.
  * 
  */
 
 class Widgetized_Level3_Helper_Data extends Mage_Paygate_Helper_Data
 {    
-    /**
-     * Retrieve information from payment configuration
-     *
-     * @param string $field
-     * @param int|string|null|Mage_Core_Model_Store $storeId
-     *
-     * @return mixed
-     */
-    public function getConfigData($field, $storeId = null)
-    {
-        if (null === $storeId) {
-            $storeId = Mage::getStore()->getStoreId();
-        }
-        $path = 'payment/revolution/'.$field;
-        return Mage::getStoreConfig($path, $storeId);
-    }
-    
-    /**
-     * 
-     * @return mixed
-     */
-    public function isLevel3Enabled()
-    {
-    	return $this->getConfigData('enable_level3');
-    }
+    const OPTIONSID = '453465';
     
     /**
      * @TODO b4requirements get the list of saved credit cards

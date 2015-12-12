@@ -1,14 +1,7 @@
 <?php
-/**
- * 
- */
+
 require_once 'Mage/Paygate/Model/Authorizenet.php';
 
-/**
- * 
- * @author anonymous
- *
- */
 class Widgetized_Level3_Model_Revolution extends Mage_Paygate_Model_Authorizenet
 {
     /*
@@ -172,16 +165,16 @@ class Widgetized_Level3_Model_Revolution extends Mage_Paygate_Model_Authorizenet
              * ask you to provide in order to reference the transaction to 
              * their credit card statement.
              */
-            $po_number = $order->getPoNumber()
-                        ?$order->getPoNumber()
-                        : ($order->getQuote()
-                               ? $order->getQuote()->getPoNumber()
-                                : '');
-            
-            $request->setXPoNum($po_number);
-                
-            $request->setXTax($order->getBaseTaxAmount())
-                ->setXFreight($order->getBaseShippingAmount());
+//e            $po_number = $order->getPoNumber()
+//                        ?$order->getPoNumber()
+//                        : ($order->getQuote()
+//                               ? $order->getQuote()->getPoNumber()
+//                                : '');
+//            
+//            $request->setXPoNum($po_number);
+//                
+//            $request->setXTax($order->getBaseTaxAmount())
+//f               ->setXFreight($order->getBaseShippingAmount());
             
 //            
 //    //        Use these fields if we're using a stored credit card
